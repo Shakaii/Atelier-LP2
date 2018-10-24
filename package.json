@@ -1,0 +1,23 @@
+{
+  "name": "docker-node",
+  "version": "1.0.0",
+  "description": "![Landing Page](https://preview.ibb.co/gOTa0y/LAMP_STACK.png)",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "nodemon src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^4.16.4",
+    "mongodb": "^3.1.8",
+    "mustache": "^3.0.0",
+    "mysql2": "^1.6.1",
+    "sequelize": "^4.41.0"
+  },
+  "devDependencies": {
+    "nodemon": "1.18.4"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

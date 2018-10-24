@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  webserver:
+    image: node:9.11.1-alpine
+    command: "yarn run start"
+    working_dir: "/app"
+    volumes:
+        - ./:/app
+        - ./logs/node:/var/log/
+    ports:
+        - 80:80
