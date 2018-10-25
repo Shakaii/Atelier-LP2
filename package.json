@@ -12,7 +12,8 @@
     "mongodb": "^3.1.8",
     "mustache": "^3.0.0",
     "mysql2": "^1.6.1",
-    "sequelize": "^4.41.0"
+    "sequelize": "^4.41.0",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "nodemon": "1.18.4"
