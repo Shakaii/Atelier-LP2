@@ -5,7 +5,8 @@ var server = http.createServer(function(req, res) {
   res.write('<a href="https://mongodb.github.io/node-mongodb-native/api-articles/nodekoarticle1.html">To learn some mongoDB with NodeJS</a></br>');
   res.write('<a href="https://www.npmjs.com/package/mustache">To learn some mustache template</a></br>');
   res.write('<a href="https://expressjs.com/fr/guide/routing.html">Learn a bit of express for routing</a></br>');
-  res.end('<a href="http://docs.sequelizejs.com/manual/installation/getting-started">Using sequelize if needed</a>');
+  res.write('<a href="http://docs.sequelizejs.com/manual/installation/getting-started">Using sequelize if needed</a></br>');
+  res.end('<a href="https://mongoosejs.com/">An ORM for MongoDB</a></br>');
   var MongoClient = require('mongodb').MongoClient;
 
 	var uri = "mongodb+srv://Shakai:Eu8tsS8k6cupaJ2P@cluster0-lbc8c.gcp.mongodb.net/test?retryWrites=true";
