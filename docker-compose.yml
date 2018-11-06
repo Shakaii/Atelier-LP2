@@ -3,7 +3,7 @@ version: "3"
 services:
   webserver:
     image: node:9.11.1-alpine
-    command: ""
+    command: "npm start"
     working_dir: "/app"
     volumes:
         - ./:/app
@@ -12,10 +12,11 @@ services:
         - 80:80
     links:
         - mongo
+    depends_on:
+        - mongo
   mongo:
     image: bitnami/mongodb:latest
     ports:
         - 27017:27017
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: root
+
+
