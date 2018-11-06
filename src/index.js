@@ -1,10 +1,17 @@
-var http = require('http');
-var express = require('express');
+let http = require('http');
+let express = require('express');
+let mongoose = require('mongoose');
 
-var app = express();
-let port = 80
 
-var mustacheExpress = require('mustache-express');
+
+
+let app = express();
+let port = 80;
+
+let mustacheExpress = require('mustache-express');
+
+let uri = 'mongodb://mongo:27017/test';
+mongoose.connect(uri)
 
 // Register '.mustache' extension with The Mustache Express
 app.engine('mustache', mustacheExpress());
@@ -18,6 +25,73 @@ app.get('/', function (req, res) {
     }
   });
 });
+
+let db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+
+	let UserSchema = new mongoose.Schema({
+		username: String,
+		password: String,
+		email: String,
+		boxes: Array
+	});
+	
+	let CategorySchema = new mongoose.Schema({
+		title: String,
+		prestations: Array
+	});
+
+	let PrestationSchema = new mongoose.Schema({
+		title: String,
+		description: String,
+		image: String,
+		price: Number,
+		isVisible: Boolean
+	})
+
+	let BoxSchema = new mongoose.Schema({
+		recipientName: String,
+		recipientEmail: String,
+		message: String,
+		urlGift: Number,
+		urlFund: Boolean,
+		date: Date,
+		isPaid: Boolean,
+		isOpened: Boolean,
+		isCurrent: Boolean,
+		prestations: Array,
+		contributions: Array
+	})
+
+	let ContributionSchema = new mongoose.Schema({
+		name: String, 
+		Amount: Number,
+		message: String
+	})
+	
+	let Box = mongoose.model('Box', BoxSchema);
+	let User = mongoose.model('User', UserSchema);
+	let Category = mongoose.model('Category', CategorySchema);
+	let Prestation = mongoose.model('prestation', PrestationSchema);
+	let Contribution = mongoose.model('Contribution', ContributionSchema);
+	
+	
+
+	console.log("is okay");
+	
+});
+
+
+
+
+
+
+
+
+
+
+
 
 app.listen(port);
 
