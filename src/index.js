@@ -28,7 +28,8 @@ app.get('/signup', function (req, res) {
 });
 
 app.get("/login", function (req, res) {
-    console.log(req.body.user.name)
+	res.render('login', {});
+    console.log(req.body.name)
 });
 
 
