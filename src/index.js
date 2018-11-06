@@ -1,5 +1,27 @@
 var http = require('http');
+var express = require('express');
 
+var app = express();
+let port = 80
+
+var mustacheExpress = require('mustache-express');
+
+// Register '.mustache' extension with The Mustache Express
+app.engine('mustache', mustacheExpress());
+app.set('view engine', 'mustache');
+app.set('views', __dirname + '/views');
+
+app.get('/', function (req, res) {
+  res.render('index', {
+    locals: {
+      title: 'Welcome'
+    }
+  });
+});
+
+app.listen(port);
+
+/*
 var server = http.createServer(function(req, res) {
   res.writeHead(200, {"Content-Type": "text/html"});
   res.write('<a href="https://mongodb.github.io/node-mongodb-native/api-articles/nodekoarticle1.html">To learn some mongoDB with NodeJS</a></br>');
@@ -20,6 +42,7 @@ var server = http.createServer(function(req, res) {
 
 });
 server.listen(80);
+*/
 
 
 
