@@ -17,6 +17,8 @@ app.use(bodyParser.json());
 
 
   
+
+/* GESTION DES GET */ 
 app.get('/', function (req, res) {
 	res.render('index', {});
 });
@@ -25,16 +27,18 @@ app.get('/signin', function (req, res) {
 	res.render('signin', {});
 });
 
-app.post("/", function (req, res) {
+app.get("/login", function (req, res) {
     console.log(req.body.user.name)
 });
 
+
+/* GESTION DES POST */ 
 app.post('/signup', function (req, res) {
 	console.log(req.body.mail)
 	console.log(req.body.pass)
 });
 
-app.post("/signin", function (req, res) {
+app.post("/login", function (req, res) {
 	console.log(req.body.mail)
 	console.log(req.body.pass)
 });
