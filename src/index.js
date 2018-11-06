@@ -23,12 +23,12 @@ app.get('/', function (req, res) {
 	res.render('index', {});
 });
 
-app.get('/signin', function (req, res) {
-	res.render('signin', {});
+app.get('/signup', function (req, res) {
+	res.render('signup', {});
 });
 
 app.get("/login", function (req, res) {
-    console.log(req.body.user.name)
+	res.render('login', {});
 });
 
 app.get("/catalogue", function (req, res) {
@@ -43,16 +43,7 @@ app.get("/catalogue/:categorie/:prestation", function (req, res) {
   res.render('prestation', {'prest':req.params.prestation, 'cat':req.params.categorie});
 });
 
-/* GESTION DES POST */ 
-app.post('/signup', function (req, res) {
-	console.log(req.body.mail)
-	console.log(req.body.pass)
-});
 
-app.post("/login", function (req, res) {
-	console.log(req.body.mail)
-	console.log(req.body.pass)
-});
 		 
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -103,32 +94,34 @@ db.once('open', function() {
 	let Prestation = mongoose.model('Prestation', PrestationSchema);
 	let Contribution = mongoose.model('Contribution', ContributionSchema);
 
-/*
-	let user = new User({
-		password: "geof",
-		email: "geof.b@laposte.net",
+	/* GESTION DES POST */ 
+	app.post('/signup', function (req, res) { 
+
+		console.log("ok");
+
+		let user = new User({
+			password: req.body.pass,
+			email: req.body.mail
+		});
+
+		user.save(function (err) {
+			if (err) return handleError(err);  
+			console.log("inscrit")
+		}); 
+
+	});
+ 
+	app.post("/login", function (req, res) {
+		
+		User.findOne({ email: req.body.mail }, function(err, user){
+
+			if (req.body.pass == user.password){
+				console.log("connecté")
+			}
+		});
+
 	});
 
-	user.boxes.push (new Box({
-		recipientName: "geof",
-		recipientEmail: "bern.geof@laposte.net",
-		message: "joyeux anniversaire",
-		isPaid: false,
-		isOpened: false,
-		isCurrent: false,
-	}));
-
-
-	user.save(function (err) {
-		if (err) return handleError(err);  
-	}); 
-
-	User.find(function (err, users) {
-		if (err) return console.error(err);
-		console.log("LESUSERS");
-		console.log(JSON.stringify(users));
-	})
-*/	 
 
 	console.log('Connection à la bdd effectuée');
 
