@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 
- 
+  
 app.get('/', function (req, res) {
 	res.render('index', {});
 });
@@ -29,12 +29,14 @@ app.post("/", function (req, res) {
     console.log(req.body.user.name)
 });
 
-app.get('/signup', function (req, res) {
-	console.log(req.body.user.pass)
+app.post('/signup', function (req, res) {
+	console.log(req.body.mail)
+	console.log(req.body.pass)
 });
 
 app.post("/signin", function (req, res) {
-    console.log(req.body.user.pass)
+	console.log(req.body.mail)
+	console.log(req.body.pass)
 });
 		 
 let db = mongoose.connection;
