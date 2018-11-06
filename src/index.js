@@ -97,7 +97,7 @@ db.once('open', function() {
 			if (err) return handleError(err);  
 			console.log("inscrit")
 		}); 
-
+		//res.render('index', {});
 	});
  
 	app.post("/login", function (req, res) {
@@ -108,7 +108,7 @@ db.once('open', function() {
 				console.log("connecté")
 			}
 		});
-
+		//res.render('index', {});
 	});
 
 
