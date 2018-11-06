@@ -1,10 +1,5 @@
-<html>
-    <head>
-        <title>Inscription</title>
-    </head>
-
-    <body>
-        <h1>Inscription</h1>
+{{> header}}
+        <h1>{{locals.title}}</h1>
         <div class="inscriptionPannel">
             <form method="post">
                 <label >Adresse email <input name="mail" type="text"></label>
@@ -13,5 +8,4 @@
                 <input type = "submit" value="Inscription">
             </form>
         </div>
-    </body>
-</html> 
+{{> footer}}
