@@ -12,9 +12,10 @@ app.set('view engine', 'mustache');
 app.set('views', __dirname + '/views');
 
 app.get('/', function (req, res) {
-  res.render('index', {
+  res.render('connexion', {
     locals: {
-      title: 'Welcome'
+
+      title: 'Connexion'
     }
   });
 });
