@@ -21,8 +21,11 @@ app.use(session({ secret: "secret"}));
 
 /* GESTION DES GET */ 
 app.get('/', function (req, res) {
-
-	res.render('index', {});
+	let connected = false;
+	if (req.session.email){
+		connected = true;
+	}
+	res.render('index', {connected: connected});
 }); 
 
 app.get('/signup', function (req, res) {
@@ -44,6 +47,11 @@ app.get("/login", function (req, res) {
 	
 });
 
+app.get("/logout", function (req, res) {
+	req.session.destroy();
+	res.redirect('/');
+});
+
 
 		 
 let db = mongoose.connection;
@@ -53,7 +61,8 @@ db.once('open', function() {
 	let UserSchema = new mongoose.Schema({
 		password: String,
 		email: String,
-		boxes: Array
+		boxes: Array,
+		isAdmin: Boolean
 	});
 		
 	let PrestationSchema = new mongoose.Schema({
@@ -95,31 +104,37 @@ db.once('open', function() {
 	let Prestation = mongoose.model('Prestation', PrestationSchema);
 	let Contribution = mongoose.model('Contribution', ContributionSchema);
  
-	/* GESTION DES POST */ 
+	//on signup
 	app.post('/signup', function (req, res) { 
 
-		let user = new User({
-			password: req.body.password,
-			email: req.body.mail
-		});
+		//if the password matches the check 
+		if (req.body.passwordCheck == req.body.password){
 
-		user.save(function (err) {
-			if (err) return handleError(err) 
-			req.session.email = user.email;
-			res.redirect('/');
-		}); 
+			let user = new User({
+				password: req.body.password,
+				email: req.body.mail
+			});
 
+			user.save(function (err) {
+				if (err) return handleError(err) 
+				req.session.email = user.email;
+				res.redirect('/');
+			}); 
+		}
 	}); 
  
+	//on login
 	app.post("/login", function (req, res) {
+		
 		User.findOne({ email: req.body.mail }, function(err, user){
 			if (err) return handleError(err)
-			if (req.body.password == user.password && req.body.passwordCheck == user.password){
+
+			//if the passwords match
+			if (req.body.password == user.password ){
 				req.session.email = user.email;
 				res.redirect('/');
 			}
-		}); 
-
+		});  
 	});
 
 
