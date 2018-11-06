@@ -1,14 +1,10 @@
-<html>
-    <head>
-        <title>Connexion</title>
-    </head>
-
-    <body>
-        <h1>Connexion</h1>
+{{> header}}
+        <h1>{{locals.title}}</h1>
         <div class="connexionPannel">
+        <form method="post">
             <label >Adresse email <input name="mail" type="text"></label>
             <label >Mot de passe <input name="pass" type="password"></label>
             <input type = "submit" value="Connexion">
+        </form>
         </div>
-    </body>
-</html>
+{{> footer}}

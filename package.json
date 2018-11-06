@@ -4,7 +4,7 @@
   "description": "![Landing Page](https://preview.ibb.co/gOTa0y/LAMP_STACK.png)",
   "main": "src/index.js",
   "scripts": {
-    "start": "nodemon -e js,mustache --watch src src/index.js",
+    "start": "nodemon -L -e js,mustache --watch src src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
