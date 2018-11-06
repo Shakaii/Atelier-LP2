@@ -31,6 +31,17 @@ app.get("/login", function (req, res) {
     console.log(req.body.user.name)
 });
 
+app.get("/catalogue", function (req, res) {
+  res.render('catalogue', {});
+});
+
+app.get("/catalogue/:categorie", function (req, res) {
+  res.render('listePrestations', {'cat':req.params.categorie});
+});
+
+app.get("/catalogue/:categorie/:prestation", function (req, res) {
+  res.render('prestation', {'prest':req.params.prestation, 'cat':req.params.categorie});
+});
 
 /* GESTION DES POST */ 
 app.post('/signup', function (req, res) {

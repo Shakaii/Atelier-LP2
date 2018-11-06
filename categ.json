@@ -1,0 +1,18 @@
+[
+    {
+      "id": "1",
+      "nom": "Attention"
+    },
+    {
+      "id": "2",
+      "nom": "Activité"
+    },
+    {
+      "id": "3",
+      "nom": "Restauration"
+    },
+    {
+      "id": "4",
+      "nom": "Hébergement"
+    }
+  ]
