@@ -9,7 +9,14 @@ mongoose.connect(uri);
 app.engine('mustache', mustacheExpress());
 app.set('view engine', 'mustache');
 app.set('views', __dirname + '/views');
+const bodyParser = require("body-parser");
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(bodyParser.json());
 
+
+ 
 app.get('/', function (req, res) {
 	res.render('index', {});
 });
@@ -18,8 +25,16 @@ app.get('/signin', function (req, res) {
 	res.render('signin', {});
 });
 
-app.get('/login', function (req, res) {
-	res.render('login', {});
+app.post("/", function (req, res) {
+    console.log(req.body.user.name)
+});
+
+app.get('/signup', function (req, res) {
+	console.log(req.body.user.pass)
+});
+
+app.post("/signin", function (req, res) {
+    console.log(req.body.user.pass)
 });
 		 
 let db = mongoose.connection;
