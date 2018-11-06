@@ -3,10 +3,19 @@ version: "3"
 services:
   webserver:
     image: node:9.11.1-alpine
-    command: "yarn run start"
+    command: ""
     working_dir: "/app"
     volumes:
         - ./:/app
         - ./logs/node:/var/log/
     ports:
         - 80:80
+    links:
+        - mongo
+  mongo:
+    image: bitnami/mongodb:latest
+    ports:
+        - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
