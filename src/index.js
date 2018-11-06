@@ -1,10 +1,11 @@
 let http = require('http');
 let express = require('express');
 let mongoose = require('mongoose');
-let app = express();
+let app = express(); 
 let port = 80;
 let mustacheExpress = require('mustache-express');
 let uri = 'mongodb://mongo:27017/test';
+let session = require('express-session')
 mongoose.connect(uri);
 app.engine('mustache', mustacheExpress());
 app.set('view engine', 'mustache');
@@ -15,22 +16,33 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
-
+app.use(session({ secret: "secret"}));
   
 
 /* GESTION DES GET */ 
 app.get('/', function (req, res) {
+
 	res.render('index', {});
-});
+}); 
 
 app.get('/signup', function (req, res) {
-	res.render('signup', {});
+	if (req.session.email){
+		res.redirect('/');
+	}else{
+		res.render('signup', {});
+	}
+	
 });
 
 app.get("/login", function (req, res) {
-	res.render('login', {});
+	if (req.session.email){
+		res.redirect('/');
+	}
+	else{
+		res.render('login', {});
+	}
+	
 });
-
 
 
 		 
@@ -82,32 +94,31 @@ db.once('open', function() {
 	let Category = mongoose.model('Category', CategorySchema);
 	let Prestation = mongoose.model('Prestation', PrestationSchema);
 	let Contribution = mongoose.model('Contribution', ContributionSchema);
-
+ 
 	/* GESTION DES POST */ 
 	app.post('/signup', function (req, res) { 
 
-		console.log("ok");
-
 		let user = new User({
-			password: req.body.pass,
+			password: req.body.password,
 			email: req.body.mail
 		});
 
 		user.save(function (err) {
-			if (err) return handleError(err);  
-			console.log("inscrit")
+			if (err) return handleError(err) 
+			req.session.email = user.email;
+			res.redirect('/');
 		}); 
 
-	});
+	}); 
  
 	app.post("/login", function (req, res) {
-		
 		User.findOne({ email: req.body.mail }, function(err, user){
-
-			if (req.body.pass == user.password){
-				console.log("connecté")
+			if (err) return handleError(err)
+			if (req.body.password == user.password && req.body.passwordCheck == user.password){
+				req.session.email = user.email;
+				res.redirect('/');
 			}
-		});
+		}); 
 
 	});
 
