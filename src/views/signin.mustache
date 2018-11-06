@@ -1,8 +1,10 @@
 {{> header}}
-        <h1>{{title}}</h1>
+        <h1>{{locals.title}}</h1>
         <div class="connexionPannel">
+        <form method="post">
             <label >Adresse email <input name="mail" type="text"></label>
             <label >Mot de passe <input name="pass" type="password"></label>
             <input type = "submit" value="Connexion">
+        </form>
         </div>
 {{> footer}}
