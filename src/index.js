@@ -1,10 +1,11 @@
 let http = require('http');
 let express = require('express');
 let mongoose = require('mongoose');
-let app = express();
+let app = express(); 
 let port = 80;
 let mustacheExpress = require('mustache-express');
 let uri = 'mongodb://mongo:27017/test';
+let session = require('express-session')
 mongoose.connect(uri);
 app.engine('mustache', mustacheExpress());
 app.set('view engine', 'mustache');
@@ -14,22 +15,47 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(bodyParser.json());
+
 let path = require('path');
 app.use(express.static(path.join(__dirname+'/public')));
+
+
+app.use(session({ secret: "secret"}));
 
   
 
 /* GESTION DES GET */ 
 app.get('/', function (req, res) {
-	res.render('index', {});
-});
+	let connected = false;
+	if (req.session.email){
+		connected = true;
+	}
+	res.render('index', {connected: connected});
+}); 
 
 app.get('/signup', function (req, res) {
-	res.render('signup', {});
+	if (req.session.email){
+		res.redirect('/');
+	}else{
+		res.render('signup', {});
+	}
+	
 });
 
 app.get("/login", function (req, res) {
-	res.render('login', {});
+	if (req.session.email){
+		res.redirect('/');
+	}
+	else{
+		res.render('login', {});
+	}
+	
+});
+
+
+app.get("/logout", function (req, res) {
+	req.session.destroy();
+	res.redirect('/');
 });
 
 app.get("/catalogue", function (req, res) {
@@ -42,6 +68,7 @@ app.get("/catalogue/:categorie", function (req, res) {
 
 app.get("/catalogue/:categorie/:prestation", function (req, res) {
   res.render('prestation', {'prest':req.params.prestation, 'cat':req.params.categorie});
+
 });
 
 
@@ -53,7 +80,8 @@ db.once('open', function() {
 	let UserSchema = new mongoose.Schema({
 		password: String,
 		email: String,
-		boxes: Array
+		boxes: Array,
+		isAdmin: Boolean
 	});
 		
 	let PrestationSchema = new mongoose.Schema({
@@ -94,33 +122,38 @@ db.once('open', function() {
 	let Category = mongoose.model('Category', CategorySchema);
 	let Prestation = mongoose.model('Prestation', PrestationSchema);
 	let Contribution = mongoose.model('Contribution', ContributionSchema);
-
-	/* GESTION DES POST */ 
+ 
+	//on signup
 	app.post('/signup', function (req, res) { 
 
-		console.log("ok");
+		//if the password matches the check 
+		if (req.body.passwordCheck == req.body.password){
 
-		let user = new User({
-			password: req.body.pass,
-			email: req.body.mail
-		});
+			let user = new User({
+				password: req.body.password,
+				email: req.body.mail
+			});
 
-		user.save(function (err) {
-			if (err) return handleError(err);  
-			console.log("inscrit")
-		}); 
-		//res.render('index', {});
+			user.save(function (err) {
+				if (err) return handleError(err) 
+				req.session.email = user.email;
+				res.redirect('/');
+			}); 
+		}
 	});
  
+	//on login
 	app.post("/login", function (req, res) {
 		
 		User.findOne({ email: req.body.mail }, function(err, user){
+			if (err) return handleError(err)
 
-			if (req.body.pass == user.password){
-				console.log("connecté")
+			//if the passwords match
+			if (req.body.password == user.password ){
+				req.session.email = user.email;
+				res.redirect('/');
 			}
 		});
-		//res.render('index', {});
 	});
 
 
@@ -128,16 +161,4 @@ db.once('open', function() {
 
 });
 
-
-
-
-
-
-
-
-
-
-
-
 app.listen(port);
-
