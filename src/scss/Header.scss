@@ -26,14 +26,19 @@ time, mark, audio, video {
     display: flex;
     flex-direction:row;
     background-color: #1C6BE7;
-    align-content: space-between;
-    height: 80px;
+    background-color:white;
+    box-shadow: 0 4px 8px 0 rgba(13, 35, 71, 0.4), 0 6px 20px 0 rgba(13, 35, 71, 0.41);
     a{
         text-decoration: none;
-        color:white;
-        padding: 20px;
-        
+        color:#0d2347;
+        align-self:center;
+        transition:0.5s
     }
+
+    a:hover{
+        color:#a34aad
+    }
+
     .titre{
         font-size: 2em;
     }
@@ -42,18 +47,42 @@ time, mark, audio, video {
         animation-duration: 2s;
     }
 
+    .lg{
+        margin-left:0.5em
+    }
+
     .connect{
         padding: 20px;
-        margin-left: auto;
-        font-size: 1.5em;
+        font-size: 1em;
         ul{
            display: flex;
+           align-self:center;
             flex-direction:row;
             list-style: none;
             flex-direction: row-reverse;
             li{
-                margin-left:15px;
+                margin-left:2em;
                 font-size: 1,5em;
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 50em){
+    .lg{
+        display:none;
+    }
+
+    .header{
+        flex-direction:column;
+        align-content: center;
+    }
+    .connect{
+        
+        ul{
+            flex-direction:column;
+            li{
+
             }
         }
     }
