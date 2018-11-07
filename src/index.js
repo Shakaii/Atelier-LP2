@@ -221,13 +221,15 @@ db.once('open', function() {
 
 	app.get("/box/:id", function (req,res) {
 		if (req.session.email){
-			User.findOne({email:req.session.email}
-				.populate('boxes')
-				.exec(function (err, user){
-					if (err) return HandeError(err);
-					if (user){
+			
+			User
+			.findOne({email:req.session.email}
+			.populate('boxes')
+			.exec(function (err, user){
+				if (err) return HandleError(err);
+				if (user){
 						let box = user.boxes.filter(function(box) {
-
+							
 						});
 					}
 				})
@@ -251,3 +253,19 @@ db.once('open', function() {
 });
 
 app.listen(port);
+
+app.get("/catalog/:category", function (req, res) {
+
+	Category
+	.findOne({ title: req.params.category})
+	.populate('prestations')
+	.exec(function (err, category){
+		if (err) return console.error(err);
+		Category.find(function (err, categories) {
+			if (err) return console.error(err);
+			console.log(category);
+			res.render('prestations', {'categories' : categories, 'category' : category, 'prestations' : category.prestations});
+		});
+	}); 
+
+});
