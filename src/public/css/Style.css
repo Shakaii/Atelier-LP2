@@ -208,6 +208,7 @@ img, .card-img {
   color: white;
   background-color: black;
 }
+
 .pannelLog {
   display: flex;
   flex-direction: column;

@@ -374,6 +374,18 @@ db.once('open', function() {
 		}
 	});
 
+	app.get("/box/gift/:id", function (req,res) {
+	
+		box.findOne({urlGift:req.params.id},function(err,box){
+		let auj = new Date();
+		let block=false;
+		if( box.date<= auj){
+			block = true;
+		}
+				res.render('gift',{'box':box,'block':block,'date':box.date});
+		
+		});
+	});
 	
 
 	console.log('Connection à la bdd effectuée');
