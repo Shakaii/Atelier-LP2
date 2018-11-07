@@ -23,14 +23,13 @@ app.use(express.static(path.join(__dirname+'/public')));
 app.use(session({ secret: "secret"}));
 
   
-
 /* GESTION DES GET */ 
 app.get('/', function (req, res) {
 	let connected = false;
 	if (req.session.email){
 		connected = true;
 	}
-	res.render('index', {connected: connected});
+	res.render('index', {'connected': connected});
 }); 
 
 app.get('/signup', function (req, res) {
@@ -52,39 +51,23 @@ app.get("/login", function (req, res) {
 	
 });
 
-
 app.get("/logout", function (req, res) {
 	req.session.destroy();
 	res.redirect('/');
 });
 
-app.get("/catalogue", function (req, res) {
-  res.render('catalogue', {});
-});
-
-app.get("/catalogue/:categorie", function (req, res) {
-  res.render('listePrestations', {'cat':req.params.categorie});
-});
-
-app.get("/catalogue/:categorie/:prestation", function (req, res) {
-  res.render('prestation', {'prest':req.params.prestation, 'cat':req.params.categorie});
-
-});
-
-
-		 
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
 		
-	let UserSchema = new mongoose.Schema({
+	let userSchema = new mongoose.Schema({
 		password: String,
 		email: String,
 		boxes: Array,
 		isAdmin: Boolean
 	});
 		
-	let PrestationSchema = new mongoose.Schema({
+	let prestationSchema = new mongoose.Schema({
 		title: String,
 		description: String,
 		image: String,
@@ -92,18 +75,19 @@ db.once('open', function() {
 		isVisible: Boolean
 	})
 			
-	let CategorySchema = new mongoose.Schema({
+	let categorySchema = new mongoose.Schema({
 		title: String,
-		prestations: [PrestationSchema]
+		image: String,
+		prestations: [prestationSchema]
 	});
 		
-	let ContributionSchema = new mongoose.Schema({
+	let contributionSchema = new mongoose.Schema({
 		name: String, 
 		Amount: Number,
 		message: String
 	})
 		
-	let BoxSchema = new mongoose.Schema({
+	let boxSchema = new mongoose.Schema({
 		recipientName: String,
 		recipientEmail: String,
 		message: String,
@@ -113,16 +97,16 @@ db.once('open', function() {
 		isPaid: Boolean,
 		isOpened: Boolean,
 		isCurrent: Boolean,
-		prestations: [PrestationSchema],
-		contributions: [ContributionSchema]
+		prestations: [prestationSchema],
+		contributions: [contributionSchema]
 	})
 
-	let Box = mongoose.model('Box', BoxSchema);
-	let User = mongoose.model('User', UserSchema);
-	let Category = mongoose.model('Category', CategorySchema);
-	let Prestation = mongoose.model('Prestation', PrestationSchema);
-	let Contribution = mongoose.model('Contribution', ContributionSchema);
- 
+	let Box = mongoose.model('Box', boxSchema);
+	let User = mongoose.model('User', userSchema);
+	let Category = mongoose.model('Category', categorySchema);
+	let Prestation = mongoose.model('Prestation', prestationSchema);
+	let Contribution = mongoose.model('Contribution', contributionSchema);
+
 	//on signup
 	app.post('/signup', function (req, res) { 
 
@@ -142,7 +126,7 @@ db.once('open', function() {
 		}
 	});
  
-	//on login
+	//on login 
 	app.post("/login", function (req, res) {
 		
 		User.findOne({ email: req.body.mail }, function(err, user){
@@ -154,6 +138,106 @@ db.once('open', function() {
 				res.redirect('/');
 			}
 		});
+	});
+
+	app.get("/catalog", function (req, res)  { 
+
+		Category.find(function (err, categories) {
+			if (err) return console.error(err);
+			res.render('catalog', {'categories' : categories});
+		});
+	
+	});
+
+	app.get("/catalog/:category", function (req, res) {
+
+		Category
+		.findOne({ title: req.params.category})
+		.populate('prestations')
+		.exec(function (err, category){
+			if (err) return console.error(err);
+			Category.find(function (err, categories) {
+				if (err) return console.error(err);
+				console.log(category);
+				res.render('prestations', {'categories' : categories, 'category' : category, 'prestations' : category.prestations});
+			});
+		}); 
+
+	});
+	   
+	app.get("/catalog/:category/:prestation", function (req, res) {
+
+		Category.findOne({ title: req.params.category},function (err, category) {
+			if (err) return console.error(err);
+
+			if (category){
+
+				let prestation = category.prestations.filter(function (prestation) {
+					return prestation.title === req.params.prestation;
+				}).pop();
+
+				Category.find(function (err, categories) {
+					if (err) return console.error(err);
+					res.render('prestation', {'categories' : categories, 'category' : category, 'prestation' : prestation});
+				});
+					
+			}
+			else{
+				res.redirect('/catalog');
+			}
+		}); 
+	});
+
+
+	//profile
+	app.get("/profile",function(req,res){
+		//si connectedocker exec -i docker-node_mongo_1 mongo test --eval "db.dropDatabase()"
+		if (req.session.email){
+			//renvoie l'user
+			User.findOne({ email: req.session.email},function(err,user){
+				res.render('profile',{'connected': true, 'user':user});
+			});
+		}
+		//sinon accueil
+		else{ 
+			res.redirect('/');
+		}
+	});
+
+	app.get("/profile/modify",function(req,res){
+		//si connecte
+		if (req.session.email){
+			//renvoie l'user
+			User.findOne({ email: req.session.email},function(err,user){
+				res.render('modify',{'connected': true, 'user':user});
+			});
+		}
+		//sinon accueil
+		else{
+			res.redirect('/');
+		}
+	});
+
+	//modifying password in profile
+	app.post("/profile/modify", function (req, res) {
+		
+		console.log(req.body.password);
+		//get logged in user
+		User.findOne({email: req.session.email }, function(err, user){
+			if (err) return handleError(err)
+
+			//if the passwords match
+			if (req.body.passwordCheck == req.body.password){
+				user.password = req.body.password;
+			}
+			 
+			user.save(function (err) {
+				if (err) return handleError(err) 
+				res.redirect('/profile');
+			});
+			
+		});
+
 	});
 
 
