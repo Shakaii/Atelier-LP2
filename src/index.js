@@ -190,9 +190,9 @@ db.once('open', function() {
 
 
 	//profile
-	app.get("/profile",functiodocker exec -i docker-node_mongo_1 mongo test --eval "db.dropDatabase()"n(req,res){
+	app.get("/profile",function(req,res){
 		//si connectedocker exec -i docker-node_mongo_1 mongo test --eval "db.dropDatabase()"
-		if (req.session.email)docker exec -i docker-node_mongo_1 mongo test --eval "db.dropDatabase()"{
+		if (req.session.email){
 			//renvoie l'user
 			User.findOne({ email: req.session.email},function(err,user){
 				res.render('profile',{'connected': true, 'user':user});
