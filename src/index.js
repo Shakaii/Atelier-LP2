@@ -106,29 +106,6 @@ db.once('open', function() {
 	let Category = mongoose.model('Category', categorySchema);
 	let Prestation = mongoose.model('Prestation', prestationSchema);
 	let Contribution = mongoose.model('Contribution', contributionSchema);
-
-
-	let cat = new Category({
-		title: "resto",
-		image: "resto.jpg"
-	})
-
-	let prest = new Prestation({
-
-		title: "Au bon feu",
-		description: "Un resto... comme les autres",
-		image: "feu.png",
-		price: 5,
-		isVisible: true
-	})
-
-	cat.prestations.push(prest);
-
-	cat.save(function (err) {
-		if (err) return handleError(err) 
-	});  
-
-	
  
 	//on signup
 	app.post('/signup', function (req, res) { 
@@ -213,9 +190,9 @@ db.once('open', function() {
 
 
 	//profile
-	app.get("/profile",function(req,res){
-		//si connecte
-		if (req.session.email){
+	app.get("/profile",functiodocker exec -i docker-node_mongo_1 mongo test --eval "db.dropDatabase()"n(req,res){
+		//si connectedocker exec -i docker-node_mongo_1 mongo test --eval "db.dropDatabase()"
+		if (req.session.email)docker exec -i docker-node_mongo_1 mongo test --eval "db.dropDatabase()"{
 			//renvoie l'user
 			User.findOne({ email: req.session.email},function(err,user){
 				res.render('profile',{'connected': true, 'user':user});
@@ -253,7 +230,7 @@ db.once('open', function() {
 			if (req.body.passwordCheck == req.body.password){
 				user.password = req.body.password;
 			}
-			
+			 
 			user.save(function (err) {
 				if (err) return handleError(err) 
 				res.redirect('/profile');
