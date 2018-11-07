@@ -16,7 +16,12 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
+let path = require('path');
+app.use(express.static(path.join(__dirname+'/public')));
+
+
 app.use(session({ secret: "secret"}));
+
   
 /* GESTION DES GET */ 
 app.get('/', function (req, res) {
@@ -24,7 +29,7 @@ app.get('/', function (req, res) {
 	if (req.session.email){
 		connected = true;
 	}
-	res.render('index', {connected: connected});
+	res.render('index', {'connected': connected});
 }); 
 
 app.get('/signup', function (req, res) {
@@ -105,7 +110,7 @@ db.once('open', function() {
 
 	let cat = new Category({
 		title: "resto",
-		image: "resto.png"
+		image: "resto.jpg"
 	})
 
 	let prest = new Prestation({
@@ -142,7 +147,7 @@ db.once('open', function() {
 				res.redirect('/');
 			}); 
 		}
-	}); 
+	});
  
 	//on login 
 	app.post("/login", function (req, res) {
@@ -155,7 +160,7 @@ db.once('open', function() {
 				req.session.email = user.email;
 				res.redirect('/');
 			}
-		});  
+		});
 	});
 
 	app.get("/catalog", function (req, res)  { 
@@ -207,21 +212,60 @@ db.once('open', function() {
 	});
 
 
+	//profile
+	app.get("/profile",function(req,res){
+		//si connecte
+		if (req.session.email){
+			//renvoie l'user
+			User.findOne({ email: req.session.email},function(err,user){
+				res.render('profile',{'connected': true, 'user':user});
+			});
+		}
+		//sinon accueil
+		else{
+			res.redirect('/');
+		}
+	});
+
+	app.get("/profile/modify",function(req,res){
+		//si connecte
+		if (req.session.email){
+			//renvoie l'user
+			User.findOne({ email: req.session.email},function(err,user){
+				res.render('modify',{'connected': true, 'user':user});
+			});
+		}
+		//sinon accueil
+		else{
+			res.redirect('/');
+		}
+	});
+
+	//modifying password in profile
+	app.post("/profile/modify", function (req, res) {
+		
+		console.log(req.body.password);
+		//get logged in user
+		User.findOne({email: req.session.email }, function(err, user){
+			if (err) return handleError(err)
+
+			//if the passwords match
+			if (req.body.passwordCheck == req.body.password){
+				user.password = req.body.password;
+			}
+			
+			user.save(function (err) {
+				if (err) return handleError(err) 
+				res.redirect('/profile');
+			});
+			
+		});
+
+	});
+
 
 	console.log('Connection à la bdd effectuée');
 
 });
 
-
-
-
-
-
-
-
-
-
-
-
 app.listen(port);
-
