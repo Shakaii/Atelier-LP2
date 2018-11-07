@@ -10,7 +10,9 @@
     <div class="card-title"><a href="/catalog/{{category.title}}/{{title}}">{{title}}</a></div>
     <div class="card-img"><img src="/img/{{image}}"></div>
     <span>Price: {{price}}</span>
-    
+    {{#connected}}
+    <a href="/addPrest/{{category._id}}/{{_id}}">Add to box</a>
+    {{/connected}}
 </div>
 {{/prestations}}
 </div>
