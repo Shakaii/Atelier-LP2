@@ -161,6 +161,7 @@ db.once('open', function () {
 
 	});
 
+	/*
 	app.get("/test", function (req, res) {
 
 		Box.findOne({isCurrent:'true'}, function (err, box) {
@@ -168,10 +169,11 @@ db.once('open', function () {
 			console.log(box);
 		});
 
-	});
+	});*/
 
 	app.get("/newBox", function (req, res) {
-
+			Box.updateMany({isCurrent:'true'},{isCurrent:'false'}, function(err, box) {
+		})
 		User.findOne({
 			email: req.session.email
 		}, function (err, user) {
@@ -193,6 +195,12 @@ db.once('open', function () {
 				if (err) return console.error(err);
 				console.log(nBox);
 				res.redirect('/');
+			});
+			user.boxes.push(nBox)
+			User.updateOne({
+				email: req.session.email
+			},{boxes: user.boxes}, function(err, doc) {
+
 			});
 		});
 	});
