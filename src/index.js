@@ -16,7 +16,12 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
+let path = require('path');
+app.use(express.static(path.join(__dirname+'/public')));
+
+
 app.use(session({ secret: "secret"}));
+
   
 
 /* GESTION DES GET */ 
@@ -47,9 +52,23 @@ app.get("/login", function (req, res) {
 	
 });
 
+
 app.get("/logout", function (req, res) {
 	req.session.destroy();
 	res.redirect('/');
+});
+
+app.get("/catalogue", function (req, res) {
+  res.render('catalogue', {});
+});
+
+app.get("/catalogue/:categorie", function (req, res) {
+  res.render('listePrestations', {'cat':req.params.categorie});
+});
+
+app.get("/catalogue/:categorie/:prestation", function (req, res) {
+  res.render('prestation', {'prest':req.params.prestation, 'cat':req.params.categorie});
+
 });
 
 
@@ -142,16 +161,4 @@ db.once('open', function() {
 
 });
 
-
-
-
-
-
-
-
-
-
-
-
 app.listen(port);
-
