@@ -152,12 +152,36 @@ db.once('open', function() {
 		});
 	});
 
+
+	//test pour affichage coffrets
+	let box1 = new Box({
+		recipientName: "jj54",
+		recipientEmail: "jj54@yahoo.fr",
+		message: "Tiens jj54 le bro",
+		date: new Date(2018,11,8),
+		isPaid: true,
+		isOpened: false,
+		isCurrent: true
+	});
+
+	let box2 = new Box({
+		recipientName: "PasGoélise",
+		recipientEmail: "papinox@yahoo.fr",
+		message: "Pas de chance",
+		date: new Date(2018,11,12),
+		isPaid: true,
+		isOpened: false,
+		isCurrent: true
+	});
+
+
 	//profile
 	app.get("/profile",function(req,res){
 		//si connecte
 		if (req.session.email){
 			//renvoie l'user
 			User.findOne({ email: req.session.email},function(err,user){
+				user.boxes.push(box1,box2);
 				res.render('profile',{'connected': true, 'user':user});
 			});
 		}

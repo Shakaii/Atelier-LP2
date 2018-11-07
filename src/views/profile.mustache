@@ -1,4 +1,11 @@
 {{> header}}
     <h1>Profil de l'utilisateur {{user.email}}</h1>
+    <div class="coffrets">
+        {{#user.boxes}}
+        Box
+        <li> {{recipientName}} </li>
+        <li> {{recipientEmail}} </li>
+        {{/user.boxes}}
+    </div>
     <a href="/profile/modify">Modifier ses informations personnelles</a>
 {{> footer}}
