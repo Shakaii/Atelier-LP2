@@ -11,6 +11,9 @@
     <body>
         <div class="header">
             <a class="titre" href="/">MyGiftBox</a>
+            {{#connected}}
+                <a href="/newBox">Nouveau coffret</a>
+            {{/connected}}
             <div class="connect">
                 <ul>
         {{#connected}}
@@ -21,8 +24,7 @@
 		{{^connected}}
 		    <li><a href="/login"><i class="fas fa-sign-in-alt"></i><span class="lg">Connexion</span></a></li>
             <li><a href="/signup"><i class="fas fa-user-plus"></i><span class="lg">Inscription</span></a></li>
-		{{/connected}}
-                    
+		{{/connected}}   
                 </ul>
             </div>
         </div>

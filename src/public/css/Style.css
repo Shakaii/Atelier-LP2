@@ -188,6 +188,22 @@ img, .card-img {
     .container {
       grid-template-columns: 1fr; } }
 
+.navCat {
+  margin-left: 20px;
+  margin-top: 20px;
+}
+.navCat a {
+  text-decoration: none;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 0.25rem;
+  padding: 5px;
+  color: black;
+}
+.navCat a:hover {
+  color: white;
+  background-color: black;
+}
 .pannelLog {
   display: flex;
   flex-direction: column;
@@ -252,5 +268,22 @@ img, .card-img {
 @media only screen and (max-width: 60em) {
   .pannelLog {
     width: 90%; } }
+
+.navCat {
+  margin-left: 20px;
+  margin-top: 20px;
+}
+.navCat a {
+  text-decoration: none;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 0.25rem;
+  padding: 5px;
+  color: black;
+}
+.navCat a:hover {
+  color: white;
+  background-color: black;
+}
 
 /*# sourceMappingURL=Style.css.map */
