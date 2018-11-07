@@ -22,6 +22,7 @@ app.use(express.static(path.join(__dirname + '/public')));
 
 app.use(session({ secret: "secret", cookie: { maxAge: 7200000 }}));
 
+let currentBox;
 
 /* GESTION DES GET */
 app.get('/', function (req, res) {
@@ -142,22 +143,6 @@ db.once('open', function() {
 		});
 	});
 
-
-	//test pour affichage coffrets
-	let box1 = new Box({
-		recipientName: "jj54",
-		recipientEmail: "jj54@yahoo.fr",
-		message: "Tiens jj54 le bro",
-		isPaid: true
-	});
-
-	let box2 = new Box({
-		recipientName: "PasGoélise",
-		recipientEmail: "papinox@yahoo.fr",
-		message: "Pas de chance",
-		isPaid: false
-	});
-
 	app.get("/catalog", function (req, res)  { 
 		let connected = false;
 		if (req.session.email){
@@ -181,12 +166,16 @@ db.once('open', function() {
 	});*/
 
 	app.get("/newBox", function (req, res) {
-			Box.updateMany({isCurrent:'true'},{isCurrent:'false'}, function(err, box) {
-		})
 		User.findOne({
 			email: req.session.email
 		}, function (err, user) {
 			if (err) return handleError(err)
+			if (user.boxes.length>0) {
+				user.boxes.forEach(function(element) {
+					element.isCurrent = false;
+				});
+				user.save();
+			}
 			let nBox = new Box({
 				recipientName: '',
 				recipientEmail: '',
@@ -200,17 +189,13 @@ db.once('open', function() {
 				prestations: [],
 				contributions: []
 			});
-			nBox.save(function (err, nBox) {
-				if (err) return console.error(err);
-				console.log(nBox);
-				res.redirect('/');
-			});
 			user.boxes.push(nBox)
 			User.updateOne({
 				email: req.session.email
 			},{boxes: user.boxes}, function(err, doc) {
 
 			});
+			res.redirect('/');
 		});
 	});
 
@@ -264,11 +249,6 @@ db.once('open', function() {
 		if (req.session.email) {
 			//renvoie l'user
 			User.findOne({ email: req.session.email},function(err,user){
-				user.boxes = [];
-				user.boxes.push(box1,box2);
-				user.save(function(err){
-					if (err)  return HandleError(err)
-				});
 				res.render('profile',{'connected': true, 'user':user});
 			});
 		}
