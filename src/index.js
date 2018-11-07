@@ -20,6 +20,7 @@ let path = require('path');
 app.use(express.static(path.join(__dirname + '/public')));
 
 
+
 app.use(session({ secret: "secret", cookie: { maxAge: 7200000 }}));
 
 let currentBox;
@@ -60,7 +61,7 @@ app.get("/logout", function (req, res) {
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
-			
+
 	let prestationSchema = new mongoose.Schema({
 		title: String,
 		description: String,
@@ -143,6 +144,23 @@ db.once('open', function() {
 		});
 	});
 
+
+
+	//test pour affichage coffrets
+	let box1 = new Box({
+		recipientName: "jj54",
+		recipientEmail: "jj54@yahoo.fr",
+		message: "Tiens jj54 le bro",
+		isPaid: true
+	});
+
+	let box2 = new Box({
+		recipientName: "PasGoélise",
+		recipientEmail: "papinox@yahoo.fr",
+		message: "Pas de chance",
+		isPaid: false
+	});
+
 	app.get("/catalog", function (req, res)  { 
 		let connected = false;
 		if (req.session.email){
@@ -195,22 +213,28 @@ db.once('open', function() {
 			},{boxes: user.boxes}, function(err, doc) {
 
 			});
-			res.redirect('/');
 		});
 	});
 
 	app.get("/catalog/:category", function (req, res) {
 
-        Category
-        .findOne({ title: req.params.category})
-        .populate('prestations')
-        .exec(function (err, category){
-            if (err) return console.error(err);
-            Category.find(function (err, categories) {
-                if (err) return console.error(err);
-                res.render('prestations', {'categories' : categories, 'category' : category, 'prestations' : category.prestations});
-            });
-        }); 
+		Category
+			.findOne({
+				title: req.params.category
+			})
+			.populate('prestations')
+			.exec(function (err, category) {
+				if (err) return console.error(err);
+				Category.find(function (err, categories) {
+					if (err) return console.error(err);
+					console.log(category);
+					res.render('prestations', {
+						'categories': categories,
+						'category': category,
+						'prestations': category.prestations
+					});
+				});
+			});
 
     }); 
 
@@ -248,8 +272,13 @@ db.once('open', function() {
 		//si connectedocker exec -i docker-node_mongo_1 mongo test --eval "db.dropDatabase()"
 		if (req.session.email) {
 			//renvoie l'user
-			User.findOne({ email: req.session.email},function(err,user){
-				res.render('profile',{'connected': true, 'user':user});
+			User.findOne({
+				email: req.session.email
+			}, function (err, user) {
+				res.render('profile', {
+					'connected': true,
+					'user': user
+				});
 			});
 		}
 		//sinon accueil
@@ -279,7 +308,6 @@ db.once('open', function() {
 
 	//modifying password in profile
 	app.post("/profile/modify", function (req, res) {
-		
 		//get logged in user
 		User.findOne({
 			email: req.session.email
