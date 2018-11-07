@@ -21,10 +21,10 @@ time, mark, audio, video {
 
 @keyframes anim {
   from {
-    color: white;
+    color: black;
   }
   to {
-    color: yellow;
+    color: purple;
   }
 }
 .header {
