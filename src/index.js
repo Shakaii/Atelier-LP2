@@ -60,7 +60,7 @@ let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
 			
-	let PrestationSchema = new mongoose.Schema({
+	let prestationSchema = new mongoose.Schema({
 		title: String,
 		description: String,
 		image: String,
@@ -90,14 +90,14 @@ db.once('open', function() {
 		isPaid: Boolean,
 		isOpened: Boolean,
 		isCurrent: Boolean,
-		prestations: [PrestationSchema],
-		contributions: [ContributionSchema]
+		prestations: [prestationSchema],
+		contributions: [contributionSchema]
 	})	
 
-	let UserSchema = new mongoose.Schema({
+	let userSchema = new mongoose.Schema({
 		password: String,
 		email: String,
-		boxes: [BoxSchema],
+		boxes: [boxSchema],
 		isAdmin: Boolean
 	});
 
@@ -106,11 +106,6 @@ db.once('open', function() {
 	let Category = mongoose.model('Category', categorySchema);
 	let Prestation = mongoose.model('Prestation', prestationSchema);
 	let Contribution = mongoose.model('Contribution', contributionSchema);
- 
-	Category.find(function(err,test){
-		if (err) return handleError(err) 
-		console.log(test[0].prestations)
-	}); 
 
 	//on signup
 	app.post('/signup', function (req, res) { 
@@ -157,6 +152,7 @@ db.once('open', function() {
 		recipientName: "PasGoélise",
 		recipientEmail: "papinox@yahoo.fr",
 		message: "Pas de chance",
+	});
 
 	app.get("/catalog", function (req, res)  { 
 

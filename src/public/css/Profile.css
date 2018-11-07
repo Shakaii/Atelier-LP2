@@ -1,0 +1,10 @@
+.coffrets {
+  display: grid;
+}
+
+.box {
+  display: flex;
+  flex-direction: column;
+}
+
+/*# sourceMappingURL=profile.css.map */
