@@ -1,11 +1,15 @@
 {{> header}}
-        <h1>{{locals.title}}</h1>
-        <div class="inscriptionPannel">
+      
+        <div class="pannelLog">
             <form method="post">
-                <label >Adresse email <input name="mail" type="text"></label>
-                <label >Mot de passe <input name="password" type="password"></label>
-                <label >Répeter votre mot de passe <input name="passwordCheck" type="password"></label>
-                <input type = "submit" value="Inscription">
+                <h1>Inscription</h1>
+                <label ><p>Adresse email</p> <input name="mail" type="text"></label>
+                <br>
+                <label ><p>Mot de passe</p> <input name="password" type="password"></label>
+                <br>
+                <label ><p>Répeter votre mot de passe</p> <input name="passwordCheck" type="password"></label>
+                <br>
+                <input class="pass" type = "submit" value="Inscription">
             </form>
             <a href="/login">Déjà inscrit ?</a>
         </div>
