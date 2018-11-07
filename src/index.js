@@ -59,15 +59,8 @@ app.get("/logout", function (req, res) {
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
-		
-	let userSchema = new mongoose.Schema({
-		password: String,
-		email: String,
-		boxes: Array,
-		isAdmin: Boolean
-	});
-		
-	let prestationSchema = new mongoose.Schema({
+			
+	let PrestationSchema = new mongoose.Schema({
 		title: String,
 		description: String,
 		image: String,
@@ -97,9 +90,16 @@ db.once('open', function() {
 		isPaid: Boolean,
 		isOpened: Boolean,
 		isCurrent: Boolean,
-		prestations: [prestationSchema],
-		contributions: [contributionSchema]
-	})
+		prestations: [PrestationSchema],
+		contributions: [ContributionSchema]
+	})	
+
+	let UserSchema = new mongoose.Schema({
+		password: String,
+		email: String,
+		boxes: [BoxSchema],
+		isAdmin: Boolean
+	});
 
 	let Box = mongoose.model('Box', boxSchema);
 	let User = mongoose.model('User', userSchema);
@@ -139,6 +139,19 @@ db.once('open', function() {
 			}
 		});
 	});
+
+
+	//test pour affichage coffrets
+	let box1 = new Box({
+		recipientName: "jj54",
+		recipientEmail: "jj54@yahoo.fr",
+		message: "Tiens jj54 le bro",
+	});
+
+	let box2 = new Box({
+		recipientName: "PasGoélise",
+		recipientEmail: "papinox@yahoo.fr",
+		message: "Pas de chance",
 
 	app.get("/catalog", function (req, res)  { 
 
@@ -195,6 +208,10 @@ db.once('open', function() {
 		if (req.session.email){
 			//renvoie l'user
 			User.findOne({ email: req.session.email},function(err,user){
+				user.boxes.push(box1,box2);
+				user.save(function(err){
+					if (err)  return HandleError(err)
+				});
 				res.render('profile',{'connected': true, 'user':user});
 			});
 		}
@@ -240,6 +257,32 @@ db.once('open', function() {
 
 	});
 
+	app.get("/box/:id", function (req,res) {
+		if (req.session.email){
+			
+			User.findOne({email:req.session.email}, function (err, user){
+				let box;
+				let found=false;
+				console.log(user);
+				console.log(user.boxes);
+				user.boxes.forEach(function(element) {
+					console.log(element._id + "  " + req.params.id);
+					if(element._id == req.params.id){
+						box=element;
+						found=true;
+					}
+				});
+				if(found){
+					res.render('box',{'connected':true,'box':box});
+				}
+			});
+
+		} else {
+			res.redirect('/');
+		}
+	});
+
+	
 
 	console.log('Connection à la bdd effectuée');
 
