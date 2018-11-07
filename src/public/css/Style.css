@@ -151,9 +151,11 @@ img, .card-img {
   overflow: hidden;
   grid-column: 1span;
   text-decoration: none;
-  justify-content: space-between; }
-  .card a {
-    text-decoration: none; }
+  justify-content: space-between;
+}
+.card a {
+  text-decoration: none;
+}
 
 .card-img {
   padding: 5px;
@@ -172,7 +174,8 @@ img, .card-img {
 
 .card:hover > a > .card-img {
   transform: scale(1);
-  opacity: 1; }
+  opacity: 1;
+}
 
 .card-title {
   color: white;
@@ -185,7 +188,8 @@ img, .card-img {
   box-shadow: 0px 1px lightgrey;
   transition: 0.7s;
   padding: 1em;
-  font-weight: 1.8em; }
+  font-weight: 1.8em;
+}
 
 .card-footer {
   padding: 0.7em;
@@ -194,17 +198,21 @@ img, .card-img {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  font-size: 1.8em; }
-  .card-footer .addToCart {
-    color: white;
-    text-decoration: none;
-    transition: 0.5s; }
-  .card-footer .addToCart:hover {
-    color: green;
-    transform: scale(1.3); }
-  .card-footer .price {
-    color: white;
-    font-weight: bold; }
+  font-size: 1.8em;
+}
+.card-footer .addToCart {
+  color: white;
+  text-decoration: none;
+  transition: 0.5s;
+}
+.card-footer .addToCart:hover {
+  color: green;
+  transform: scale(1.3);
+}
+.card-footer .price {
+  color: white;
+  font-weight: bold;
+}
 
 .container {
   padding: 20px;
@@ -225,17 +233,20 @@ img, .card-img {
 
 .navCat {
   margin-left: 20px;
-  margin-top: 20px; }
-  .navCat a {
-    text-decoration: none;
-    background-color: white;
-    border: 1px solid black;
-    border-radius: 0.25rem;
-    padding: 5px;
-    color: black; }
-    .navCat a:hover {
-      color: white;
-      background-color: black; }
+  margin-top: 20px;
+}
+.navCat a {
+  text-decoration: none;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 0.25rem;
+  padding: 5px;
+  color: black;
+}
+.navCat a:hover {
+  color: white;
+  background-color: black;
+}
 
 .pannelLog {
   display: flex;
@@ -312,25 +323,29 @@ img, .card-img {
 }
 @media only screen and (max-width: 60em) {
   .pannelLog {
-    width: 90%; } }
-
+    width: 90%;
+  }
+}
 .navCat {
   margin-left: 20px;
-  margin-top: 20px; }
-  .navCat a {
-    border: none;
-    padding: 10px;
-    background-color: #0d2347;
-    color: white;
-    cursor: pointer;
-    border-width: 2px;
-    border-style: solid;
-    border-color: #0d2347;
-    transition: 1s; }
-    .navCat a:hover {
-      border-style: solid;
-      border-color: #0d2347;
-      color: #0d2347;
-      background-color: white; }
+  margin-top: 20px;
+}
+.navCat a {
+  border: none;
+  padding: 10px;
+  background-color: #0d2347;
+  color: white;
+  cursor: pointer;
+  border-width: 2px;
+  border-style: solid;
+  border-color: #0d2347;
+  transition: 1s;
+}
+.navCat a:hover {
+  border-style: solid;
+  border-color: #0d2347;
+  color: #0d2347;
+  background-color: white;
+}
 
 /*# sourceMappingURL=Style.css.map */
