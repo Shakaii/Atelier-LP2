@@ -7,13 +7,15 @@
 <div class="container">
 {{#prestations}}
 <div class="card">
-    <div class="card-title"><a href="/catalog/{{category.title}}/{{title}}">{{title}}</a></div>
-    <div class="card-img"><img src="/img/{{image}}"></div>
-    <span>Price: {{price}}</span>
-    {{#connected}}
-    <a href="/addPrest/{{category._id}}/{{_id}}">Add to box</a>
-    {{/connected}}
-</div>
+    <a  href="/catalog/{{category.title}}/{{title}}" >
+        <div class="card-title">{{title}}</div>
+        <div class="card-img"><img src="/img/{{image}}"></div>
+    </a>
+    <div class="card-footer">
+            <div class="price">{{price}} €</div>
+            <a class="addToCart" href="/add/{{category.id}}/{{id}}"><i class="fas fa-cart-plus"></i></a>
+    </div> 
+</div>  
 {{/prestations}}
 </div>
 {{> footer}}
