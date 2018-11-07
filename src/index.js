@@ -216,17 +216,18 @@ db.once('open', function() {
 
 	app.get("/catalog/:category", function (req, res) {
 
-		Category
-			.findOne({
-				title: req.params.category
-			})
-			.populate('prestations')
-			.exec(function (err, category) {
-				if (err) return console.error(err);
-				res.render('prestations', {'categories' : categories, 'category' : category, 'prestations' : category.prestations});
-			});
+        Category
+        .findOne({ title: req.params.category})
+        .populate('prestations')
+        .exec(function (err, category){
+            if (err) return console.error(err);
+            Category.find(function (err, categories) {
+                if (err) return console.error(err);
+                res.render('prestations', {'categories' : categories, 'category' : category, 'prestations' : category.prestations});
+            });
+        }); 
 
-	});
+    }); 
 
 	app.get("/catalog/:category/:prestation", function (req, res) {
 
