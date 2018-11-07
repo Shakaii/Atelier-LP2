@@ -9,11 +9,12 @@
             <div class="">
                 <ul>
 		{{#connected}}
-		<li><a href="/logout">Deconnexion</a></li>
+            <li><a href="/profile">Profile</a></li>
+		    <li><a href="/logout">Deconnexion</a></li>
 		{{/connected}}
 		{{^connected}}
-		<li><a href="/login">Connexion</a></li>
-                <li><a href="/signup">Inscription</a></li>
+		    <li><a href="/login">Connexion</a></li>
+            <li><a href="/signup">Inscription</a></li>
 		{{/connected}}
                     
                 </ul>

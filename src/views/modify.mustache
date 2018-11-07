@@ -1,0 +1,11 @@
+{{> header}}
+    <h1>Modifier votre profil</h1>
+    <div class="informations">
+        Votre adresse email : {{user.email}}
+        <form method="post">
+            <label >Nouveau mot de passe <input name="password" type="password"></label>
+            <label >Répeter votre mot de passe <input name="passwordCheck" type="password"></label>
+            <input type = "submit" value="Confirmer">
+        </form>
+    </div>
+{{> footer}}

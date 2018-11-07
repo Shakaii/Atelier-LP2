@@ -17,6 +17,7 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 app.use(session({ secret: "secret"}));
+
   
 
 /* GESTION DES GET */ 
@@ -25,7 +26,7 @@ app.get('/', function (req, res) {
 	if (req.session.email){
 		connected = true;
 	}
-	res.render('index', {connected: connected});
+	res.render('index', {'connected': connected});
 }); 
 
 app.get('/signup', function (req, res) {
@@ -47,6 +48,11 @@ app.get("/login", function (req, res) {
 	
 });
 
+app.get("/logout", function (req, res) {
+	req.session.destroy();
+	res.redirect('/');
+});
+
 app.get("/catalogue", function (req, res) {
   res.render('catalogue', {});
 });
@@ -58,8 +64,6 @@ app.get("/catalogue/:categorie", function (req, res) {
 app.get("/catalogue/:categorie/:prestation", function (req, res) {
   res.render('prestation', {'prest':req.params.prestation, 'cat':req.params.categorie});
 });
-
-
 		 
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -142,6 +146,57 @@ db.once('open', function() {
 				res.redirect('/');
 			}
 		});  
+	});
+
+	//profile
+	app.get("/profile",function(req,res){
+		//si connecte
+		if (req.session.email){
+			//renvoie l'user
+			User.findOne({ email: req.session.email},function(err,user){
+				res.render('profile',{'connected': true, 'user':user});
+			});
+		}
+		//sinon accueil
+		else{
+			res.redirect('/');
+		}
+	});
+
+	app.get("/profile/modify",function(req,res){
+		//si connecte
+		if (req.session.email){
+			//renvoie l'user
+			User.findOne({ email: req.session.email},function(err,user){
+				res.render('modify',{'connected': true, 'user':user});
+			});
+		}
+		//sinon accueil
+		else{
+			res.redirect('/');
+		}
+	});
+
+	//modifying password in profile
+	app.post("/profile/modify", function (req, res) {
+		
+		console.log(req.body.password);
+		//get logged in user
+		User.findOne({email: req.session.email }, function(err, user){
+			if (err) return handleError(err)
+
+			//if the passwords match
+			if (req.body.passwordCheck == req.body.password){
+				user.password = req.body.password;
+			}
+			
+			user.save(function (err) {
+				if (err) return handleError(err) 
+				res.redirect('/profile');
+			});
+			
+		});
+
 	});
 
 
