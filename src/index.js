@@ -165,7 +165,7 @@ db.once('open', function() {
 			if (err) return console.error(err);
 			res.render('catalog', {'categories' : categories,'connected': connected}); 	
 		});
-	
+	 
 	});
 
 	app.get("/catalog/:category", function (req, res) {
@@ -175,7 +175,7 @@ db.once('open', function() {
 		.populate('prestations')
 		.exec(function (err, category){
 			if (err) return console.error(err);
-			Category.find(function (err, categories) {
+			Category.find(function (err, categories) { 
 				if (err) return console.error(err);
 				res.render('prestations', {'categories' : categories, 'category' : category, 'prestations' : category.prestations});
 			});
