@@ -14,7 +14,8 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(bodyParser.json());
-
+let path = require('path');
+app.use(express.static(path.join(__dirname+'/public')));
 
   
 
@@ -108,7 +109,7 @@ db.once('open', function() {
 			if (err) return handleError(err);  
 			console.log("inscrit")
 		}); 
-
+		//res.render('index', {});
 	});
  
 	app.post("/login", function (req, res) {
@@ -119,7 +120,7 @@ db.once('open', function() {
 				console.log("connecté")
 			}
 		});
-
+		//res.render('index', {});
 	});
 
 
