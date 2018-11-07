@@ -146,14 +146,16 @@ db.once('open', function() {
 		recipientName: "jj54",
 		recipientEmail: "jj54@yahoo.fr",
 		message: "Tiens jj54 le bro",
-		isPaid: true
+		isPaid: true,
+		isOpened: true
 	});
 
 	let box2 = new Box({
 		recipientName: "PasGoélise",
 		recipientEmail: "papinox@yahoo.fr",
 		message: "Pas de chance",
-		isPaid: false
+		isPaid: false,
+		isOpened : false
 	});
 
 	app.get("/catalog", function (req, res)  { 
@@ -273,6 +275,28 @@ db.once('open', function() {
 				});
 				if(found){
 					res.render('box',{'connected':true,'box':box});
+				}
+			});
+
+		} else {
+			res.redirect('/');
+		}
+	});
+
+	app.get("/box/:id/suivi", function (req,res) {
+		if (req.session.email){
+			
+			User.findOne({email:req.session.email}, function (err, user){
+				let box;
+				let found=false;
+				user.boxes.forEach(function(element) {
+					if(element._id == req.params.id){
+						box=element;
+						found=true;
+					}
+				});
+				if(found){
+					res.render('suivi',{'connected':true,'box':box});
 				}
 			});
 
