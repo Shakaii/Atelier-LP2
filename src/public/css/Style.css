@@ -175,7 +175,7 @@ img, .card-img {
 .pannelLog {
   display: flex;
   flex-direction: column;
-  background-color: #6C88B4;
+  background-color: #A9B8C1;
   text-align: center;
   margin-left: 35%;
   margin-right: 35%;
@@ -193,6 +193,16 @@ img, .card-img {
   margin: 5px;
   border: none;
   width: 70%;
+}
+.pannelLog .pass {
+  border: black double 1px;
+  padding: 10px;
+}
+.pannelLog .pass:hover {
+  border: none;
+  border: #165ED4 double 1px;
+  background-color: #165ED4;
+  color: white;
 }
 .pannelLog h1 {
   font-size: 3em;

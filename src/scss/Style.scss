@@ -178,7 +178,7 @@ img {
 .pannelLog{
     display: flex;
     flex-direction: column;
-    background-color: #6C88B4    ;
+    background-color: #A9B8C1    ;
     text-align: center;
     margin-left:35%;
     margin-right:35%;
@@ -200,7 +200,15 @@ img {
        
     }
     .pass{
-
+        border: black double 1px;
+        padding:10px;
+        
+    }
+    .pass:hover{
+        border:none;
+        border: #165ED4 double 1px;
+        background-color: #165ED4;
+        color:white;
     }
     h1{
         font-size: 3em;
