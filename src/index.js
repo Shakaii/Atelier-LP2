@@ -76,7 +76,7 @@ db.once('open', function() {
 	let UserSchema = new mongoose.Schema({
 		password: String,
 		email: String,
-		boxes: Array,
+		boxes: [BoxSchema],
 		isAdmin: Boolean
 	});
 		
@@ -158,20 +158,12 @@ db.once('open', function() {
 		recipientName: "jj54",
 		recipientEmail: "jj54@yahoo.fr",
 		message: "Tiens jj54 le bro",
-		date: new Date(2018,11,8),
-		isPaid: true,
-		isOpened: false,
-		isCurrent: true
 	});
 
 	let box2 = new Box({
 		recipientName: "PasGoélise",
 		recipientEmail: "papinox@yahoo.fr",
 		message: "Pas de chance",
-		date: new Date(2018,11,12),
-		isPaid: true,
-		isOpened: false,
-		isCurrent: true
 	});
 
 
@@ -225,6 +217,31 @@ db.once('open', function() {
 			
 		});
 
+	});
+
+	app.get("/box/:id", function (req,res) {
+		if (req.session.email){
+			User.findOne({email:req.session.email}
+				.populate('boxes')
+				.exec(function (err, user){
+					if (err) return HandeError(err);
+					if (user){
+						let box = user.boxes.filter(function(box) {
+
+						});
+					}
+				})
+			);
+			Box.findOne({_id:req.params.id}, function(err, box){
+				if (err) return handleError(err)
+
+				console.log(req.params.id);
+				console.log(box);
+				res.render('box', {'connected':true,'box':box});
+			});	
+		} else {
+			res.redirect('/');
+		}
 	});
 
 

@@ -1,10 +1,15 @@
 {{> header}}
     <h1>Profil de l'utilisateur {{user.email}}</h1>
     <div class="coffrets">
+        </br>
         {{#user.boxes}}
-        Box
-        <li> {{recipientName}} </li>
-        <li> {{recipientEmail}} </li>
+        Box 
+        </br>
+        <li> Destinataire : {{recipientName}} </li>
+        <li> Email du destinataire : {{recipientEmail}} </li>
+        <li> Message : {{message}} </li>
+        <a href=/box/{{_id}}>Modifier le contenu du coffret</a>
+        </br>
         {{/user.boxes}}
     </div>
     <a href="/profile/modify">Modifier ses informations personnelles</a>
