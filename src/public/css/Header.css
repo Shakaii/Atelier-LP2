@@ -19,14 +19,39 @@ time, mark, audio, video {
   vertical-align: baseline;
 }
 
+@keyframes anim {
+  from {
+    color: white;
+    font-size: 2em;
+  }
+  to {
+    color: yellow;
+    font-size: 2.3em;
+  }
+}
 .header {
   display: flex;
   flex-direction: row;
-  background-color: lime;
+  background-color: #1C6BE7;
   align-content: space-between;
+  height: 80px;
+}
+.header a {
+  text-decoration: none;
+  color: white;
+  padding: 20px;
+}
+.header .titre {
+  font-size: 2em;
+}
+.header .titre:hover {
+  animation-name: anim;
+  animation-duration: 2s;
 }
 .header .connect {
+  padding: 20px;
   margin-left: auto;
+  font-size: 1.5em;
 }
 .header .connect ul {
   display: flex;
@@ -36,6 +61,7 @@ time, mark, audio, video {
 }
 .header .connect ul li {
   margin-left: 15px;
+  font-size: 1, 5em;
 }
 
-/*# sourceMappingURL=Style.css.map */
+/*# sourceMappingURL=Header.css.map */
