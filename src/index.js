@@ -20,10 +20,8 @@ let path = require('path');
 app.use(express.static(path.join(__dirname + '/public')));
 
 
-app.use(session({
-	secret: "secret"
-}));
 
+app.use(session({ secret: "secret", cookie: { maxAge: 7200000 }}));
 
 /* GESTION DES GET */
 app.get('/', function (req, res) {
@@ -31,24 +29,23 @@ app.get('/', function (req, res) {
 	if (req.session.email) {
 		connected = true;
 	}
-	res.render('index', {
-		'connected': connected
-	});
-});
+	res.redirect('/catalog');
+}); 
 
 app.get('/signup', function (req, res) {
-	if (req.session.email) {
-		res.redirect('/');
-	} else {
+	if (req.session.email){
+		res.redirect('/catalog');
+	}else{
 		res.render('signup', {});
 	}
 
 });
 
 app.get("/login", function (req, res) {
-	if (req.session.email) {
-		res.redirect('/');
-	} else {
+	if (req.session.email){
+		res.redirect('/catalog');
+	}
+	else{
 		res.render('login', {});
 	}
 
@@ -61,14 +58,7 @@ app.get("/logout", function (req, res) {
 
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function () {
-
-	let userSchema = new mongoose.Schema({
-		password: String,
-		email: String,
-		boxes: Array,
-		isAdmin: Boolean
-	});
+db.once('open', function() {
 
 	let prestationSchema = new mongoose.Schema({
 		title: String,
@@ -102,18 +92,20 @@ db.once('open', function () {
 		isCurrent: Boolean,
 		prestations: [prestationSchema],
 		contributions: [contributionSchema]
-	})
+	})	
+
+	let userSchema = new mongoose.Schema({
+		password: String,
+		email: String,
+		boxes: [boxSchema],
+		isAdmin: Boolean
+	});
 
 	let Box = mongoose.model('Box', boxSchema);
 	let User = mongoose.model('User', userSchema);
 	let Category = mongoose.model('Category', categorySchema);
 	let Prestation = mongoose.model('Prestation', prestationSchema);
 	let Contribution = mongoose.model('Contribution', contributionSchema);
-
-	Category.find(function (err, test) {
-		if (err) return handleError(err)
-		console.log(test[0].prestations)
-	});
 
 	//on signup
 	app.post('/signup', function (req, res) {
@@ -150,8 +142,28 @@ db.once('open', function () {
 		});
 	});
 
-	app.get("/catalog", function (req, res) {
 
+
+	//test pour affichage coffrets
+	let box1 = new Box({
+		recipientName: "jj54",
+		recipientEmail: "jj54@yahoo.fr",
+		message: "Tiens jj54 le bro",
+		isPaid: true
+	});
+
+	let box2 = new Box({
+		recipientName: "PasGoélise",
+		recipientEmail: "papinox@yahoo.fr",
+		message: "Pas de chance",
+		isPaid: false
+	});
+
+	app.get("/catalog", function (req, res)  { 
+		let connected = false;
+		if (req.session.email){
+			connected = true;
+		}
 		Category.find(function (err, categories) {
 			if (err) return console.error(err);
 			res.render('catalog', {
@@ -255,7 +267,7 @@ db.once('open', function () {
 		});
 	});
 
-
+ 
 	//profile
 	app.get("/profile", function (req, res) {
 		//si connectedocker exec -i docker-node_mongo_1 mongo test --eval "db.dropDatabase()"
@@ -297,8 +309,6 @@ db.once('open', function () {
 
 	//modifying password in profile
 	app.post("/profile/modify", function (req, res) {
-
-		console.log(req.body.password);
 		//get logged in user
 		User.findOne({
 			email: req.session.email
@@ -319,6 +329,29 @@ db.once('open', function () {
 
 	});
 
+	app.get("/box/:id", function (req,res) {
+		if (req.session.email){
+			
+			User.findOne({email:req.session.email}, function (err, user){
+				let box;
+				let found=false;
+				user.boxes.forEach(function(element) {
+					if(element._id == req.params.id){
+						box=element;
+						found=true;
+					}
+				});
+				if(found){
+					res.render('box',{'connected':true,'box':box});
+				}
+			});
+
+		} else {
+			res.redirect('/');
+		}
+	});
+
+	
 
 	console.log('Connection à la bdd effectuée');
 

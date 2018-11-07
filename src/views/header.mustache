@@ -2,6 +2,7 @@
     <head>
         <link rel="stylesheet" type="text/css" href="/css/Style.css">
         <link rel="stylesheet" type="text/css" href="/css/Header.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
         <title>MyGiftBox</title>
         
     </head>
@@ -14,15 +15,15 @@
             {{/connected}}
             <div class="connect">
                 <ul>
-                    {{#connected}}
-                        <li><a href="/profile">Profile</a></li>
-                        <li><a href="/logout">Deconnexion</a></li>
-                    {{/connected}}
-                    {{^connected}}
-                        <li><a href="/login">Connexion</a></li>
-                        <li><a href="/signup">Inscription</a></li>
-                    {{/connected}}
-                    
+        {{#connected}}
+            <li><a href="/logout"><i class="fas fa-sign-out-alt"></i><span class="lg">Deconnexion</span></a></li>
+            <li><a href="/profile"><i class="fas fa-user"></i><span class="lg">Profil</span></a></li>
+		    
+		{{/connected}}
+		{{^connected}}
+		    <li><a href="/login"><i class="fas fa-sign-in-alt"></i><span class="lg">Connexion</span></a></li>
+            <li><a href="/signup"><i class="fas fa-user-plus"></i><span class="lg">Inscription</span></a></li>
+		{{/connected}}   
                 </ul>
             </div>
         </div>

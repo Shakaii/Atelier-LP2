@@ -16,52 +16,60 @@ time, mark, audio, video {
   border: 0;
   font-size: 100%;
   font: inherit;
-  vertical-align: baseline;
-}
+  vertical-align: baseline; }
 
 @keyframes anim {
   from {
     color: white;
-    font-size: 2em;
+
   }
   to {
     color: yellow;
-    font-size: 2.3em;
   }
 }
+
 .header {
   display: flex;
   flex-direction: row;
   background-color: #1C6BE7;
-  align-content: space-between;
-  height: 80px;
-}
-.header a {
-  text-decoration: none;
-  color: white;
-  padding: 20px;
-}
-.header .titre {
-  font-size: 2em;
-}
-.header .titre:hover {
-  animation-name: anim;
-  animation-duration: 2s;
-}
-.header .connect {
-  padding: 20px;
-  margin-left: auto;
-  font-size: 1.5em;
-}
-.header .connect ul {
-  display: flex;
-  flex-direction: row;
-  list-style: none;
-  flex-direction: row-reverse;
-}
-.header .connect ul li {
-  margin-left: 15px;
-  font-size: 1, 5em;
-}
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(13, 35, 71, 0.4), 0 6px 20px 0 rgba(13, 35, 71, 0.41); }
+  .header a {
+    text-decoration: none;
+    color: #0d2347;
+    align-self: center;
+    transition: 0.5s; }
+  .header a:hover {
+    color: #a34aad; }
+  .header .titre {
+    font-size: 2em; }
+  .header .titre:hover {
+    animation-name: anim;
+    animation-duration: 2s; }
+  .header .lg {
+    margin-left: 0.5em; }
+  .header .connect {
+    padding: 20px;
+    font-size: 1em; }
+    .header .connect ul {
+      display: flex;
+      align-self: center;
+      flex-direction: row;
+      list-style: none;
+      flex-direction: row-reverse; }
+      .header .connect ul li {
+        margin-left: 2em;
+        font-size: 1,5em; }
+
+@media only screen and (max-width: 50em) {
+  .lg {
+    display: none; }
+
+  .header {
+    flex-direction: column;
+    align-content: center; }
+
+  .connect ul {
+    flex-direction: column; } }
 
 /*# sourceMappingURL=Header.css.map */
