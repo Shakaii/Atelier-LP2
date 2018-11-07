@@ -1,0 +1,15 @@
+{{>header}}
+<h1>Coffret à destination de {{box.recipientName}}</h1>
+    <div class="box">
+        {{#box.isOpened}}
+        Coffret ouvert !
+        {{/box.isOpened}}
+        {{^box.isOpened}}
+        Votre coffret n'a pas encore été ouvert.
+        {{/box.isOpened}}
+        {{#box.prestations}}
+        Prestation </br>
+        {{/box.prestations}}
+        </br>
+    </div>
+{{> footer}}
