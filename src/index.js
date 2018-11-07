@@ -66,7 +66,7 @@ db.once('open', function() {
 		image: String,
 		price: Number,
 		isVisible: Boolean
-	})
+	})  
 			
 	let categorySchema = new mongoose.Schema({
 		title: String,
@@ -75,7 +75,7 @@ db.once('open', function() {
 	});
 		
 	let contributionSchema = new mongoose.Schema({
-		name: String, 
+		name: String,  
 		Amount: Number,
 		message: String
 	})
@@ -106,6 +106,11 @@ db.once('open', function() {
 	let Category = mongoose.model('Category', categorySchema);
 	let Prestation = mongoose.model('Prestation', prestationSchema);
 	let Contribution = mongoose.model('Contribution', contributionSchema);
+ 
+	Category.find(function(err,test){
+		if (err) return handleError(err) 
+		console.log(test[0].prestations)
+	}); 
 
 	//on signup
 	app.post('/signup', function (req, res) { 
@@ -123,7 +128,7 @@ db.once('open', function() {
 				req.session.email = user.email;
 				res.redirect('/');
 			}); 
-		}
+		} 
 	});
  
 	//on login 
@@ -157,7 +162,7 @@ db.once('open', function() {
 
 		Category.find(function (err, categories) {
 			if (err) return console.error(err);
-			res.render('catalog', {'categories' : categories});
+			res.render('catalog', {'categories' : categories}); 	
 		});
 	
 	});
@@ -176,7 +181,7 @@ db.once('open', function() {
 			});
 		}); 
 
-	});
+	}); 
 	   
 	app.get("/catalog/:category/:prestation", function (req, res) {
 
