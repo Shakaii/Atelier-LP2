@@ -179,30 +179,33 @@ db.once('open', function() {
 				console.log(category);
 				res.render('prestations', {'categories' : categories, 'category' : category, 'prestations' : category.prestations});
 			});
-		});
+		}); 
 
 	});
-	  
+	   
 	app.get("/catalog/:category/:prestation", function (req, res) {
 
 		Category.findOne({ title: req.params.category},function (err, category) {
 			if (err) return console.error(err);
+
 			if (category){
-				category.findOne({title: req.paramas.prestation},function (err, prestation) {
+
+				let prestation = category.prestations.filter(function (prestation) {
+					return prestation.title === req.params.prestation;
+				}).pop();
+
+				Category.find(function (err, categories) {
 					if (err) return console.error(err);
-					Category.find(function (err, categories) {
-						if (err) return console.error(err);
-						res.render('prestation', {'categories' : categories, 'category' : category, 'prestation' : prestation});
-					});
-					
+					res.render('prestation', {'categories' : categories, 'category' : category, 'prestation' : prestation});
 				});
-			} 
+					
+			}
 			else{
 				res.redirect('/catalog');
 			}
-			
-		});
+		}); 
 	});
+
 
 
 	console.log('Connection à la bdd effectuée');
