@@ -106,7 +106,7 @@ db.once('open', function() {
 	let Category = mongoose.model('Category', categorySchema);
 	let Prestation = mongoose.model('Prestation', prestationSchema);
 	let Contribution = mongoose.model('Contribution', contributionSchema);
- 
+
 	//on signup
 	app.post('/signup', function (req, res) { 
 
@@ -199,7 +199,7 @@ db.once('open', function() {
 			});
 		}
 		//sinon accueil
-		else{
+		else{ 
 			res.redirect('/');
 		}
 	});

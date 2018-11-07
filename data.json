@@ -1,6 +1,6 @@
 [
     {
-      "name": "Attention",
+      "title": "Attention",
       "prestations": [
         {
           "title": "Champagne",
@@ -47,7 +47,7 @@
       ]
     },
     {
-      "name": "Activité",
+      "title": "Activité",
       "prestations":[
         {
           "title": "Exposition",
@@ -136,7 +136,7 @@
       ]
     },
     {
-      "name": "Restauration",
+      "title": "Restauration",
       "prestations":[
         {
           "title": "Goûter",
@@ -190,7 +190,7 @@
       ]
     },
     {
-      "name": "Hébergement",
+      "title": "Hébergement",
       "prestations":[
         {
           "title": "Appart Hotel",
