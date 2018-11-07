@@ -140,7 +140,7 @@ db.once('open', function() {
 				res.redirect('/');
 			}); 
 		}
-	}); 
+	});
  
 	//on login
 	app.post("/login", function (req, res) {
@@ -153,7 +153,7 @@ db.once('open', function() {
 				req.session.email = user.email;
 				res.redirect('/');
 			}
-		});  
+		});
 	});
 
 
