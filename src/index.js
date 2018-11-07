@@ -60,7 +60,7 @@ let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
 			
-	let PrestationSchema = new mongoose.Schema({
+	let prestationSchema = new mongoose.Schema({
 		title: String,
 		description: String,
 		image: String,
@@ -90,14 +90,14 @@ db.once('open', function() {
 		isPaid: Boolean,
 		isOpened: Boolean,
 		isCurrent: Boolean,
-		prestations: [PrestationSchema],
-		contributions: [ContributionSchema]
+		prestations: [prestationSchema],
+		contributions: [contributionSchema]
 	})	
 
-	let UserSchema = new mongoose.Schema({
+	let userSchema = new mongoose.Schema({
 		password: String,
 		email: String,
-		boxes: [BoxSchema],
+		boxes: [boxSchema],
 		isAdmin: Boolean
 	});
 
@@ -106,11 +106,6 @@ db.once('open', function() {
 	let Category = mongoose.model('Category', categorySchema);
 	let Prestation = mongoose.model('Prestation', prestationSchema);
 	let Contribution = mongoose.model('Contribution', contributionSchema);
- 
-	Category.find(function(err,test){
-		if (err) return handleError(err) 
-		console.log(test[0].prestations)
-	}); 
 
 	//on signup
 	app.post('/signup', function (req, res) { 
@@ -151,12 +146,15 @@ db.once('open', function() {
 		recipientName: "jj54",
 		recipientEmail: "jj54@yahoo.fr",
 		message: "Tiens jj54 le bro",
+		isPaid: true
 	});
 
 	let box2 = new Box({
 		recipientName: "PasGoélise",
 		recipientEmail: "papinox@yahoo.fr",
 		message: "Pas de chance",
+		isPaid: false
+	});
 
 	app.get("/catalog", function (req, res)  { 
 
@@ -176,7 +174,6 @@ db.once('open', function() {
 			if (err) return console.error(err);
 			Category.find(function (err, categories) {
 				if (err) return console.error(err);
-				console.log(category);
 				res.render('prestations', {'categories' : categories, 'category' : category, 'prestations' : category.prestations});
 			});
 		}); 
@@ -213,6 +210,7 @@ db.once('open', function() {
 		if (req.session.email){
 			//renvoie l'user
 			User.findOne({ email: req.session.email},function(err,user){
+				user.boxes = [];
 				user.boxes.push(box1,box2);
 				user.save(function(err){
 					if (err)  return HandleError(err)
@@ -243,7 +241,6 @@ db.once('open', function() {
 	//modifying password in profile
 	app.post("/profile/modify", function (req, res) {
 		
-		console.log(req.body.password);
 		//get logged in user
 		User.findOne({email: req.session.email }, function(err, user){
 			if (err) return handleError(err)
@@ -268,10 +265,7 @@ db.once('open', function() {
 			User.findOne({email:req.session.email}, function (err, user){
 				let box;
 				let found=false;
-				console.log(user);
-				console.log(user.boxes);
 				user.boxes.forEach(function(element) {
-					console.log(element._id + "  " + req.params.id);
 					if(element._id == req.params.id){
 						box=element;
 						found=true;
