@@ -1,0 +1,16 @@
+{{> header}}
+<div>
+    {{#categories}}
+        <a href="./prestation/{{title}}">{{title}}</a>
+    {{/categories}}
+</div>
+
+
+<div>
+    <h1>{{prestation.title}}</h1>
+    <div>{{prestationimage}}</div>
+    <div>{{prestation.description}}</div>
+    <span>Price: {{price}}</span>
+</div>
+
+{{> footer}}

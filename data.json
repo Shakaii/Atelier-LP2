@@ -1,0 +1,211 @@
+[
+    {
+      "name": "Attention",
+      "prestations": [
+        {
+          "title": "Champagne",
+          "description": "Bouteille de champagne + flutes + jeux à gratter",
+          "image": "champagne.jpg",
+          "price": "20.00",
+          "isVisible":"true"
+        },
+        {
+          "title": "Musique",
+          "description": "Partitions de piano à 4 mains",
+          "image": "musique.jpg",
+          "price": "25.00",
+          "isVisible":"true"
+        },
+        {
+          "title": "Bouquet",
+          "description": "Bouquet de roses et Mots de Marion Renaud",
+          "image": "rose.jpg",
+          "price": "16.00",
+          "isVisible":"true"
+        },
+        {
+          "title": "Livres",
+          "description": "Livre bricolage avec petits-enfants + Roman",
+          "image": "bricolage.jpg",
+          "price": "24.00",
+          "isVisible":"true"
+        },
+        {
+          "title": "Bijoux",
+          "description": "Bijoux de manteau + Sous-verre pochette de disque + Lait après-soleil",
+          "image": "bijoux.jpg",
+          "price": "29.00",
+          "isVisible":"true"
+        },
+        {
+          "title": "Cadeaux individuels",
+          "description": "Cadeaux individuels sur le thème de la soirée",
+          "image": "cadeaux.jpg",
+          "price": "13.00",
+          "isVisible":"true"
+        }
+      ]
+    },
+    {
+      "name": "Activité",
+      "prestations":[
+        {
+          "title": "Exposition",
+          "description": "Visite guidée de l’exposition ‘REGARDER’ à la galerie Poirel",
+          "image": "poirelregarder.jpg",
+          "price": "14.00",
+          "isVisible":"true"
+        },
+        {
+          "title": "Projection",
+          "description": "Projection courts-métrages au FIFNL",
+          "image": "film.jpg",
+          "price": "10.00",
+          "isVisible":"true"
+        },
+        {
+          "title": "Visite guidée",
+          "description": "Visite guidée personnalisée de Saint-Epvre jusqu’à Stanislas",
+          "image": "place.jpg",
+          "price": "11.00",
+          "isVisible":"true"
+        },
+        {
+          "title": "Opéra",
+          "description": "Concert commenté à l’Opéra",
+          "image": "opera.jpg",
+          "price": "15.00",
+          "isVisible":"true"
+        },
+        {
+          "title": "Jeu connaissance",
+          "description": "Jeu pour faire connaissance",
+          "image": "connaissance.jpg",
+          "price": "6.00",
+          "isVisible":"true"
+        },
+        {
+          "title": "Animation",
+          "description": "Activité animée par un intervenant extérieur",
+          "image": "animateur.jpg",
+          "price": "9.00",
+          "isVisible":"true"
+        },
+        {
+          "title": "Jeu contacts",
+          "description": "Jeu pour échange de contacts",
+          "image": "contact.png",
+          "price": "5.00",
+          "isVisible":"true"
+        },
+        {
+          "title": "Star Wars",
+          "description": "Star Wars - Le Réveil de la Force. Séance cinéma 3D",
+          "image": "starwars.jpg",
+          "price": "12.00",
+          "isVisible":"true"
+        },
+        {
+          "title": "Concert",
+          "description": "Un concert à Nancy",
+          "image": "concert.jpg",
+          "price": "17.00",
+          "isVisible":"true"
+        },
+        {
+          "title": "Boite de nuit",
+          "description": "Discothèque, Boîte tendance avec des soirées à thème & DJ invités",
+          "image": "boitedenuit.jpg",
+          "price": "32.00",
+          "isVisible":"true"
+        },
+        {
+          "title": "Planètes Laser",
+          "description": "Laser game : Gilet électronique et pistolet laser comme matériel, vous voilà équipé.",
+          "image": "laser.jpg",
+          "price": "15.00",
+          "isVisible":"true"
+        },
+        {
+          "title": "Fort Aventure",
+          "description": "Découvrez Fort Aventure à Bainville-sur-Madon, un site Accropierre unique en Lorraine ! Des Parcours Acrobatiques pour petits et grands, Jeu Mission Aventure, Crypte de Crapahute, Tyrolienne, Saut à l''élastique inversé, Toboggan géant... et bien plus encore.",
+          "image": "fort.jpg",
+          "price": "25.00",
+          "isVisible":"true"
+        }
+      ]
+    },
+    {
+      "name": "Restauration",
+      "prestations":[
+        {
+          "title": "Goûter",
+          "description": "Goûter au FIFNL",
+          "image": "gouter.jpg",
+          "price": "20.00",
+          "isVisible":"true"
+        },
+        {
+          "title": "Diner Stanislas",
+          "description": "Diner à La Table du Bon Roi Stanislas (Apéritif /Entrée / Plat / Vin / Dessert / Café / Digestif)",
+          "image": "bonroi.jpg",
+          "price": "60.00",
+          "isVisible":"true"
+        },
+        {
+          "title": "Origami",
+          "description": "Baguettes magiques en Origami en buvant un thé",
+          "image": "origami.jpg",
+          "price": "12.00",
+          "isVisible":"true"
+        },
+        {
+          "title": "Diner  Grand Rue ",
+          "description": "Diner au Grand’Ru(e) (Apéritif / Entrée / Plat / Vin / Dessert / Café)",
+          "image": "grandrue.jpg",
+          "price": "59.00",
+          "isVisible":"true"
+        },
+        {
+          "title": "Thé Hotel de la reine",
+          "description": "Thé de debriefing au bar de l’Hotel de la reine",
+          "image": "hotelreine.gif",
+          "price": "5.00",
+          "isVisible":"true"
+        },
+        {
+          "title": "Diner",
+          "description": "Diner (Apéritif / Plat / Vin / Dessert / Café)",
+          "image": "diner.jpg",
+          "price": "40.00",
+          "isVisible":"true"
+        },
+        {
+          "title": "Cocktail",
+          "description": "Cocktail de fin de soirée",
+          "image": "cocktail.jpg",
+          "price": "12.00",
+          "isVisible":"true"
+        }
+      ]
+    },
+    {
+      "name": "Hébergement",
+      "prestations":[
+        {
+          "title": "Appart Hotel",
+          "description": "Appart’hôtel Coeur de Ville, en plein centre-ville",
+          "image": "apparthotel.jpg",
+          "price": "56.00",
+          "isVisible":"true"
+        },
+        {
+          "title": "Hôtel d'Haussonville",
+          "description": "Hôtel d'Haussonville, au coeur de la Vieille ville à deux pas de la place Stanislas",
+          "image": "hotel_haussonville_logo.jpg",
+          "price": "169.00",
+          "isVisible":"true"
+        }
+      ]
+    }
+  ]
