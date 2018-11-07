@@ -234,7 +234,6 @@ db.once('open', function() {
 		});
 	});
 
-
 	app.get("/catalog/:category", function (req, res) {
 		let connected = false;
 		if (req.session.email){
