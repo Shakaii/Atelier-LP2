@@ -16,6 +16,10 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
+let path = require('path');
+app.use(express.static(path.join(__dirname+'/public')));
+
+
 app.use(session({ secret: "secret"}));
 
   
@@ -132,7 +136,7 @@ db.once('open', function() {
 				res.redirect('/');
 			}); 
 		}
-	}); 
+	});
  
 	//on login
 	app.post("/login", function (req, res) {
@@ -145,7 +149,7 @@ db.once('open', function() {
 				req.session.email = user.email;
 				res.redirect('/');
 			}
-		});  
+		});
 	});
 
 	//profile
@@ -204,16 +208,4 @@ db.once('open', function() {
 
 });
 
-
-
-
-
-
-
-
-
-
-
-
 app.listen(port);
-
