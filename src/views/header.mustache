@@ -9,16 +9,19 @@
     <body>
         <div class="header">
             <a class="titre" href="/">MyGiftBox</a>
+            {{#connected}}
+                <a href="/newBox">Nouveau coffret</a>
+            {{/connected}}
             <div class="connect">
                 <ul>
-		{{#connected}}
-            <li><a href="/profile">Profile</a></li>
-		    <li><a href="/logout">Deconnexion</a></li>
-		{{/connected}}
-		{{^connected}}
-		    <li><a href="/login">Connexion</a></li>
-            <li><a href="/signup">Inscription</a></li>
-		{{/connected}}
+                    {{#connected}}
+                        <li><a href="/profile">Profile</a></li>
+                        <li><a href="/logout">Deconnexion</a></li>
+                    {{/connected}}
+                    {{^connected}}
+                        <li><a href="/login">Connexion</a></li>
+                        <li><a href="/signup">Inscription</a></li>
+                    {{/connected}}
                     
                 </ul>
             </div>
