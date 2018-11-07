@@ -59,14 +59,7 @@ app.get("/logout", function (req, res) {
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
-		
-	let userSchema = new mongoose.Schema({
-		password: String,
-		email: String,
-		boxes: Array,
-		isAdmin: Boolean
-	});
-		
+			
 	let prestationSchema = new mongoose.Schema({
 		title: String,
 		description: String,
@@ -99,17 +92,20 @@ db.once('open', function() {
 		isCurrent: Boolean,
 		prestations: [prestationSchema],
 		contributions: [contributionSchema]
-	})
+	})	
+
+	let userSchema = new mongoose.Schema({
+		password: String,
+		email: String,
+		boxes: [boxSchema],
+		isAdmin: Boolean
+	});
 
 	let Box = mongoose.model('Box', boxSchema);
 	let User = mongoose.model('User', userSchema);
 	let Category = mongoose.model('Category', categorySchema);
 	let Prestation = mongoose.model('Prestation', prestationSchema);
 	let Contribution = mongoose.model('Contribution', contributionSchema);
- 
-	Category.find(function(err,test){
-		if (err) return handleError(err) 
-	}); 
 
 	//on signup
 	app.post('/signup', function (req, res) { 
@@ -142,6 +138,22 @@ db.once('open', function() {
 				res.redirect('/');
 			}
 		});
+	});
+
+
+	//test pour affichage coffrets
+	let box1 = new Box({
+		recipientName: "jj54",
+		recipientEmail: "jj54@yahoo.fr",
+		message: "Tiens jj54 le bro",
+		isPaid: true
+	});
+
+	let box2 = new Box({
+		recipientName: "PasGoélise",
+		recipientEmail: "papinox@yahoo.fr",
+		message: "Pas de chance",
+		isPaid: false
 	});
 
 	app.get("/catalog", function (req, res)  { 
@@ -201,6 +213,11 @@ db.once('open', function() {
 		if (req.session.email){
 			//renvoie l'user
 			User.findOne({ email: req.session.email},function(err,user){
+				user.boxes = [];
+				user.boxes.push(box1,box2);
+				user.save(function(err){
+					if (err)  return HandleError(err)
+				});
 				res.render('profile',{'connected': true, 'user':user});
 			});
 		}
@@ -245,6 +262,29 @@ db.once('open', function() {
 
 	});
 
+	app.get("/box/:id", function (req,res) {
+		if (req.session.email){
+			
+			User.findOne({email:req.session.email}, function (err, user){
+				let box;
+				let found=false;
+				user.boxes.forEach(function(element) {
+					if(element._id == req.params.id){
+						box=element;
+						found=true;
+					}
+				});
+				if(found){
+					res.render('box',{'connected':true,'box':box});
+				}
+			});
+
+		} else {
+			res.redirect('/');
+		}
+	});
+
+	
 
 	console.log('Connection à la bdd effectuée');
 
