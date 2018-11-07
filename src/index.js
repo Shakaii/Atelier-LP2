@@ -20,7 +20,7 @@ let path = require('path');
 app.use(express.static(path.join(__dirname+'/public')));
 
 
-app.use(session({ secret: "secret"}));
+app.use(session({ secret: "secret", cookie: { maxAge: 7200000 }}));
 
   
 /* GESTION DES GET */ 
@@ -29,12 +29,12 @@ app.get('/', function (req, res) {
 	if (req.session.email){
 		connected = true;
 	}
-	res.render('index', {'connected': connected});
+	res.redirect('/catalog');
 }); 
 
 app.get('/signup', function (req, res) {
 	if (req.session.email){
-		res.redirect('/');
+		res.redirect('/catalog');
 	}else{
 		res.render('signup', {});
 	}
@@ -43,7 +43,7 @@ app.get('/signup', function (req, res) {
 
 app.get("/login", function (req, res) {
 	if (req.session.email){
-		res.redirect('/');
+		res.redirect('/catalog');
 	}
 	else{
 		res.render('login', {});
@@ -109,7 +109,6 @@ db.once('open', function() {
  
 	Category.find(function(err,test){
 		if (err) return handleError(err) 
-		console.log(test[0].prestations)
 	}); 
 
 	//on signup
@@ -146,10 +145,13 @@ db.once('open', function() {
 	});
 
 	app.get("/catalog", function (req, res)  { 
-
+		let connected = false;
+		if (req.session.email){
+			connected = true;
+		}
 		Category.find(function (err, categories) {
 			if (err) return console.error(err);
-			res.render('catalog', {'categories' : categories}); 	
+			res.render('catalog', {'categories' : categories,'connected': connected}); 	
 		});
 	
 	});
@@ -163,7 +165,6 @@ db.once('open', function() {
 			if (err) return console.error(err);
 			Category.find(function (err, categories) {
 				if (err) return console.error(err);
-				console.log(category);
 				res.render('prestations', {'categories' : categories, 'category' : category, 'prestations' : category.prestations});
 			});
 		}); 
@@ -193,7 +194,7 @@ db.once('open', function() {
 		}); 
 	});
 
-
+ 
 	//profile
 	app.get("/profile",function(req,res){
 		//si connectedocker exec -i docker-node_mongo_1 mongo test --eval "db.dropDatabase()"
@@ -226,7 +227,6 @@ db.once('open', function() {
 	//modifying password in profile
 	app.post("/profile/modify", function (req, res) {
 		
-		console.log(req.body.password);
 		//get logged in user
 		User.findOne({email: req.session.email }, function(err, user){
 			if (err) return handleError(err)
