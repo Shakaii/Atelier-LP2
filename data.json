@@ -1,8 +1,9 @@
 [
     {
-      "name": "Attention",
+      "title": "Attention",
       "prestations": [
         {
+	  "_id": "1234e8ac996ef7f4636bfeac",
           "title": "Champagne",
           "description": "Bouteille de champagne + flutes + jeux à gratter",
           "image": "champagne.jpg",
@@ -10,6 +11,7 @@
           "isVisible":"true"
         },
         {
+	  "_id": "5519e8ac452ef7f4636bfeac",
           "title": "Musique",
           "description": "Partitions de piano à 4 mains",
           "image": "musique.jpg",
@@ -17,6 +19,7 @@
           "isVisible":"true"
         },
         {
+	  "_id": "5519e8ac996ef7f4123bfeac",
           "title": "Bouquet",
           "description": "Bouquet de roses et Mots de Marion Renaud",
           "image": "rose.jpg",
@@ -24,6 +27,7 @@
           "isVisible":"true"
         },
         {
+	  "_id": "5519e8ac996ef7f2536bfeac",
           "title": "Livres",
           "description": "Livre bricolage avec petits-enfants + Roman",
           "image": "bricolage.jpg",
@@ -31,6 +35,7 @@
           "isVisible":"true"
         },
         {
+	  "_id": "1519e8ac996ef7f4636bfeac",
           "title": "Bijoux",
           "description": "Bijoux de manteau + Sous-verre pochette de disque + Lait après-soleil",
           "image": "bijoux.jpg",
@@ -38,6 +43,7 @@
           "isVisible":"true"
         },
         {
+	  "_id": "5919e8ac996ef7f4636bfeac",
           "title": "Cadeaux individuels",
           "description": "Cadeaux individuels sur le thème de la soirée",
           "image": "cadeaux.jpg",
@@ -47,9 +53,10 @@
       ]
     },
     {
-      "name": "Activité",
+      "title": "Activité",
       "prestations":[
         {
+	  "_id": "5519e8ac456ef7f4636bfeac",
           "title": "Exposition",
           "description": "Visite guidée de l’exposition ‘REGARDER’ à la galerie Poirel",
           "image": "poirelregarder.jpg",
@@ -57,6 +64,7 @@
           "isVisible":"true"
         },
         {
+	  "_id": "5519e8ac126ef7f4636bfeac",
           "title": "Projection",
           "description": "Projection courts-métrages au FIFNL",
           "image": "film.jpg",
@@ -64,6 +72,7 @@
           "isVisible":"true"
         },
         {
+ 	  "_id": "4429e8ac996ef7f4636bfeac",
           "title": "Visite guidée",
           "description": "Visite guidée personnalisée de Saint-Epvre jusqu’à Stanislas",
           "image": "place.jpg",
@@ -71,6 +80,7 @@
           "isVisible":"true"
         },
         {
+          "_id": "5519e8ac996ef7f4635cfeac",
           "title": "Opéra",
           "description": "Concert commenté à l’Opéra",
           "image": "opera.jpg",
@@ -78,6 +88,7 @@
           "isVisible":"true"
         },
         {
+	  "_id": "5519e8ab985ef7f4636bfeac",
           "title": "Jeu connaissance",
           "description": "Jeu pour faire connaissance",
           "image": "connaissance.jpg",
@@ -85,6 +96,7 @@
           "isVisible":"true"
         },
         {
+          "_id": "5519e8ac996ef7f4456bfeac",
           "title": "Animation",
           "description": "Activité animée par un intervenant extérieur",
           "image": "animateur.jpg",
@@ -92,6 +104,7 @@
           "isVisible":"true"
         },
         {
+          "_id": "5519e8ac996ef7f3536bfeac",
           "title": "Jeu contacts",
           "description": "Jeu pour échange de contacts",
           "image": "contact.png",
@@ -99,6 +112,7 @@
           "isVisible":"true"
         },
         {
+	  "_id": "5519e8ac886ef7f4636bfeac",
           "title": "Star Wars",
           "description": "Star Wars - Le Réveil de la Force. Séance cinéma 3D",
           "image": "starwars.jpg",
@@ -106,6 +120,7 @@
           "isVisible":"true"
         },
         {
+          "_id": "5519e8ac986ef7f4636bfeac",
           "title": "Concert",
           "description": "Un concert à Nancy",
           "image": "concert.jpg",
@@ -113,6 +128,7 @@
           "isVisible":"true"
         },
         {
+          "_id": "5519e8ac996ee7f4636bfeac",
           "title": "Boite de nuit",
           "description": "Discothèque, Boîte tendance avec des soirées à thème & DJ invités",
           "image": "boitedenuit.jpg",
@@ -120,6 +136,7 @@
           "isVisible":"true"
         },
         {
+	  "_id": "5519e84c996ef7f4636bfeac",
           "title": "Planètes Laser",
           "description": "Laser game : Gilet électronique et pistolet laser comme matériel, vous voilà équipé.",
           "image": "laser.jpg",
@@ -127,6 +144,7 @@
           "isVisible":"true"
         },
         {
+          "_id": "5529e8ac996ef7f4636bfeac",
           "title": "Fort Aventure",
           "description": "Découvrez Fort Aventure à Bainville-sur-Madon, un site Accropierre unique en Lorraine ! Des Parcours Acrobatiques pour petits et grands, Jeu Mission Aventure, Crypte de Crapahute, Tyrolienne, Saut à l''élastique inversé, Toboggan géant... et bien plus encore.",
           "image": "fort.jpg",
@@ -136,9 +154,10 @@
       ]
     },
     {
-      "name": "Restauration",
+      "title": "Restauration",
       "prestations":[
         {
+          "_id": "5519e8ae996ef7f4636bfeac",
           "title": "Goûter",
           "description": "Goûter au FIFNL",
           "image": "gouter.jpg",
@@ -146,6 +165,7 @@
           "isVisible":"true"
         },
         {
+          "_id": "5519e8ac996ef7f4636bfeac",
           "title": "Diner Stanislas",
           "description": "Diner à La Table du Bon Roi Stanislas (Apéritif /Entrée / Plat / Vin / Dessert / Café / Digestif)",
           "image": "bonroi.jpg",
@@ -153,6 +173,7 @@
           "isVisible":"true"
         },
         {
+	  "_id": "5519e8ac996ef7f4636bfafa",
           "title": "Origami",
           "description": "Baguettes magiques en Origami en buvant un thé",
           "image": "origami.jpg",
@@ -160,6 +181,7 @@
           "isVisible":"true"
         },
         {
+	  "_id": "5519e8ac996ef7f4636bfaef",
           "title": "Diner  Grand Rue ",
           "description": "Diner au Grand’Ru(e) (Apéritif / Entrée / Plat / Vin / Dessert / Café)",
           "image": "grandrue.jpg",
@@ -167,6 +189,7 @@
           "isVisible":"true"
         },
         {
+	  "_id": "5519e8ac996ef7f4636bfaee",
           "title": "Thé Hotel de la reine",
           "description": "Thé de debriefing au bar de l’Hotel de la reine",
           "image": "hotelreine.gif",
@@ -174,6 +197,7 @@
           "isVisible":"true"
         },
         {
+          "_id": "5519e8ac996ef7f4636bfaed",
           "title": "Diner",
           "description": "Diner (Apéritif / Plat / Vin / Dessert / Café)",
           "image": "diner.jpg",
@@ -181,6 +205,7 @@
           "isVisible":"true"
         },
         {
+          "_id": "5519e8ac996ef7f4636bfaec",
           "title": "Cocktail",
           "description": "Cocktail de fin de soirée",
           "image": "cocktail.jpg",
@@ -190,9 +215,10 @@
       ]
     },
     {
-      "name": "Hébergement",
+      "title": "Hébergement",
       "prestations":[
         {
+	  "_id": "5519e8ac996ef7f4636bfaeb", 
           "title": "Appart Hotel",
           "description": "Appart’hôtel Coeur de Ville, en plein centre-ville",
           "image": "apparthotel.jpg",
@@ -200,6 +226,7 @@
           "isVisible":"true"
         },
         {
+          "_id": "5519e8ac996ef7f4636bfaea", 
           "title": "Hôtel d'Haussonville",
           "description": "Hôtel d'Haussonville, au coeur de la Vieille ville à deux pas de la place Stanislas",
           "image": "hotel_haussonville_logo.jpg",
