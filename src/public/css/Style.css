@@ -170,4 +170,21 @@ img, .card-img {
   }
 }
 
+.navCat {
+  margin-left: 20px;
+  margin-top: 20px;
+}
+.navCat a {
+  text-decoration: none;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 0.25rem;
+  padding: 5px;
+  color: black;
+}
+.navCat a:hover {
+  color: white;
+  background-color: black;
+}
+
 /*# sourceMappingURL=Style.css.map */

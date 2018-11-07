@@ -1,16 +1,17 @@
 {{> header}}
-<div>
+<div class="navCat">
     {{#categories}}
         <a href="/catalog/{{title}}">{{title}}</a>
     {{/categories}}
 </div>
-
+<div class="container">
 {{#prestations}}
-<div>
-    <div><a href="/catalog/{{category.title}}/{{title}}">{{title}}</a></div>
-    <div>{{image}}</div>
+<div class="card">
+    <div class="card-title"><a href="/catalog/{{category.title}}/{{title}}">{{title}}</a></div>
+    <div class="card-img"><img src="/img/{{image}}"></div>
     <span>Price: {{price}}</span>
     
 </div>
 {{/prestations}}
+</div>
 {{> footer}}
