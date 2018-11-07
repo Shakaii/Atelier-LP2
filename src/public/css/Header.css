@@ -69,7 +69,7 @@ time, mark, audio, video {
   font-size: 1, 5em;
 }
 
-@media only screen and (max-width: 50em) {
+@media only screen and (max-width: 500px) {
   .lg {
     display: none;
   }
