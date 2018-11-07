@@ -217,7 +217,7 @@ db.once('open', function() {
 			});
 		});
 	});
-
+ 
 	app.get("/catalog/:category", function (req, res) {
 
 		Category
