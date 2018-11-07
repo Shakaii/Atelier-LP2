@@ -172,9 +172,6 @@ db.once('open', function() {
 			if (err) return console.error(err);
 			res.render('catalog', {'categories' : categories,'connected': connected}); 	
 		});
-<<<<<<< HEAD
-	 
-=======
 
 	});
 
@@ -219,25 +216,16 @@ db.once('open', function() {
 
 			});
 		});
->>>>>>> master
 	});
 
 	app.get("/catalog/:category", function (req, res) {
 
 		Category
-<<<<<<< HEAD
-		.findOne({ title: req.params.category})
-		.populate('prestations')
-		.exec(function (err, category){
-			if (err) return console.error(err);
-			Category.find(function (err, categories) { 
-=======
 			.findOne({
 				title: req.params.category
 			})
 			.populate('prestations')
 			.exec(function (err, category) {
->>>>>>> master
 				if (err) return console.error(err);
 				Category.find(function (err, categories) {
 					if (err) return console.error(err);
