@@ -244,6 +244,7 @@ db.once('open', function() {
 		}
 	});
 
+	
 
 	console.log('Connection à la bdd effectuée');
 
