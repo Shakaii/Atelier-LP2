@@ -21,10 +21,13 @@ time, mark, audio, video {
 @keyframes anim {
   from {
     color: white;
-    font-size: 2em; }
+
+  }
   to {
     color: yellow;
-    font-size: 2.3em; } }
+  }
+}
+
 .header {
   display: flex;
   flex-direction: row;
