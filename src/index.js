@@ -123,7 +123,7 @@ db.once('open', function() {
 		}
 	}); 
  
-	//on login
+	//on login 
 	app.post("/login", function (req, res) {
 		
 		User.findOne({ email: req.body.mail }, function(err, user){
