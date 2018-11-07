@@ -72,14 +72,7 @@ app.get("/catalogue/:categorie/:prestation", function (req, res) {
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
-		
-	let UserSchema = new mongoose.Schema({
-		password: String,
-		email: String,
-		boxes: [BoxSchema],
-		isAdmin: Boolean
-	});
-		
+			
 	let PrestationSchema = new mongoose.Schema({
 		title: String,
 		description: String,
@@ -111,7 +104,14 @@ db.once('open', function() {
 		isCurrent: Boolean,
 		prestations: [PrestationSchema],
 		contributions: [ContributionSchema]
-	})
+	})	
+
+	let UserSchema = new mongoose.Schema({
+		password: String,
+		email: String,
+		boxes: [BoxSchema],
+		isAdmin: Boolean
+	});
 
 	let Box = mongoose.model('Box', BoxSchema);
 	let User = mongoose.model('User', UserSchema);
@@ -174,6 +174,9 @@ db.once('open', function() {
 			//renvoie l'user
 			User.findOne({ email: req.session.email},function(err,user){
 				user.boxes.push(box1,box2);
+				user.save(function(err){
+					if (err)  return HandleError(err)
+				});
 				res.render('profile',{'connected': true, 'user':user});
 			});
 		}
@@ -222,25 +225,23 @@ db.once('open', function() {
 	app.get("/box/:id", function (req,res) {
 		if (req.session.email){
 			
-			User
-			.findOne({email:req.session.email}
-			.populate('boxes')
-			.exec(function (err, user){
-				if (err) return HandleError(err);
-				if (user){
-						let box = user.boxes.filter(function(box) {
-							
-						});
+			User.findOne({email:req.session.email}, function (err, user){
+				let box;
+				let found=false;
+				console.log(user);
+				console.log(user.boxes);
+				user.boxes.forEach(function(element) {
+					console.log(element._id + "  " + req.params.id);
+					if(element._id == req.params.id){
+						box=element;
+						found=true;
 					}
-				})
-			);
-			Box.findOne({_id:req.params.id}, function(err, box){
-				if (err) return handleError(err)
+				});
+				if(found){
+					res.render('box',{'connected':true,'box':box});
+				}
+			});
 
-				console.log(req.params.id);
-				console.log(box);
-				res.render('box', {'connected':true,'box':box});
-			});	
 		} else {
 			res.redirect('/');
 		}
