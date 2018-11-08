@@ -9,6 +9,9 @@
             <span>Prix: {{price}}</span>
         </div>
         {{/box.prestations}}
+        {{^isCurrent}}
+        <a href="/changeCurr/{{box._id}}">Sélectionner le coffret comme coffret courant</a>
+        {{/isCurrent}}
         <a href="/delete/{{box._id}}">Supprimer le coffret</a>
     </div>
 {{> footer}}
