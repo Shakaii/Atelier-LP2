@@ -2,18 +2,28 @@
     <h1 class="titreProfil">Profil de l'utilisateur {{user.email}}</h1>
     <div class="container">
         {{#user.boxes}}
-        <div class="box">
-            Box 
-            </br>
-            <li> Destinataire : {{recipientName}} </li>
-            <li> Email du destinataire : {{recipientEmail}} </li>
-            <li> Message : {{message}} </li>
-            {{^isPaid}}
-            <a href=/box/{{_id}}>Modifier le contenu du coffret</a>
-            {{/isPaid}}
-            {{#isPaid}}
-            <a href=/box/{{_id}}/suivi>Suivre le coffret</a>
-            {{/isPaid}}
+        {{^isCurrent}}
+            <div class="box nonCurrent">
+        {{/isCurrent}}
+        {{#isCurrent}}
+            <div class="box current">
+        {{/isCurrent}}
+            <p class="titreCoff">
+                {{#isCurrent}}
+                    Coffret en cours
+                {{/isCurrent}}
+                {{^isCurrent}}
+                    Autre coffret
+                {{/isCurrent}}
+            </p>
+                <li> Email du destinataire : {{recipientEmail}} </li>
+                <li> Message : {{message}} </li>
+                {{^isPaid}}
+                <a href=/box/{{_id}}>Accéder au contenu du coffret</a>
+                {{/isPaid}}
+                {{#isPaid}}
+                <a href=/box/{{_id}}/suivi>Suivre le coffret</a>
+                {{/isPaid}}
             </br>
         </div>
         {{/user.boxes}}
