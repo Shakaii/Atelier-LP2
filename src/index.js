@@ -88,7 +88,7 @@ db.once('open', function() {
 		recipientEmail: String,
 		message: String,
 		urlGift: String,
-		urlFund: Number,
+		urlFund: String,
 		date: Date,
 		isPaid: Boolean,
 		isOpened: Boolean,
