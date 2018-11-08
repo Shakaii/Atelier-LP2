@@ -12,7 +12,7 @@ app.set('view engine', 'mustache');
 app.set('views', __dirname + '/views');
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({
-	extended: true
+	extended: true 
 }));
 app.use(bodyParser.json());
 
