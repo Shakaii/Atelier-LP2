@@ -319,7 +319,7 @@ db.once('open', function() {
 				if (element._id == req.params.idBox) {
 					element.prestations.forEach(function (prest){
 						if(prest._id == req.params.id){
-							element.prestations.splice(indexOf(prest),1);
+							element.prestations.splice(element.prestations.indexOf(prest),1);
 							user.save();
 						}
 					});
