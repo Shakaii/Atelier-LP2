@@ -334,16 +334,14 @@ db.once('open', function() {
 		User.findOne({
 			email: req.session.email
 		}, function (err, user) {
-			let pos;
 			user.boxes.forEach(function (element) {
 				if (element._id == req.params.idBox) {
 					element.prestations.forEach(function (prest){
 						if(prest._id == req.params.idPrest){
-							pos=element.prestations.indexOf(prest);
+							element.prestations.splice(indexOf(prest),1);
+							user.save();
 						}
 					});
-					element.prestations.splice(pos,1);
-					user.save();
 				}
 			});
 		});
