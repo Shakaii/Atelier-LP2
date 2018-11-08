@@ -273,25 +273,6 @@ db.once('open', function() {
 		}
 	});
 
-
-
-	//test pour affichage coffrets
-	let box1 = new Box({
-		recipientName: "jj54",
-		recipientEmail: "jj54@yahoo.fr",
-		message: "Tiens jj54 le bro",
-		isPaid: true,
-		isOpened: true
-	});
-
-	let box2 = new Box({
-		recipientName: "PasGoélise",
-		recipientEmail: "papinox@yahoo.fr",
-		message: "Pas de chance",
-		isPaid: false,
-		isOpened : false
-	});
-
 	app.get("/catalog", function (req, res)  { 
 		let connected = false;
 		if (req.session.email){
@@ -576,7 +557,7 @@ db.once('open', function() {
 					found=true;
 				}
 			});
-			if( box.date<= auj){
+			if( box.date> auj){
 				block = true;
 			}
 			if(found){

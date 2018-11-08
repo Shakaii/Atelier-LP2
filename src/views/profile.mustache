@@ -1,5 +1,5 @@
 {{> header}}
-    <h1 class="titreProfil">Profil de l'utilisateur {{user.email}}</h1>
+    <h1 class="titreW">Profil de l'utilisateur. Vous pouvez consulter le status de vos coffrets et modifier vos informations personnelles.</h1>
     <div class="container">
         {{#user.boxes}}
         {{^isCurrent}}
@@ -18,7 +18,7 @@
             </p>
                 Nombre de prestation(s) : {{prestations.length}}
                 {{#box.isPaid}}
-                    Votre coffret est validé et transmis au destinataire !
+                    Le coffret est validé et a été transmis au destinataire !
                     {{#box.isOpened}}
                         Il a été ouvert !
                     {{/box.isOpened}}
@@ -27,7 +27,7 @@
                     {{/box.isOpened}}
                 {{/box.isPaid}}
                 {{^box.isPaid}}
-                    </br>Votre coffret n'est pas validé !
+                    </br>Le coffret n'est pas validé !
                     <a href=/box/{{_id}}>Modifier le contenu du coffret</a>
                 {{/box.isPaid}}
             </br>

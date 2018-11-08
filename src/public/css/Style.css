@@ -1,4 +1,4 @@
-.titreProfil {
+.titreW {
   padding-top: 20px;
   padding-left: 20px;
 }
@@ -18,7 +18,7 @@
 }
 
 .nonCurrent {
-  background-color: grey;
+  background-image: linear-gradient(gray, #b3b3b3, gray);
 }
 
 .current {
@@ -32,6 +32,11 @@
 
 .modifsBox {
   padding-left: 20px;
+}
+
+.description {
+  padding-left: 20px;
+  padding-bottom: 20px;
 }
 
 html,
