@@ -633,7 +633,7 @@ db.once('open', function() {
 			if(found){
 				user.boxes.splice(pos,1);
 				//si courant, on met par de faut le premier coffret en courant
-				if(curr){
+				if(curr && user.boxes.length>0){
 					user.boxes[0].isCurrent=true;
 				}
 				user.save();
