@@ -284,6 +284,9 @@ img {
        
     }
     .pass{
+        margin-bottom: 1em;
+        font-weight:100;
+        text-transform: uppercase;
         border: none;
         padding:10px;
         background-color: rgb(13, 35, 71);
@@ -448,3 +451,22 @@ img {
 }
 
 
+.welcome{
+
+    text-align:center;
+    padding: 2em;
+
+    .headline{
+        font-size: 3em;
+        font-weight:100;
+        color: rgb(13, 35, 71);
+    }
+    p{
+        font-weight:100;
+        color: rgb(13, 35, 71);
+        a{
+            text-decoration: none;
+            color: #097887
+        }
+    }
+}

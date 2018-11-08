@@ -1,11 +1,28 @@
 {{> header}}
-    <h1>Modifier votre profil</h1>
-    <div class="informations">
-        Votre adresse email : {{user.email}}
+<div class="pannelLog">
         <form method="post">
-            <label >Nouveau mot de passe <input name="password" type="password"></label>
-            <label >Répeter votre mot de passe <input name="passwordCheck" type="password"></label>
-            <input type = "submit" value="Confirmer">
+            <h1>Modifier votre mot de passe</h1>
+
+            <div>
+                <label ><p>Mot de passe</p> <input {{#passwordWarning}} class="inputWarning" {{/passwordWarning}} name="password" type="password"></label>
+
+                {{#passwordIsSet}}
+                        <span class="warning">Veuillez entrer un mot de passe</span>
+                {{/passwordIsSet}}
+            </div>
+            <div>
+                    <label ><p>Répeter votre mot de passe</p> <input {{#passwordMatch}} class="inputWarning" {{/passwordMatch}} name="passwordCheck" type="password"></label>
+
+                    {{#passwordMatch}}
+                        <span class="warning">Les mots de passe ne correspondent pas</span>
+                    {{/passwordMatch}}
+            </div>
+            
+            <input class ="pass" type = "submit" value="Confirmer">
+            
+            
+            
         </form>
-    </div>
+</div>
 {{> footer}}
+

@@ -273,6 +273,9 @@ img, .card-img {
       border-width: 2px;
       outline: 0; }
   .pannelLog .pass {
+    margin-bottom: 1em;
+    font-weight: 100;
+    text-transform: uppercase;
     border: none;
     padding: 10px;
     background-color: #0d2347;
@@ -397,5 +400,18 @@ img, .card-img {
 
   .navCat {
     text-align: center; } }
+.welcome {
+  text-align: center;
+  padding: 2em; }
+  .welcome .headline {
+    font-size: 3em;
+    font-weight: 100;
+    color: #0d2347; }
+  .welcome p {
+    font-weight: 100;
+    color: #0d2347; }
+    .welcome p a {
+      text-decoration: none;
+      color: #097887; }
 
 /*# sourceMappingURL=Style.css.map */
