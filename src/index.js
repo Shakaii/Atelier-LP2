@@ -327,23 +327,25 @@ db.once('open', function() {
 				}
 			});
 		});
-		res.redirect('/');
+		res.redirect('back');
 	});
 
-	app.get("/rmPrest/:idCat/:id", function (req, res) {
+	app.get("/rmPrest/:idBox/:id", function (req, res) {
 		User.findOne({
 			email: req.session.email
 		}, function (err, user) {
 			user.boxes.forEach(function (element) {
-				if (element.isCurrent) {
-					Category.findById(req.params.idCat, function(err, res) {
-						element.prestations.splice(element.index, 1);
-						user.save();
+				if (element.id == req.params.idBox) {
+					element.prestations.forEach(function(prest) {
+						if(prest.id == req.params.id) {
+							element.prestations.splice(element.prestations.indexOf(prest), 1);
+							user.save();
+						}
 					});
 				}
 			});
 		});
-		res.redirect('/');
+		res.redirect('back');
 	});
 
 	app.get("/newBox", function (req, res) {
