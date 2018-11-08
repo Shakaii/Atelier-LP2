@@ -201,6 +201,22 @@ db.once('open', function() {
 		res.redirect('/');
 	});
 
+	app.get("/rmPrest/:idCat/:id", function (req, res) {
+		User.findOne({
+			email: req.session.email
+		}, function (err, user) {
+			user.boxes.forEach(function (element) {
+				if (element.isCurrent) {
+					Category.findById(req.params.idCat, function(err, res) {
+						element.prestations.splice(element.index, 1);
+						user.save();
+					});
+				}
+			});
+		});
+		res.redirect('/');
+	});
+
 	app.get("/newBox", function (req, res) {
 		User.findOne({
 			email: req.session.email

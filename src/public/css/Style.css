@@ -222,6 +222,15 @@ img, .card-img {
   color: green;
   transform: scale(1.3);
 }
+.card-footer .rmPrest {
+  color: white;
+  text-decoration: none;
+  transition: 0.5s;
+}
+.card-footer .rmPrest:hover {
+  color: red;
+  transform: scale(1.3);
+}
 .card-footer .price {
   color: white;
   font-weight: bold;
