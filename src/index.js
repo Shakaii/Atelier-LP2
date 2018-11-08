@@ -307,8 +307,10 @@ db.once('open', function() {
 		}, function (err, user) {
 			user.boxes.forEach(function (element) {
 				if (element._id == req.params.idBox) {
+					let found=false;
 					element.prestations.forEach(function (prest){
-						if(prest._id == req.params.id){
+						if(prest._id == req.params.id && !found){
+							found=true;
 							element.prestations.splice(element.prestations.indexOf(prest),1);
 							user.save();
 						}
