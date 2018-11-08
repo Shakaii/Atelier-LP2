@@ -285,16 +285,6 @@ db.once('open', function() {
 
 	});
 
-	/*
-	app.get("/test", function (req, res) {
-
-		Box.findOne({isCurrent:'true'}, function (err, box) {
-			if (err) return console.error(err);
-			console.log(box);
-		});
-
-	});*/
-
 	app.get("/addPrest/:idCat/:id", function (req, res) {
 		User.findOne({
 			email: req.session.email
@@ -415,6 +405,11 @@ db.once('open', function() {
 
 	app.get("/catalog/:category/:prestation", function (req, res) {
 
+		let connected = false;
+		if (req.session.email) {
+			connected = true;
+		}
+		
 		Category.findOne({
 			title: req.params.category
 		}, function (err, category) {
@@ -436,7 +431,7 @@ db.once('open', function() {
 				});
 
 			} else {
-				res.redirect('/catalog');
+				res.redirect('/catalog',{"connected":connected});
 			}
 		});
 	});
@@ -556,7 +551,6 @@ db.once('open', function() {
 			let auj = new Date();
 			let block=false;
 			let found=false;
-			console.log(user);
 			user.boxes.forEach(function(element) {
 				
 				if(element.urlGift == req.params.id){
@@ -605,7 +599,7 @@ db.once('open', function() {
 
 		}
 	});
-
+ 
 
 	app.get("/delete/:id", function (req,res) {
 		User.findOne({email:req.session.email}, function (err, user){
@@ -637,4 +631,4 @@ db.once('open', function() {
 
 });
 
-app.listen(port);
+app.listen(port); 
