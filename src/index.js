@@ -441,7 +441,8 @@ db.once('open', function() {
 					res.render('prestation', {
 						'categories': categories,
 						'category': category,
-						'prestation': prestation
+						'prestation': prestation,
+						'connected': connected
 					});
 				});
 
