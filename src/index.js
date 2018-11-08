@@ -273,25 +273,6 @@ db.once('open', function() {
 		}
 	});
 
-
-
-	//test pour affichage coffrets
-	let box1 = new Box({
-		recipientName: "jj54",
-		recipientEmail: "jj54@yahoo.fr",
-		message: "Tiens jj54 le bro",
-		isPaid: true,
-		isOpened: true
-	});
-
-	let box2 = new Box({
-		recipientName: "PasGoélise",
-		recipientEmail: "papinox@yahoo.fr",
-		message: "Pas de chance",
-		isPaid: false,
-		isOpened : false
-	});
-
 	app.get("/catalog", function (req, res)  { 
 		let connected = false;
 		if (req.session.email){
@@ -327,23 +308,25 @@ db.once('open', function() {
 				}
 			});
 		});
-		res.redirect('/');
+		res.redirect('back');
 	});
 
-	app.get("/rmPrest/:idCat/:id", function (req, res) {
+	app.get("/rmPrest/:idBox/:idPrest", function (req, res) {
 		User.findOne({
 			email: req.session.email
 		}, function (err, user) {
 			user.boxes.forEach(function (element) {
-				if (element.isCurrent) {
-					Category.findById(req.params.idCat, function(err, res) {
-						element.prestations.splice(element.index, 1);
-						user.save();
+				if (element._id == req.params.idBox) {
+					element.prestations.forEach(function (prest){
+						if(prest._id == req.params.idPrest){
+							element.prestations.splice(indexOf(prest),1);
+							user.save();
+						}
 					});
 				}
 			});
 		});
-		res.redirect('/');
+		res.redirect('back');
 	});
 
 	app.get("/newBox", function (req, res) {
@@ -574,7 +557,7 @@ db.once('open', function() {
 					found=true;
 				}
 			});
-			if( box.date<= auj){
+			if( box.date> auj){
 				block = true;
 			}
 			if(found){
@@ -633,7 +616,7 @@ db.once('open', function() {
 			if(found){
 				user.boxes.splice(pos,1);
 				//si courant, on met par de faut le premier coffret en courant
-				if(curr){
+				if(curr && user.boxes.length>0){
 					user.boxes[0].isCurrent=true;
 				}
 				user.save();
