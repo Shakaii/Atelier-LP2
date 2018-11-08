@@ -185,6 +185,22 @@ db.once('open', function() {
 
 	});*/
 
+	app.get("/addPrest/:idCat/:id", function (req, res) {
+		User.findOne({
+			email: req.session.email
+		}, function (err, user) {
+			user.boxes.forEach(function (element) {
+				if (element.isCurrent) {
+					Category.findById(req.params.idCat, function(err, res) {
+						element.prestations.push(res.prestations.id(req.params.id));
+						user.save();
+					});
+				}
+			});
+		});
+		res.redirect('/');
+	});
+
 	app.get("/newBox", function (req, res) {
 		User.findOne({
 			email: req.session.email
@@ -213,13 +229,16 @@ db.once('open', function() {
 			User.updateOne({
 				email: req.session.email
 			},{boxes: user.boxes}, function(err, doc) {
-
+				res.redirect('/');
 			});
 		});
 	});
- 
-	app.get("/catalog/:category", function (req, res) {
 
+	app.get("/catalog/:category", function (req, res) {
+		let connected = false;
+		if (req.session.email){
+			connected = true;
+		}
 		Category
 			.findOne({
 				title: req.params.category
@@ -229,11 +248,12 @@ db.once('open', function() {
 				if (err) return console.error(err);
 				Category.find(function (err, categories) {
 					if (err) return console.error(err);
-					console.log(category);
+
 					res.render('prestations', {
 						'categories': categories,
 						'category': category,
-						'prestations': category.prestations
+						'prestations': category.prestations,
+						'connected': connected
 					});
 				});
 			});
@@ -374,7 +394,23 @@ db.once('open', function() {
 		}
 	});
 
-	
+	app.get("/delete/:id", function (req,res) {
+		User.findOne({email:req.session.email}, function (err, user){
+			let pos;
+			let found=false;
+			user.boxes.forEach(function(element) {
+				if(element._id == req.params.id){
+					pos=user.boxes.indexOf(element);
+					found=true;
+				}
+			});
+			if(found){
+				user.boxes.splice(pos,1);
+				user.save();
+			}
+		});
+		res.redirect('/');
+	});
 
 	console.log('Connection à la bdd effectuée');
 
