@@ -416,14 +416,21 @@ db.once('open', function() {
 		User.findOne({email:req.session.email}, function (err, user){
 			let pos;
 			let found=false;
+			//on verifie si on supprime le coffret courant
+			let curr=false;
 			user.boxes.forEach(function(element) {
 				if(element._id == req.params.id){
 					pos=user.boxes.indexOf(element);
 					found=true;
+					curr=element.isCurrent;
 				}
 			});
 			if(found){
 				user.boxes.splice(pos,1);
+				//si courant, on met par de faut le premier coffret en courant
+				if(curr){
+					user.boxes[0].isCurrent=true;
+				}
 				user.save();
 			}
 		});
