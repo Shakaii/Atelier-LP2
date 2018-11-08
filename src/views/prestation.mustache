@@ -5,12 +5,20 @@
     {{/categories}}
 </div>
 
+<div class="prestation-container">
+    <div class="prestation">
+        <h1>{{prestation.title}}</h1>
+        <img src="/img/{{prestation.image}}">
+        <div class="content">
+            <div class="description">{{prestation.description}}</div>
+            
+            <div class="prestation-footer">
+                    <div class="price">{{prestation.price}} €</div>
 
-<div>
-    <h1>{{prestation.title}}</h1>
-    <div>{{prestationimage}}</div>
-    <div>{{prestation.description}}</div>
-    <span>Price: {{price}}</span>
+                        <a class="addToCart" href="/addPrest/{{category.id}}/{{id}}"><i class="fas fa-cart-plus"></i></a>
+                   
+        </div>
+    </div>
 </div>
 
 {{> footer}}
