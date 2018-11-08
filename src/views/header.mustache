@@ -11,14 +11,13 @@
     <body>
         <div class="header">
             <a class="titre" href="/">MyGiftBox</a>
-            {{#connected}}
-                <a href="/newBox">Nouveau coffret</a>
-            {{/connected}}
             <div class="connect">
                 <ul>
         {{#connected}}
             <li><a href="/logout"><i class="fas fa-sign-out-alt"></i><span class="lg">Deconnexion</span></a></li>
             <li><a href="/profile"><i class="fas fa-user"></i><span class="lg">Profil</span></a></li>
+            <li><a href="/newBox"><i class="fas fa-plus-square"></i><span class="lg">Nouveau coffret</span></a></li>
+            <li><a href="/current"><i class="fas fa-gift"></i><span class="lg">Panier</span></a></li>
 		    
 		{{/connected}}
 		{{^connected}}
