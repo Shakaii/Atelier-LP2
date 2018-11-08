@@ -198,7 +198,15 @@ img {
         color:green;
         transform: scale(1.3)
     }
-
+    .rmPrest{
+        color:white;
+        text-decoration:none;
+        transition:0.5s;
+    }
+    .rmPrest:hover{
+        color:red;
+        transform: scale(1.3)
+    }
 
     .price{
         color:white;
@@ -266,7 +274,7 @@ img {
     }
     label{
 
-        input{
+        &>input{
             
             border-radius: 10px;
             padding : 0.5em;
@@ -277,10 +285,12 @@ img {
             border-width:1px;
             transition:0.1s;
             margin-bottom:1em;
+            outline: 0;
         }
-        input:focus{
+        &>input:focus{
             color:rgb(13, 35, 71);
             border-width:2px;
+            outline: 0;
         }
        
     }
