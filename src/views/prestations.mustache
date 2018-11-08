@@ -13,7 +13,9 @@
     </a>
     <div class="card-footer">
             <div class="price">{{price}} €</div>
+            {{#connected}}
             <a class="addToCart" href="/add/{{category.id}}/{{id}}"><i class="fas fa-cart-plus"></i></a>
+            {{/connected}}
     </div> 
 </div>  
 {{/prestations}}
