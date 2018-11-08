@@ -6,20 +6,21 @@ let port = 80;
 let mustacheExpress = require('mustache-express');
 let uri = 'mongodb://mongo:27017/test';
 let session = require('express-session')
+let bcrypt = require('bcryptjs');
+let validator = require('validator');
+let uuid4 = require('uuid/v4');
 mongoose.connect(uri);
 app.engine('mustache', mustacheExpress());
 app.set('view engine', 'mustache');
 app.set('views', __dirname + '/views');
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({
-	extended: true
+	extended: true  
 }));
 app.use(bodyParser.json());
 
 let path = require('path');
 app.use(express.static(path.join(__dirname + '/public')));
-
-
 
 app.use(session({ secret: "secret", cookie: { maxAge: 7200000 }}));
 
@@ -112,36 +113,164 @@ db.once('open', function() {
 	//on signup
 	app.post('/signup', function (req, res) {
 
-		//if the password matches the check 
-		if (req.body.passwordCheck == req.body.password) {
+		let validated = true;
+		let passwordMatch = true;
+		let emailIsNotInDb = true;
+		let emailIsValid = true;
+		let emailIsSet = true;
+		let passwordIsSet = true;
+		let saveEmail = false;
 
-			let user = new User({
-				password: req.body.password,
+		if (req.body.mail) saveEmail = req.body.mail
+
+		if (req.body.passwordCheck !== req.body.password) {
+			validated = false;
+			passwordMatch = false;
+		}
+
+		//check if mail is set then if it is valid and not already in DB
+		if (req.body.mail.length > 5){
+
+			if (!validator.isEmail(req.body.mail)){
+				validated = false;
+				emailIsValid = false;
+			}
+
+			User.findOne({
 				email: req.body.mail
-			});
-
-			user.save(function (err) {
+			}, function (err, user){
 				if (err) return handleError(err)
-				req.session.email = user.email;
-				res.redirect('/');
+				if (user){
+					validated = false;
+					emailIsNotInDb = false;
+				}
+
 			});
 		}
+		else{
+			validate = false;
+			emailIsSet = false
+		}
+
+		if (req.body.password.length > 1){
+
+		}
+		else{
+			passwordIsSet = false;
+			validated = false;
+		}
+
+		//if lazy checking passed
+		if (validated){
+
+			let salt = "salty";
+			let passwordHashed;
+			bcrypt.genSalt(10, function(err, salt) {
+    			bcrypt.hash(req.body.password, salt, function(err, hash) {
+					
+					let user = new User({
+						password: hash, 
+						email: escape(req.body.mail)
+					});
+		
+					user.save(function (err) {
+						if (err) return handleError(err)
+						req.session.email = user.email;
+						res.redirect('/');
+					});
+				});	
+
+    		}); 
+		}
+		else{
+
+			let passwordWarning = passwordIsSet
+			let checkWarning = passwordMatch
+			let emailWarning = true;
+
+			if (!emailIsNotInDb || !emailIsValid || !emailIsSet) emailWarning = false;
+			
+			res.render('signup', {
+				"passwordMatch": !passwordMatch,
+				"emailIsNotInDb": !emailIsNotInDb,
+				"emailIsValid": !emailIsValid,
+				"emailIsSet": !emailIsSet,
+				"passwordIsSet": !passwordIsSet,
+				"emailWarning": !emailWarning,
+				"checkWarning": !checkWarning,
+				"passwordWarning": !passwordWarning,
+				"saveEmail" : saveEmail
+			});
+		}
+			
 	});
 
 	//on login 
 	app.post("/login", function (req, res) {
 
-		User.findOne({
-			email: req.body.mail
-		}, function (err, user) {
-			if (err) return handleError(err)
+		let validate = true;
+		let saveEmail = false;
+		let emailIsSet = true;
+		let passwordIsSet = true;
 
-			//if the passwords match
-			if (req.body.password == user.password) {
-				req.session.email = user.email;
-				res.redirect('/');
-			}
-		});
+		if (req.body.mail) saveEmail = req.body.mail
+
+		if (req.body.mail.length <= 5){
+			emailIsSet = false;
+			validate = false;
+		}
+		if (req.body.password.length <= 1){
+			passwordIsSet = false;
+			validate = false;
+		}
+
+		//if lazy checking passed
+		if (validate){
+
+			User.findOne({
+				email: req.body.mail
+			}, function (err, user) {
+				if (err) return handleError(err)
+					//if user is found
+				if (user){
+					//if the passwords match
+					if (bcrypt.compare(req.body.password, user.password)) {
+						req.session.email = user.email;
+						res.redirect('/');
+					}
+					else {
+						res.render('login', {
+							"connectionRefused": true,
+							"saveEmail" : saveEmail
+						});
+					}
+				}
+				else {
+					res.render('login', {
+						"connectionRefused": true,
+						"saveEmail" : saveEmail
+					});
+				}
+				//Only telling the user the connection is refused, not why to allow account guessing
+
+				
+				
+				
+			});
+		}
+		else {
+
+			let passwordWarning = passwordIsSet;
+			let emailWarning = emailIsSet;
+
+			res.render('login', {
+				"emailIsSet": !emailIsSet,
+				"passwordIsSet": !passwordIsSet,
+				"passwordWarning": !passwordWarning,
+				"emailWarning": !emailWarning,
+				"saveEmail" : saveEmail
+			});
+		}
 	});
 
 
@@ -333,7 +462,8 @@ db.once('open', function() {
 			}, function (err, user) {
 				res.render('profile', {
 					'connected': true,
-					'user': user
+					'user': user,
+					'host':req.hostname
 				});
 			});
 		}
@@ -428,6 +558,65 @@ db.once('open', function() {
 		}
 	});
 
+
+	app.get("/box/gift/:iduser/:id", function (req,res) {
+	
+		User.findById(req.params.iduser, function (err, user){
+			let box;
+			let auj = new Date();
+			let block=false;
+			let found=false;
+			console.log(user);
+			user.boxes.forEach(function(element) {
+				
+				if(element.urlGift == req.params.id){
+					box=element;
+					found=true;
+				}
+			});
+			if( box.date<= auj){
+				block = true;
+			}
+			if(found){
+				res.render('gift',{'box':box,'block':block,'date':box.date});
+			}
+			
+					
+			
+			});
+		});
+	
+	
+	app.get("/box/giftGenerate/:id", function(req,res){
+		if (req.session.email){
+
+			User.findOne({email:req.session.email}, function (err, user){
+				let box;
+				let found=false;
+				user.boxes.forEach(function(element) {
+					if(element._id == req.params.id){
+						box=element;
+						found=true;
+						if(!box.urlGift){
+							box.urlGift=uuid4();
+							//Date pour l'instant
+							box.date = new Date();
+						}
+					}
+				});
+				user.save();
+			
+
+				if(!found){
+					res.redirect('/');
+				} else
+				res.redirect('/profile');
+			});
+
+		}
+	});
+
+
 	app.get("/delete/:id", function (req,res) {
 		User.findOne({email:req.session.email}, function (err, user){
 			let pos;
@@ -452,6 +641,7 @@ db.once('open', function() {
 		});
 		res.redirect('/profile');
 	});
+
 
 	console.log('Connection à la bdd effectuée');
 

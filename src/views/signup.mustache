@@ -1,20 +1,41 @@
 {{> header}}
-      
+
         <div class="pannelLog">
             <form method="post">
                 <h1>Inscription</h1>
                 <div>
-                <label ><p>Adresse email</p> <input name="mail" type="text"></label>
+                    <label ><p>Adresse email</p> <input {{#saveEmail}} value="{{saveEmail}}" {{/saveEmail}} {{#emailWarning}} class="inputWarning" {{/emailWarning}} name="mail" type="text"></label>
+
+                    {{#emailIsSet}}
+                        <span class="warning">Veuillez entrer une adresse email</span>
+                    {{/emailIsSet}}
+                    
+                    {{#emailIsValid}}
+                        <span class="warning">L'adresse email n'est pas valide</span>
+                    {{/emailIsValid}}
+
+                    {{#emailIsNotInDb}}
+                        <span class="warning">L'adresse email est déjà utilisée</span>
+                    {{/emailIsNotInDb}}
                 </div>
 
                 <div>
-                <label ><p>Mot de passe</p> <input name="password" type="password"></label>
+                    <label ><p>Mot de passe</p> <input {{#passwordWarning}} class="inputWarning" {{/passwordWarning}} name="password" type="password"></label>
+
+                    {{#passwordIsSet}}
+                        <span class="warning">Veuillez entrer un mot de passe</span>
+                    {{/passwordIsSet}}
                 </div>
 
                 <div>
-                    <label ><p>Répeter votre mot de passe</p> <input name="passwordCheck" type="password"></label>
+                    <label ><p>Répeter votre mot de passe</p> <input {{#checkWarning}} class="inputWarning" {{/checkWarning}} name="passwordCheck" type="password"></label>
+
+                    {{#passwordMatch}}
+                        <span class="warning">Les mots de passe ne correspondent pas</span>
+                    {{/passwordMatch}}
                 </div>
                 <input class="pass" type = "submit" value="Inscription">
+ 
             </form>
             <a href="/login">Déjà inscrit ?</a>
         </div>

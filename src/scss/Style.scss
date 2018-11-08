@@ -262,7 +262,18 @@ img {
     label:hover{
         color:rgb(13, 35, 71);
     }  
+    .inputWarning{
+        border-color:red;
+    }
+    .warning{
+        font-weight:100;
+        color:red;
+        display:block;
+        font-size: 0.8em;
+        margin-bottom:1em;
+    }
     label{
+
         input{
             
             border-radius: 10px;
