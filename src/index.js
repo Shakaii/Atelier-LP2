@@ -24,7 +24,7 @@ app.use(express.static(path.join(__dirname + '/public')));
 
 app.use(session({ secret: "secret", cookie: { maxAge: 7200000 }}));
 
-let currentBox;
+let tri;//var pour le tri des prestations
 
 /* GESTION DES GET */
 app.get('/', function (req, res) {
@@ -311,14 +311,14 @@ db.once('open', function() {
 		res.redirect('back');
 	});
 
-	app.get("/rmPrest/:idBox/:idPrest", function (req, res) {
+	app.get("/rmPrest/:idBox/:id", function (req, res) {
 		User.findOne({
 			email: req.session.email
 		}, function (err, user) {
 			user.boxes.forEach(function (element) {
 				if (element._id == req.params.idBox) {
 					element.prestations.forEach(function (prest){
-						if(prest._id == req.params.idPrest){
+						if(prest._id == req.params.id){
 							element.prestations.splice(indexOf(prest),1);
 							user.save();
 						}
@@ -394,7 +394,10 @@ db.once('open', function() {
 				if (err) return console.error(err);
 				Category.find(function (err, categories) {
 					if (err) return console.error(err);
-
+					if(tri) {
+						category.prestations.sort(function(a, b){return b.price - a.price});//+ vers -
+					} else {category.prestations.sort(function(a, b){return a.price - b.price});}//- vers +
+					
 					res.render('prestations', {
 						'categories': categories,
 						'category': category,
@@ -403,8 +406,12 @@ db.once('open', function() {
 					});
 				});
 			});
-
     }); 
+
+	app.get("/triPrest", function(req, res){
+		tri = !tri;
+		res.redirect('back');
+	});
 
 	app.get("/catalog/:category/:prestation", function (req, res) {
 
