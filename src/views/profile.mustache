@@ -16,12 +16,13 @@
                     Autre coffret
                 {{/isCurrent}}
             </p>
-                <li> Email du destinataire : {{recipientEmail}} </li>
-                <li> Message : {{message}} </li>
+                Nombre de prestations : {{prestations.length}}
                 {{^isPaid}}
-                <a href=/box/{{_id}}>Accéder au contenu du coffret</a>
+                </br>Le coffret n'est pas validé !
+                <a href=/box/{{_id}}>Modifier le contenu du coffret</a>
                 {{/isPaid}}
                 {{#isPaid}}
+                Le coffret est validé !
                 <a href=/box/{{_id}}/suivi>Suivre le coffret</a>
                 {{/isPaid}}
             </br>

@@ -234,6 +234,24 @@ db.once('open', function() {
 		});
 	});
 
+	app.get("/changeCurr/:id", function(req,res){
+		//getcurrent user
+		User.findOne({
+			email: req.session.email
+		}, function (err, user) {
+			if (err) return handleError(err)
+			//reset every boxes to not current except the one that matches the id
+			user.boxes.forEach(function(element) {
+				element.isCurrent = false;
+				if(element._id == req.params.id){
+					element.isCurrent = true;
+				}
+			});
+			user.save();
+			res.redirect('/profile');
+		});
+	});
+
 	app.get("/catalog/:category", function (req, res) {
 		let connected = false;
 		if (req.session.email){
@@ -409,7 +427,7 @@ db.once('open', function() {
 				user.save();
 			}
 		});
-		res.redirect('/');
+		res.redirect('/profile');
 	});
 
 	console.log('Connection à la bdd effectuée');
