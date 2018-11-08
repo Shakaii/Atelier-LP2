@@ -3,7 +3,7 @@
     Coffret 
     {{#box.isCurrent}} courant {{/box.isCurrent}}
     {{^box.isCurrent}} non courant {{/box.isCurrent}}
-    contenant {{box.prestations.length}} prestations.
+    contenant {{box.prestations.length}} prestation(s).
     </h1>
     <div class="container">
         {{#box.prestations}}
@@ -14,7 +14,7 @@
             </div>
             <div class="card-footer">
                 <span class="price">{{price}}€</span>
-                <a class="rmPrest" href="/rmPrest/{{box.id}}/{{id}}"><i class="fas fa-trash-alt"></i></a>
+                <a class="rmPrest" href="/rmPrest/{{box._id}}/{{_id}}"><i class="fas fa-trash-alt"></i></a>
             </div>
         </div>
         {{/box.prestations}}

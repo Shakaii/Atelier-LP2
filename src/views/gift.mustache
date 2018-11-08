@@ -1,16 +1,24 @@
 {{> header}}
-<h1>Voici vote cadeau !</h1>
+<h1 class="titreW">Récupérez votre cadeau !</h1>
+
+{{^block}}
+<div class="container">
+        {{#box.prestations}}
+        <div class="card">
+            <h1 class="card-title">{{title}}</h1>
+            <div class="card-img">
+                <img src="/img/{{image}}">
+            </div>
+            <div class="description">
+                {{description}}
+            </div>
+        </div>
+        {{/box.prestations}}
+    </div>
+{{/block}}
 
 {{#block}}
-{{#box.prestations}}
-
-{{title}}
-{{description}}
-{{image}}
-{{/box.prestations}}
-{{/block}}
-{{^block}}
-<p>Votre cadeau n'es pas encore disponible veulliez revenir plus tard.</p>
-<p>Votre cadeau sera disponible le {{date}}</p>
+<p>Votre cadeau n'est pas encore disponible...</p>
+<p>Il sera disponible le {{box.date}} !</p>
 {{/block}}
 {{> footer}}
