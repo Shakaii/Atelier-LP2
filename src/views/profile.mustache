@@ -17,14 +17,19 @@
                 {{/isCurrent}}
             </p>
                 Nombre de prestations : {{prestations.length}}
-                {{^isPaid}}
-                </br>Le coffret n'est pas validé !
-                <a href=/box/{{_id}}>Modifier le contenu du coffret</a>
-                {{/isPaid}}
-                {{#isPaid}}
-                Le coffret est validé !
-                <a href=/box/{{_id}}/suivi>Suivre le coffret</a>
-                {{/isPaid}}
+                {{#box.isPaid}}
+                    Votre coffret est validé et transmis au destinataire !
+                    {{#box.isOpened}}
+                        Il a été ouvert !
+                    {{/box.isOpened}}
+                    {{^box.isOpened}}
+                        Il n'a pas encore été ouvert.
+                    {{/box.isOpened}}
+                {{/box.isPaid}}
+                {{^box.isPaid}}
+                    </br>Votre coffret n'est pas validé !
+                    <a href=/box/{{_id}}>Modifier le contenu du coffret</a>
+                {{/box.isPaid}}
             </br>
             {{#urlGift}}
             <input disabled="disabled" value={{host}}/box/gift/{{user.id}}/{{urlGift}}> 
