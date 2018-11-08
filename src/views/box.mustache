@@ -1,9 +1,17 @@
 {{> header}}
 <h1>Coffret à destination de {{box.recipientName}}</h1>
-    <div class="box">
+    <div class="container">
         {{#box.prestations}}
-        Prestation </br>
+        <div class="prestation">
+            <h1>{{title}}</h1>
+            <div>{{image}}</div>
+            <div>{{description}}</div>
+            <span>Prix: {{price}}</span>
+        </div>
         {{/box.prestations}}
-        </br>
+        {{^isCurrent}}
+        <a href="/changeCurr/{{box._id}}">Sélectionner le coffret comme coffret courant</a>
+        {{/isCurrent}}
+        <a href="/delete/{{box._id}}">Supprimer le coffret</a>
     </div>
 {{> footer}}

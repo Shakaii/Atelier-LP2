@@ -235,6 +235,24 @@ db.once('open', function() {
 		});
 	});
 
+	app.get("/changeCurr/:id", function(req,res){
+		//getcurrent user
+		User.findOne({
+			email: req.session.email
+		}, function (err, user) {
+			if (err) return handleError(err)
+			//reset every boxes to not current except the one that matches the id
+			user.boxes.forEach(function(element) {
+				element.isCurrent = false;
+				if(element._id == req.params.id){
+					element.isCurrent = true;
+				}
+			});
+			user.save();
+			res.redirect('/profile');
+		});
+	});
+
 	app.get("/catalog/:category", function (req, res) {
 		let connected = false;
 		if (req.session.email){
@@ -396,6 +414,7 @@ db.once('open', function() {
 		}
 	});
 
+
 	app.get("/box/gift/:iduser/:id", function (req,res) {
 	
 		User.findById(req.params.iduser, function (err, user){
@@ -451,6 +470,32 @@ db.once('open', function() {
 			});
 
 		}
+	});
+
+
+	app.get("/delete/:id", function (req,res) {
+		User.findOne({email:req.session.email}, function (err, user){
+			let pos;
+			let found=false;
+			//on verifie si on supprime le coffret courant
+			let curr=false;
+			user.boxes.forEach(function(element) {
+				if(element._id == req.params.id){
+					pos=user.boxes.indexOf(element);
+					found=true;
+					curr=element.isCurrent;
+				}
+			});
+			if(found){
+				user.boxes.splice(pos,1);
+				//si courant, on met par de faut le premier coffret en courant
+				if(curr){
+					user.boxes[0].isCurrent=true;
+				}
+				user.save();
+			}
+		});
+		res.redirect('/profile');
 	});
 
 
