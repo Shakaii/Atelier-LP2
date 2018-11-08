@@ -394,7 +394,23 @@ db.once('open', function() {
 		}
 	});
 
-	
+	app.get("/delete/:id", function (req,res) {
+		User.findOne({email:req.session.email}, function (err, user){
+			let pos;
+			let found=false;
+			user.boxes.forEach(function(element) {
+				if(element._id == req.params.id){
+					pos=user.boxes.indexOf(element);
+					found=true;
+				}
+			});
+			if(found){
+				user.boxes.splice(pos,1);
+				user.save();
+			}
+		});
+		res.redirect('/');
+	});
 
 	console.log('Connection à la bdd effectuée');
 
