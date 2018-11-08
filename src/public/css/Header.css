@@ -15,7 +15,7 @@ time, mark, audio, video {
   padding: 0;
   border: 0;
   font-size: 100%;
-  font: inherit;
+  font-family: 'Roboto', sans-serif;
   vertical-align: baseline; }
 
 @keyframes anim {
@@ -44,7 +44,8 @@ time, mark, audio, video {
     padding-right: 1em;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
-    transition: 1s; }
+    transition: 1s;
+    font-weight: 900; }
   .header .titre:hover {
     /*
     animation-name: anim;
@@ -55,6 +56,7 @@ time, mark, audio, video {
   .header .lg {
     margin-left: 0.5em; }
   .header .connect {
+    font-weight: 100;
     padding: 20px;
     font-size: 1em; }
     .header .connect ul {

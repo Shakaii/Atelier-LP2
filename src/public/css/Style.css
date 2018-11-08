@@ -15,12 +15,10 @@
   padding-left: 20px; }
 
 .nonCurrent {
-  background-image: linear-gradient(gray, #b3b3b3, gray);
-}
+  background-image: linear-gradient(gray, #b3b3b3, gray); }
 
 .current {
-  background-color: white;
-}
+  background-color: white; }
 
 .infoCoffrets {
   padding-top: 20px;
@@ -31,8 +29,7 @@
 
 .description {
   padding-left: 20px;
-  padding-bottom: 20px;
-}
+  padding-bottom: 20px; }
 
 html,
 body,
@@ -183,6 +180,7 @@ img, .card-img {
   opacity: 1; }
 
 .card-title {
+  font-weight: 900;
   color: white;
   font-weight: bold;
   background-color: #0d2347;
@@ -218,8 +216,8 @@ img, .card-img {
     color: red;
     transform: scale(1.3); }
   .card-footer .price {
-    color: white;
-    font-weight: bold; }
+    font-weight: 100;
+    color: white; }
 
 .container {
   padding: 20px;
@@ -257,21 +255,23 @@ img, .card-img {
     display: block;
     font-size: 0.8em;
     margin-bottom: 1em; }
-  .pannelLog label > input {
-    border-radius: 10px;
-    padding: 0.5em;
-    border: none;
-    width: 70%;
-    border-bottom-style: solid;
-    border-radius: 0px;
-    border-width: 1px;
-    transition: 0.1s;
-    margin-bottom: 1em;
-    outline: 0; }
-  .pannelLog label > input:focus {
-    color: #0d2347;
-    border-width: 2px;
-    outline: 0; }
+  .pannelLog label {
+    font-weight: 100; }
+    .pannelLog label > input {
+      border-radius: 10px;
+      padding: 0.5em;
+      border: none;
+      width: 70%;
+      border-bottom-style: solid;
+      border-radius: 0px;
+      border-width: 1px;
+      transition: 0.1s;
+      margin-bottom: 1em;
+      outline: 0; }
+    .pannelLog label > input:focus {
+      color: #0d2347;
+      border-width: 2px;
+      outline: 0; }
   .pannelLog .pass {
     border: none;
     padding: 10px;
@@ -292,6 +292,7 @@ img, .card-img {
     background-color: #0d2347;
     color: white; }
   .pannelLog a {
+    font-weight: 900;
     color: #0d2347;
     margin: 1em;
     text-align: right;
@@ -310,6 +311,8 @@ img, .card-img {
 .navCat {
   padding: 1em; }
   .navCat a {
+    text-transform: uppercase;
+    font-weight: 100;
     display: inline-block;
     margin-top: 1em;
     text-decoration: none;
@@ -380,8 +383,8 @@ img, .card-img {
       color: red;
       transform: scale(1.3); }
     .prestation .prestation-footer .price {
-      color: white;
-      font-weight: bold; }
+      font-weight: 100 !important;
+      color: white; }
 
 @media only screen and (max-width: 60em) {
   .prestation {
@@ -390,6 +393,9 @@ img, .card-img {
     grid-template-rows: auto 1fr 1fr auto; }
 
   h1 {
-    grid-column: span 1; } }
+    grid-column: span 1; }
+
+  .navCat {
+    text-align: center; } }
 
 /*# sourceMappingURL=Style.css.map */
