@@ -5,7 +5,8 @@ let app = express();
 let port = 80;
 let mustacheExpress = require('mustache-express');
 let uri = 'mongodb://mongo:27017/test';
-let session = require('express-session')
+let session = require('express-session');
+let uuid4 = require('uuid/v4');
 mongoose.connect(uri);
 app.engine('mustache', mustacheExpress());
 app.set('view engine', 'mustache');
@@ -317,7 +318,8 @@ db.once('open', function() {
 			}, function (err, user) {
 				res.render('profile', {
 					'connected': true,
-					'user': user
+					'user': user,
+					'host':req.hostname
 				});
 			});
 		}
@@ -412,6 +414,65 @@ db.once('open', function() {
 		}
 	});
 
+
+	app.get("/box/gift/:iduser/:id", function (req,res) {
+	
+		User.findById(req.params.iduser, function (err, user){
+			let box;
+			let auj = new Date();
+			let block=false;
+			let found=false;
+			console.log(user);
+			user.boxes.forEach(function(element) {
+				
+				if(element.urlGift == req.params.id){
+					box=element;
+					found=true;
+				}
+			});
+			if( box.date<= auj){
+				block = true;
+			}
+			if(found){
+				res.render('gift',{'box':box,'block':block,'date':box.date});
+			}
+			
+					
+			
+			});
+		});
+	
+	
+	app.get("/box/giftGenerate/:id", function(req,res){
+		if (req.session.email){
+
+			User.findOne({email:req.session.email}, function (err, user){
+				let box;
+				let found=false;
+				user.boxes.forEach(function(element) {
+					if(element._id == req.params.id){
+						box=element;
+						found=true;
+						if(!box.urlGift){
+							box.urlGift=uuid4();
+							//Date pour l'instant
+							box.date = new Date();
+						}
+					}
+				});
+				user.save();
+			
+
+				if(!found){
+					res.redirect('/');
+				} else
+				res.redirect('/profile');
+			});
+
+		}
+	});
+
+
 	app.get("/delete/:id", function (req,res) {
 		User.findOne({email:req.session.email}, function (err, user){
 			let pos;
@@ -436,6 +497,7 @@ db.once('open', function() {
 		});
 		res.redirect('/profile');
 	});
+
 
 	console.log('Connection à la bdd effectuée');
 

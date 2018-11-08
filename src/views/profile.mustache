@@ -26,6 +26,12 @@
                 <a href=/box/{{_id}}/suivi>Suivre le coffret</a>
                 {{/isPaid}}
             </br>
+            {{#urlGift}}
+            <input disabled="disabled" value={{host}}/box/gift/{{user.id}}/{{urlGift}}> 
+            {{/urlGift}}
+            {{^urlGift}}
+            <a href=/box/giftGenerate/{{_id}}>Génerer votre Url cadeau !</a> 
+            {{/urlGift}}
         </div>
         {{/user.boxes}}
     </div>
