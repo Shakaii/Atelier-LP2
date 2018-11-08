@@ -274,7 +274,7 @@ img {
     }
     label{
 
-        input{
+        &>input{
             
             border-radius: 10px;
             padding : 0.5em;
@@ -285,10 +285,12 @@ img {
             border-width:1px;
             transition:0.1s;
             margin-bottom:1em;
+            outline: 0;
         }
-        input:focus{
+        &>input:focus{
             color:rgb(13, 35, 71);
             border-width:2px;
+            outline: 0;
         }
        
     }
