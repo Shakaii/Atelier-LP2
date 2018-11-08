@@ -410,7 +410,7 @@ db.once('open', function() {
 		let connected = false;
 		if (req.session.email) {
 			connected = true;
-		}
+		} 
 		
 		Category.findOne({
 			title: req.params.category
