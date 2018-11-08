@@ -3,11 +3,27 @@
         <div class="pannelLog">
         <form method="post">
             <h1>Connexion</h1>
-            <label ><p>Adresse email</p> <input name="mail" type="text"></label>
-            <br>
-            <label ><p>Mot de passe</p> <input name="password" type="password"></label>
-            <br>
+            {{#connectionRefused}}
+                <span class="warning">Votre email et/ou votre mot de passe est incorrecte </span>
+            {{/connectionRefused}}
+            <div>
+                <label ><p>Adresse email</p><input {{#saveEmail}} value="{{saveEmail}}" {{/saveEmail}} {{#emailWarning}} class="inputWarning" {{/emailWarning}} name="mail" type="text"></label>
+
+                {{#emailIsSet}}
+                        <span class="warning">Veuillez entrer une adresse email</span>
+                {{/emailIsSet}}
+            </div>
+            <div>
+                <label ><p>Mot de passe</p> <input {{#passwordWarning}} class="inputWarning" {{/passwordWarning}} name="password" type="password"></label>
+
+                {{#passwordIsSet}}
+                        <span class="warning">Veuillez entrer un mot de passe</span>
+                {{/passwordIsSet}}
+            </div>
             <input class ="pass" type = "submit" value="Connexion">
+            
+            
+            
         </form>
         <a href="/signup">Vous n'êtes pas encore inscrit ?</a>
         </div>
