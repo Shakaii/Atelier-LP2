@@ -7,13 +7,14 @@
     </h1>
     <div class="container">
         {{#box.prestations}}
-        <div class="prestation">
-            <h1 class="titrePrestation">{{title}}</h1>
+        <div class="card">
+            <h1 class="card-title">{{title}}</h1>
             <div class="card-img">
                 <img src="/img/{{image}}">
             </div>
-            <div>{{description}}</div>
-            <span>Prix: {{price}}€</span>
+            <div class="card-footer">
+                <span class="price">{{price}}€</span>
+            </div>
         </div>
         {{/box.prestations}}
     </div>
