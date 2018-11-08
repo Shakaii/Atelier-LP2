@@ -15,9 +15,21 @@
 .modifProfil {
   padding-left: 20px; }
 
+<<<<<<< HEAD
 .prestation {
   padding: 20px;
   grid-column: 1,5; }
+=======
+.nonCurrent {
+  background-color: grey; }
+
+.infoCoffrets {
+  padding-top: 20px;
+  padding-left: 20px; }
+
+.modifsBox {
+  padding-left: 20px; }
+>>>>>>> master
 
 html,
 body,
@@ -240,6 +252,7 @@ img, .card-img {
     margin-bottom: 1em; }
   .pannelLog label:hover {
     color: #0d2347; }
+<<<<<<< HEAD
   .pannelLog .inputWarning {
     border-color: red; }
   .pannelLog .warning {
@@ -248,6 +261,8 @@ img, .card-img {
     display: block;
     font-size: 0.8em;
     margin-bottom: 1em; }
+=======
+>>>>>>> master
   .pannelLog label input {
     border-radius: 10px;
     padding: 0.5em;

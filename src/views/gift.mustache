@@ -1,0 +1,16 @@
+{{> header}}
+<h1>Voici vote cadeau !</h1>
+
+{{#block}}
+{{#box.prestations}}
+
+{{title}}
+{{description}}
+{{image}}
+{{/box.prestations}}
+{{/block}}
+{{^block}}
+<p>Votre cadeau n'es pas encore disponible veulliez revenir plus tard.</p>
+<p>Votre cadeau sera disponible le {{date}}</p>
+{{/block}}
+{{> footer}}
