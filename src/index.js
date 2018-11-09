@@ -122,7 +122,7 @@ db.once('open', function() {
 		}	
 		res.redirect('/catalog');
 	}); 
-
+ 
 	//on signup
 	app.post('/signup', function (req, res) {
 
@@ -176,7 +176,6 @@ db.once('open', function() {
 		//if lazy checking passed
 		if (validated){
 
-			let salt = "salty";
 			let passwordHashed;
 			bcrypt.genSalt(10, function(err, salt) {
     			bcrypt.hash(req.body.password, salt, function(err, hash) {
@@ -246,17 +245,19 @@ db.once('open', function() {
 				if (err) return handleError(err)
 					//if user is found
 				if (user){
-					//if the passwords match
-					if (bcrypt.compare(req.body.password, user.password)) {
-						req.session.email = user.email;
-						res.redirect('/');
-					}
-					else {
-						res.render('login', {
-							"connectionRefused": true,
-							"saveEmail" : saveEmail
-						});
-					}
+					bcrypt.compare(req.body.password, user.password).then(function(result) {
+						//if the passwords match
+						if (result) {
+							req.session.email = user.email;
+							res.redirect('/');
+						}
+						else {
+							res.render('login', {
+								"connectionRefused": true,
+								"saveEmail" : saveEmail
+							});
+						}
+					});
 				}
 				else {
 					res.render('login', {
