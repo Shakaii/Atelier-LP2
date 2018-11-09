@@ -25,15 +25,9 @@ app.use(express.static(path.join(__dirname + '/public')));
 app.use(session({ secret: "secret", cookie: { maxAge: 7200000 }}));
 
 let tri;//var pour le tri des prestations
+let currentBox;
 
 /* GESTION DES GET */
-app.get('/', function (req, res) {
-	let connected = false;
-	if (req.session.email) {
-		connected = true;
-	}
-	res.redirect('/catalog');
-}); 
 
 app.get('/signup', function (req, res) {
 	if (req.session.email){
@@ -109,6 +103,25 @@ db.once('open', function() {
 	let Category = mongoose.model('Category', categorySchema);
 	let Prestation = mongoose.model('Prestation', prestationSchema);
 	let Contribution = mongoose.model('Contribution', contributionSchema);
+
+	app.get('/', function (req, res) {
+		let connected = false;
+		if (req.session.email) {
+			connected = true;
+			User.findOne({
+				email: req.session.email
+			}, function (err, user) {
+				if (err) return handleError(err)
+				user.boxes.forEach(function(element) {
+					
+					if(element.isCurrent){
+						currentBox=element.id;
+					}
+				});
+			});
+		}	
+		res.redirect('/catalog');
+	}); 
 
 	//on signup
 	app.post('/signup', function (req, res) {
@@ -285,16 +298,6 @@ db.once('open', function() {
 
 	});
 
-	/*
-	app.get("/test", function (req, res) {
-
-		Box.findOne({isCurrent:'true'}, function (err, box) {
-			if (err) return console.error(err);
-			console.log(box);
-		});
-
-	});*/
-
 	app.get("/addPrest/:idCat/:id", function (req, res) {
 		User.findOne({
 			email: req.session.email
@@ -317,8 +320,10 @@ db.once('open', function() {
 		}, function (err, user) {
 			user.boxes.forEach(function (element) {
 				if (element._id == req.params.idBox) {
+					let found=false;
 					element.prestations.forEach(function (prest){
-						if(prest._id == req.params.id){
+						if(prest._id == req.params.id && !found){
+							found=true;
 							element.prestations.splice(element.prestations.indexOf(prest),1);
 							user.save();
 						}
@@ -357,6 +362,7 @@ db.once('open', function() {
 			User.updateOne({
 				email: req.session.email
 			},{boxes: user.boxes}, function(err, doc) {
+				currentBox = nBox.id;
 				res.redirect('/');
 			});
 		});
@@ -376,6 +382,7 @@ db.once('open', function() {
 				}
 			});
 			user.save();
+			currentBox = req.params.id;
 			res.redirect('/profile');
 		});
 	});
@@ -415,6 +422,11 @@ db.once('open', function() {
 
 	app.get("/catalog/:category/:prestation", function (req, res) {
 
+		let connected = false;
+		if (req.session.email) {
+			connected = true;
+		} 
+		
 		Category.findOne({
 			title: req.params.category
 		}, function (err, category) {
@@ -431,12 +443,13 @@ db.once('open', function() {
 					res.render('prestation', {
 						'categories': categories,
 						'category': category,
-						'prestation': prestation
+						'prestation': prestation,
+						'connected': connected
 					});
 				});
 
 			} else {
-				res.redirect('/catalog');
+				res.redirect('/catalog',{"connected":connected});
 			}
 		});
 	});
@@ -461,6 +474,10 @@ db.once('open', function() {
 		else {
 			res.redirect('/');
 		}
+	});
+
+	app.get("/current", function(req, res) {
+		res.redirect('/box/'+currentBox);
 	});
 
 	app.get("/profile/modify", function (req, res) {
@@ -556,7 +573,6 @@ db.once('open', function() {
 			let auj = new Date();
 			let block=false;
 			let found=false;
-			console.log(user);
 			user.boxes.forEach(function(element) {
 				
 				if(element.urlGift == req.params.id){
@@ -605,7 +621,7 @@ db.once('open', function() {
 
 		}
 	});
-
+ 
 
 	app.get("/delete/:id", function (req,res) {
 		User.findOne({email:req.session.email}, function (err, user){
@@ -625,6 +641,7 @@ db.once('open', function() {
 				//si courant, on met par de faut le premier coffret en courant
 				if(curr && user.boxes.length>0){
 					user.boxes[0].isCurrent=true;
+					currentBox = user.boxes[0].id;
 				}
 				user.save();
 			}
@@ -637,4 +654,4 @@ db.once('open', function() {
 
 });
 
-app.listen(port);
+app.listen(port); 
