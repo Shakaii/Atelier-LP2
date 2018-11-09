@@ -14,8 +14,9 @@
             
             <div class="prestation-footer">
                     <div class="price">{{prestation.price}} €</div>
-
+                        {{#connected}}
                         <a class="addToCart" href="/addPrest/{{category.id}}/{{prestation._id}}"><i class="fas fa-cart-plus"></i></a>
+                        {{/connected}}
                    
         </div>
     </div>

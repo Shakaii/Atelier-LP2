@@ -1,0 +1,43 @@
+{{> header}}
+
+        <div class="pannelLog">
+            <form method="post">
+                <h1>Inscription</h1>
+                <div>
+                    <label ><p>Numero de carte</p> <input {{#saveNumber}} value="{{saveNumber}}" {{/saveNumber}} {{#numberWarning}} class="inputWarning" {{/numberWarning}} name="numcarte" type="text" maxlength="16"></label>
+
+                    {{#numberIsSet}}
+                        <span class="warning">Veuillez entrer le numéro de votre carte/span>
+                    {{/numberIsSet}}
+                    
+                </div>
+
+                <div>
+                    <label ><p>NOM prenom</p> <input {{#saveName}} value="{{saveName}}" {{/saveName}} {{#nameWarning}} class="inputWarning" {{/nameWarning}} name="name" type="text"></label>
+
+                    {{#nameIsSet}}
+                        <span class="warning">Veuillez entrer votre nom et prénom</span>
+                    {{/nameIsSet}}
+                </div>
+
+                <div>
+                    <label ><p>Date d'expiration</p> <input {{#saveDate}} value="{{saveDate}}" {{/saveDate}} {{#checkWarning}} class="inputWarning" {{/checkWarning}} name="dateexpi" type="text" ></label>
+
+                    {{#dateIsSet}}
+                        <span class="warning">Veuillez entrer la date d'expiration</span>
+                    {{/dateIsSet}}
+                </div>
+
+                <div>
+                        <label ><p>Cryptogramme</p> <input {{#saveCrypt}} value="{{saveCrypt}}" {{/saveCrypt}} {{#checkWarning}} class="inputWarning" {{/checkWarning}} name="crypt" type="text" maxlength="3"></label>
+    
+                        {{#cryptIsSet}}
+                            <span class="warning">Veuillez entrer le cryptogramme</span>
+                        {{/cryptIsSet}}
+                    </div>
+
+                <input class="pass" type = "submit" value="Payer">
+ 
+            </form>
+        </div>
+{{> footer}}

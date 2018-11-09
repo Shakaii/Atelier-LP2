@@ -1,0 +1,46 @@
+{{> header}}
+
+        <div class="pannelLog">
+            <form method="post">
+                <h1>Finalisation</h1>
+
+                <div>
+                        <label ><p>Nom Prénom</p> <input {{#nameWarning}} class="inputWarning" {{/nameWarning}} name="name" type="text"></label>
+    
+                        {{#nameIsSet}}
+                            <span class="warning">Veuillez entrer votre nom / prénom</span>
+                        {{/nameIsSet}}
+                        
+                    </div>
+
+                <div>
+                    <label ><p>Date d'ouverture des cadeaux</p> <input {{#dateWarning}} class="inputWarning" {{/dateWarning}} name="dateouverture" type="date"></label>
+
+                    {{#dateIsSet}}
+                        <span class="warning">Veuillez entrer une date</span>
+                    {{/dateIsSet}}
+                    
+                </div>
+
+                <div>
+                    <label ><p>Message</p> <input {{#saveMessage}} value="{{saveMessage}}" {{/saveMessage}}  {{#dateWarning}} class="inputWarning" {{/dateWarning}} name="message" type="text" >
+    
+                        {{#messageIsSet}}
+                            <span class="warning">Veuillez entrer un message</span>
+                        {{/messageIsSet}}
+                        
+                </div>
+
+                <div>
+                        <label ><p>Payer par carte bancaire</p><input type="radio" name="paiement" value="cb" checked></label>
+                </div>
+                <div>
+                        <label ><p>Payer par cagnotte</p><input type="radio" name="paiement" value="c"></label>
+                </div>
+            </br>
+
+                <input class="pass" type = "submit" value="Valider">
+ 
+            </form>
+        </div>
+{{> footer}}
