@@ -568,6 +568,10 @@ db.once('open', function() {
 						console.log(box);
 						res.render('profil_prestation',{'connected':true,'box':box, 'prestation':prest});
 					}
+					//si on ne trouve pas la prest on redirige vers la boite (pour le rmPrest)
+					else{
+						res.render('box',{'connected':true,'box':box});
+					}
 				}
 			});
 
