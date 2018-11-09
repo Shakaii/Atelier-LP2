@@ -14,7 +14,9 @@
             </a>
             <div class="card-footer">
                 <span class="price">{{price}}€</span>
-                <a class="rmPrest" href="/rmPrest/{{box._id}}/{{_id}}"><i class="fas fa-trash-alt"></i></a>
+                {{^box.isPaid}}
+                        <a class="rmPrest" href="/rmPrest/{{box._id}}/{{prestation._id}}"><i class="fas fa-trash-alt"></i></a>
+                {{/box.isPaid}} 
             </div>
         </div>
         {{/box.prestations}}
@@ -22,6 +24,7 @@
     {{^isCurrent}}
         <a href="/changeCurr/{{box._id}}" class="modifsBox">Sélectionner le coffret comme coffret courant</a>
     {{/isCurrent}}
+    {{^box.isPaid}}
         <a href="/delete/{{box._id}}" class="modifsBox">Supprimer le coffret</a>
-    
+    {{/box.isPaid}} 
 {{> footer}}

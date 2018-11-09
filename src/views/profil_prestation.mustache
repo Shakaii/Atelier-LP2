@@ -9,7 +9,9 @@
             
             <div class="prestation-footer">
                     <div class="price">{{prestation.price}} €</div>
-                    <a class="rmPrest" href="/rmPrest/{{box._id}}/{{prestation._id}}"><i class="fas fa-trash-alt"></i></a>                   
+                    {{^box.isPaid}}
+                        <a class="rmPrest" href="/rmPrest/{{box._id}}/{{prestation._id}}"><i class="fas fa-trash-alt"></i></a>
+                    {{/box.isPaid}}                   
             </div>
         </div>
     </div>
