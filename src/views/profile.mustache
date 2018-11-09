@@ -16,6 +16,7 @@
                     Autre coffret
                 {{/isCurrent}}
             </p>
+
                 Nombre de prestation(s) : {{prestations.length}}
                 {{#box.isPaid}}
                     Le coffret est validé et a été transmis au destinataire !
@@ -37,6 +38,7 @@
             {{^urlGift}}
             <a class="linkProfile" href=/box/giftGenerate/{{_id}}>Génerer votre Url cadeau !</a> 
             {{/urlGift}}
+
         </div>
         {{/user.boxes}}
     </div>
