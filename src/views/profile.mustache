@@ -1,5 +1,5 @@
 {{> header}}
-    <h1 class="titreW">Profil de l'utilisateur. Vous pouvez consulter le status de vos coffrets et modifier vos informations personnelles.</h1>
+    <h1 class="titreW">Profil de l'utilisateur. Vous pouvez consulter le statut de vos coffrets et modifier vos informations personnelles.</h1>
     <div class="container">
         {{#user.boxes}}
         {{^isCurrent}}
@@ -67,7 +67,7 @@
         <!-- Si pas -->
         {{^recipientName}}
             <a class="link" href=/validate/{{_id}}>Finaliser le panier</a>
-            <a class="link" href=/box/changeCurr/{{_id}}>Définir en temps que panier courant</a>
+            <a class="link" href=/changeCurr/{{_id}}>Définir en temps que panier courant</a>
         {{/recipientName}}
 
          <div class="card-footer">
