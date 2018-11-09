@@ -8,44 +8,61 @@
         {{#isCurrent}}
             <div class="card current">
         {{/isCurrent}}
-            <p class="card-title">
+            <h1 class="card-title">
                 {{#isCurrent}}
                     Coffret en cours
                 {{/isCurrent}}
                 {{^isCurrent}}
                     Autre coffret
                 {{/isCurrent}}
-            </p>
+            </h1>
+            <div class="description-box">
                 Nombre de prestation(s) : {{prestations.length}}
                 {{#box.isPaid}}
                     Le coffret est validé et a été transmis au destinataire !
                     {{#box.isOpened}}
-                        Il a été ouvert !
+                </br>Il a été ouvert !
                     {{/box.isOpened}}
                     {{^box.isOpened}}
-                        Il n'a pas encore été ouvert.
+                </br>Il n'a pas encore été ouvert.
                     {{/box.isOpened}}
                 {{/box.isPaid}}
                 {{^box.isPaid}}
                     </br>Le coffret n'est pas validé !
-                    
                 {{/box.isPaid}}
-            </br>
+                </div>
             {{#urlGift}}
             <input data-clipboard-text="{{host}}/box/gift/{{user.id}}/{{urlGift}}" disabled="disabled" value={{host}}/box/gift/{{user.id}}/{{urlGift}}> 
             <div class="urlGift" data-clipboard-text="{{host}}/box/gift/{{user.id}}/{{urlGift}}">Copier dans le presse papier</div>
             {{/urlGift}}
             {{^urlGift}}
-            <a class="linkProfile" href=/box/giftGenerate/{{_id}}>Génerer votre Url cadeau !</a> 
+                {{#box.isPaid}}
+                    <a class="link" href=/box/giftGenerate/{{_id}}>Génerer votre Url cadeau !</a> 
+                {{/box.isPaid}}
+            <a class="link" href="/changeCurr/{{_id}}">Définir en temps que coffret courant</a> 
             {{/urlGift}}
+            {{#box.isPaid}}{{/box.isPaid}}{{^box.isPaid}}
+            
+            {{/box.isPaid}}
+            {{#box.isPaid}}{{/box.isPaid}}{{^box.isPaid}}
+                {{#box.isPot}}
+                    <input data-clipboard-text="{{host}}/box/gift/{{user.id}}/{{urlPot}}" disabled="disabled" value={{host}}/box/gift/{{user.id}}/{{urlGift}}> 
+                    <div class="urlGift" data-clipboard-text="{{host}}/box/gift/{{user.id}}/{{urlGift}}">Copier dans le presse papier</div>
+                {{/box.isPot}}
+                {{^box.isPot}}
+                    <a class="link" href=/box/giftGenerate/{{_id}}>Passer en mode cagnotte</a>
+                    <a class="link" href="test">Payer</a>
+                {{/box.isPot}}
+            {{/box.isPaid}}
             <div class="card-footer">
                 <a class="zoom" href=/box/{{_id}}><i class="fas fa-search-plus"></i></a>
-                <a class="rmPrest" href=/box/{{_id}}><i class="fas fa-trash-alt"></i></a>
+                {{#box.isPaid}}{{/box.isPaid}}{{^box.isPaid}}
+                    <a class="rmPrest" href=/delete/{{_id}}><i class="fas fa-trash-alt"></i></a>
+                {{/box.isPaid}}
             </div>
         </div>
         {{/user.boxes}}
     </div>
-<<<<<<< HEAD
     <a href="/profile/modify" class="modifProfil">Modifier mon mot de passe</a>
 {{> footer}} 
 
@@ -65,7 +82,3 @@
 		}
 	});
 </script> 
-=======
-    <a class="linkProfile" href="/profile/modify" class="modifProfil">Modifier mon mot de passe</a>
-{{> footer}}
->>>>>>> master

@@ -516,3 +516,22 @@ img {
         background-color: white;
     }
 }
+
+.link{
+    text-align:center;
+    text-decoration : none;
+    text-transform : uppercase;
+    color: rgb(13, 35, 71);
+    font-weight: 100;
+    margin-bottom:1em;
+    &:hover{
+        color: #097887
+    }
+}
+
+.description-box{
+    text-align:center;
+    color: rgb(13, 35, 71);
+    font-weight:bold;
+    line-height:2em;
+}
