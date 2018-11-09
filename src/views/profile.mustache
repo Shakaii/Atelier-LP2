@@ -36,7 +36,7 @@
             <div class="urlGift" data-clipboard-text="{{host}}/box/gift/{{user.id}}/{{urlGift}}">Copier dans le presse papier</div>
             {{/urlGift}}
             {{^urlGift}}
-            <a href=/box/giftGenerate/{{_id}}>Génerer votre Url cadeau !</a> 
+            <a class="linkProfile" href=/box/giftGenerate/{{_id}}>Génerer votre Url cadeau !</a> 
             {{/urlGift}}
             <div class="card-footer">
                 <a class="zoom" href=/box/{{_id}}><i class="fas fa-search-plus"></i></a>
@@ -45,6 +45,7 @@
         </div>
         {{/user.boxes}}
     </div>
+<<<<<<< HEAD
     <a href="/profile/modify" class="modifProfil">Modifier mon mot de passe</a>
 {{> footer}} 
 
@@ -64,3 +65,7 @@
 		}
 	});
 </script> 
+=======
+    <a class="linkProfile" href="/profile/modify" class="modifProfil">Modifier mon mot de passe</a>
+{{> footer}}
+>>>>>>> master

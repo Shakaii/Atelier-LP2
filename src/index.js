@@ -478,7 +478,12 @@ db.once('open', function() {
 	});
 
 	app.get("/current", function(req, res) {
-		res.redirect('/box/'+currentBox);
+		if (currentBox) {
+			res.redirect('/box/'+currentBox);
+		}else {
+			res.redirect('/');
+		}
+		
 	});
 
 	app.get("/profile/modify", function (req, res) {
@@ -560,6 +565,43 @@ db.once('open', function() {
 				});
 				if(found){
 					res.render('box',{'connected':true,'box':box});
+				}
+			});
+
+		} else {
+			res.redirect('/');
+		}
+	});
+
+	app.get("/box/:boxId/:id", function (req,res) {
+		if (req.session.email){
+			
+			User.findOne({email:req.session.email}, function (err, user){
+				let box;
+				let found=false;
+				user.boxes.forEach(function(element) {
+					if(element._id == req.params.boxId){
+						box=element;
+						found=true;
+					}
+				});
+				if(found){
+					let prest;
+					let foundPrest=false;
+					box.prestations.forEach(function(element) {
+						if(element._id == req.params.id){
+							prest=element;
+							foundPrest=true;
+						}
+					});
+					if(foundPrest){
+						console.log(box);
+						res.render('profil_prestation',{'connected':true,'box':box, 'prestation':prest});
+					}
+					//si on ne trouve pas la prest on redirige vers la boite (pour le rmPrest)
+					else{
+						res.render('box',{'connected':true,'box':box});
+					}
 				}
 			});
 
@@ -667,6 +709,9 @@ db.once('open', function() {
 				if(curr && user.boxes.length>0){
 					user.boxes[0].isCurrent=true;
 					currentBox = user.boxes[0].id;
+				}
+				if (user.boxes.length==0) {
+					currentBox = null;
 				}
 				user.save();
 			}
