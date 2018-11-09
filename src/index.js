@@ -1,39 +1,33 @@
-let http = require('http');
+let http = require('http'); 
 let express = require('express');
 let mongoose = require('mongoose');
 let app = express();
 let port = 80;
 let mustacheExpress = require('mustache-express');
 let uri = 'mongodb://mongo:27017/test';
-let session = require('express-session');
+let session = require('express-session')
+let bcrypt = require('bcryptjs');
+let validator = require('validator');
 let uuid4 = require('uuid/v4');
 mongoose.connect(uri);
-app.engine('mustache', mustacheExpress());
+app.engine('mustache', mustacheExpress()); 
 app.set('view engine', 'mustache');
 app.set('views', __dirname + '/views');
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({
-	extended: true
+	extended: true  
 }));
 app.use(bodyParser.json());
 
 let path = require('path');
 app.use(express.static(path.join(__dirname + '/public')));
 
-
-
 app.use(session({ secret: "secret", cookie: { maxAge: 7200000 }}));
 
+let tri;//var pour le tri des prestations
 let currentBox;
 
 /* GESTION DES GET */
-app.get('/', function (req, res) {
-	let connected = false;
-	if (req.session.email) {
-		connected = true;
-	}
-	res.redirect('/catalog');
-}); 
 
 app.get('/signup', function (req, res) {
 	if (req.session.email){
@@ -110,58 +104,186 @@ db.once('open', function() {
 	let Prestation = mongoose.model('Prestation', prestationSchema);
 	let Contribution = mongoose.model('Contribution', contributionSchema);
 
+	app.get('/', function (req, res) {
+		let connected = false;
+		if (req.session.email) {
+			connected = true;
+			User.findOne({
+				email: req.session.email
+			}, function (err, user) {
+				if (err) return handleError(err)
+				user.boxes.forEach(function(element) {
+					
+					if(element.isCurrent){
+						currentBox=element.id;
+					}
+				});
+			});
+		}	
+		res.redirect('/catalog');
+	}); 
+
 	//on signup
 	app.post('/signup', function (req, res) {
 
-		//if the password matches the check 
-		if (req.body.passwordCheck == req.body.password) {
+		let validated = true;
+		let passwordMatch = true;
+		let emailIsNotInDb = true;
+		let emailIsValid = true;
+		let emailIsSet = true;
+		let passwordIsSet = true;
+		let saveEmail = false;
 
-			let user = new User({
-				password: req.body.password,
+		if (req.body.mail) saveEmail = req.body.mail
+
+		if (req.body.passwordCheck !== req.body.password) {
+			validated = false;
+			passwordMatch = false;
+		}
+
+		//check if mail is set then if it is valid and not already in DB
+		if (req.body.mail.length > 5){
+
+			if (!validator.isEmail(req.body.mail)){
+				validated = false;
+				emailIsValid = false;
+			}
+
+			User.findOne({
 				email: req.body.mail
-			});
-
-			user.save(function (err) {
+			}, function (err, user){
 				if (err) return handleError(err)
-				req.session.email = user.email;
-				res.redirect('/');
+				if (user){
+					validated = false;
+					emailIsNotInDb = false;
+				}
+
 			});
 		}
+		else{
+			validate = false;
+			emailIsSet = false
+		}
+
+		if (req.body.password.length > 1){
+
+		}
+		else{
+			passwordIsSet = false;
+			validated = false;
+		}
+
+		//if lazy checking passed
+		if (validated){
+
+			let salt = "salty";
+			let passwordHashed;
+			bcrypt.genSalt(10, function(err, salt) {
+    			bcrypt.hash(req.body.password, salt, function(err, hash) {
+					
+					let user = new User({
+						password: hash, 
+						email: escape(req.body.mail)
+					});
+		
+					user.save(function (err) {
+						if (err) return handleError(err)
+						req.session.email = user.email;
+						res.redirect('/');
+					});
+				});	
+
+    		}); 
+		}
+		else{
+
+			let passwordWarning = passwordIsSet
+			let checkWarning = passwordMatch
+			let emailWarning = true;
+
+			if (!emailIsNotInDb || !emailIsValid || !emailIsSet) emailWarning = false;
+			
+			res.render('signup', {
+				"passwordMatch": !passwordMatch,
+				"emailIsNotInDb": !emailIsNotInDb,
+				"emailIsValid": !emailIsValid,
+				"emailIsSet": !emailIsSet,
+				"passwordIsSet": !passwordIsSet,
+				"emailWarning": !emailWarning,
+				"checkWarning": !checkWarning,
+				"passwordWarning": !passwordWarning,
+				"saveEmail" : saveEmail
+			});
+		}
+			
 	});
 
 	//on login 
 	app.post("/login", function (req, res) {
 
-		User.findOne({
-			email: req.body.mail
-		}, function (err, user) {
-			if (err) return handleError(err)
+		let validate = true;
+		let saveEmail = false;
+		let emailIsSet = true;
+		let passwordIsSet = true;
 
-			//if the passwords match
-			if (req.body.password == user.password) {
-				req.session.email = user.email;
-				res.redirect('/');
-			}
-		});
-	});
+		if (req.body.mail) saveEmail = req.body.mail
 
+		if (req.body.mail.length <= 5){
+			emailIsSet = false;
+			validate = false;
+		}
+		if (req.body.password.length <= 1){
+			passwordIsSet = false;
+			validate = false;
+		}
 
+		//if lazy checking passed
+		if (validate){
 
-	//test pour affichage coffrets
-	let box1 = new Box({
-		recipientName: "jj54",
-		recipientEmail: "jj54@yahoo.fr",
-		message: "Tiens jj54 le bro",
-		isPaid: true,
-		isOpened: true
-	});
+			User.findOne({
+				email: req.body.mail
+			}, function (err, user) {
+				if (err) return handleError(err)
+					//if user is found
+				if (user){
+					//if the passwords match
+					if (bcrypt.compare(req.body.password, user.password)) {
+						req.session.email = user.email;
+						res.redirect('/');
+					}
+					else {
+						res.render('login', {
+							"connectionRefused": true,
+							"saveEmail" : saveEmail
+						});
+					}
+				}
+				else {
+					res.render('login', {
+						"connectionRefused": true,
+						"saveEmail" : saveEmail
+					});
+				}
+				//Only telling the user the connection is refused, not why to allow account guessing
 
-	let box2 = new Box({
-		recipientName: "PasGoélise",
-		recipientEmail: "papinox@yahoo.fr",
-		message: "Pas de chance",
-		isPaid: false,
-		isOpened : false
+				
+				
+				
+			});
+		}
+		else {
+
+			let passwordWarning = passwordIsSet;
+			let emailWarning = emailIsSet;
+
+			res.render('login', {
+				"emailIsSet": !emailIsSet,
+				"passwordIsSet": !passwordIsSet,
+				"passwordWarning": !passwordWarning,
+				"emailWarning": !emailWarning,
+				"saveEmail" : saveEmail
+			});
+		}
 	});
 
 	app.get("/catalog", function (req, res)  { 
@@ -176,16 +298,6 @@ db.once('open', function() {
 
 	});
 
-	/*
-	app.get("/test", function (req, res) {
-
-		Box.findOne({isCurrent:'true'}, function (err, box) {
-			if (err) return console.error(err);
-			console.log(box);
-		});
-
-	});*/
-
 	app.get("/addPrest/:idCat/:id", function (req, res) {
 		User.findOne({
 			email: req.session.email
@@ -199,7 +311,27 @@ db.once('open', function() {
 				}
 			});
 		});
-		res.redirect('/');
+		res.redirect('back');
+	});
+
+	app.get("/rmPrest/:idBox/:id", function (req, res) {
+		User.findOne({
+			email: req.session.email
+		}, function (err, user) {
+			user.boxes.forEach(function (element) {
+				if (element._id == req.params.idBox) {
+					let found=false;
+					element.prestations.forEach(function (prest){
+						if(prest._id == req.params.id && !found){
+							found=true;
+							element.prestations.splice(element.prestations.indexOf(prest),1);
+							user.save();
+						}
+					});
+				}
+			});
+		});
+		res.redirect('back');
 	});
 
 	app.get("/newBox", function (req, res) {
@@ -230,6 +362,7 @@ db.once('open', function() {
 			User.updateOne({
 				email: req.session.email
 			},{boxes: user.boxes}, function(err, doc) {
+				currentBox = nBox.id;
 				res.redirect('/');
 			});
 		});
@@ -249,6 +382,7 @@ db.once('open', function() {
 				}
 			});
 			user.save();
+			currentBox = req.params.id;
 			res.redirect('/profile');
 		});
 	});
@@ -267,7 +401,10 @@ db.once('open', function() {
 				if (err) return console.error(err);
 				Category.find(function (err, categories) {
 					if (err) return console.error(err);
-
+					if(tri) {
+						category.prestations.sort(function(a, b){return b.price - a.price});//+ vers -
+					} else {category.prestations.sort(function(a, b){return a.price - b.price});}//- vers +
+					
 					res.render('prestations', {
 						'categories': categories,
 						'category': category,
@@ -276,11 +413,20 @@ db.once('open', function() {
 					});
 				});
 			});
-
     }); 
+
+	app.get("/triPrest", function(req, res){
+		tri = !tri;
+		res.redirect('back');
+	});
 
 	app.get("/catalog/:category/:prestation", function (req, res) {
 
+		let connected = false;
+		if (req.session.email) {
+			connected = true;
+		} 
+		
 		Category.findOne({
 			title: req.params.category
 		}, function (err, category) {
@@ -297,12 +443,13 @@ db.once('open', function() {
 					res.render('prestation', {
 						'categories': categories,
 						'category': category,
-						'prestation': prestation
+						'prestation': prestation,
+						'connected': connected
 					});
 				});
 
 			} else {
-				res.redirect('/catalog');
+				res.redirect('/catalog',{"connected":connected});
 			}
 		});
 	});
@@ -327,6 +474,15 @@ db.once('open', function() {
 		else {
 			res.redirect('/');
 		}
+	});
+
+	app.get("/current", function(req, res) {
+		if (currentBox) {
+			res.redirect('/box/'+currentBox);
+		}else {
+			res.redirect('/');
+		}
+		
 	});
 
 	app.get("/profile/modify", function (req, res) {
@@ -356,15 +512,39 @@ db.once('open', function() {
 		}, function (err, user) {
 			if (err) return handleError(err)
 
-			//if the passwords match
-			if (req.body.passwordCheck == req.body.password) {
-				user.password = req.body.password;
+			//lazy checking
+			let validated = true;
+			let passwordMatch = true;
+			let passwordIsSet = true;
+
+			if (req.body.password.length <= 1){
+				validated = false;
+				passwordIsSet = false;
 			}
 
-			user.save(function (err) {
-				if (err) return handleError(err)
-				res.redirect('/profile');
-			});
+			if (req.body.passwordCheck != req.body.password) {
+				passwordMatch = false;
+				validated = false;
+			}
+
+			if (validated){
+				
+				user.password = req.body.password;
+			
+				user.save(function (err) {
+					if (err) return handleError(err)
+					res.redirect('/profile');
+				});
+			}
+			else{
+				res.render('modify',{
+					"passwordMatch": !passwordMatch,
+					"passwordIsSet": !passwordIsSet,
+					"passwordWarning": !passwordIsSet,
+				})
+			}
+
+			
 
 		});
 
@@ -384,6 +564,43 @@ db.once('open', function() {
 				});
 				if(found){
 					res.render('box',{'connected':true,'box':box});
+				}
+			});
+
+		} else {
+			res.redirect('/');
+		}
+	});
+
+	app.get("/box/:boxId/:id", function (req,res) {
+		if (req.session.email){
+			
+			User.findOne({email:req.session.email}, function (err, user){
+				let box;
+				let found=false;
+				user.boxes.forEach(function(element) {
+					if(element._id == req.params.boxId){
+						box=element;
+						found=true;
+					}
+				});
+				if(found){
+					let prest;
+					let foundPrest=false;
+					box.prestations.forEach(function(element) {
+						if(element._id == req.params.id){
+							prest=element;
+							foundPrest=true;
+						}
+					});
+					if(foundPrest){
+						console.log(box);
+						res.render('profil_prestation',{'connected':true,'box':box, 'prestation':prest});
+					}
+					//si on ne trouve pas la prest on redirige vers la boite (pour le rmPrest)
+					else{
+						res.render('box',{'connected':true,'box':box});
+					}
 				}
 			});
 
@@ -422,7 +639,6 @@ db.once('open', function() {
 			let auj = new Date();
 			let block=false;
 			let found=false;
-			console.log(user);
 			user.boxes.forEach(function(element) {
 				
 				if(element.urlGift == req.params.id){
@@ -430,7 +646,7 @@ db.once('open', function() {
 					found=true;
 				}
 			});
-			if( box.date<= auj){
+			if( box.date> auj){
 				block = true;
 			}
 			if(found){
@@ -471,7 +687,7 @@ db.once('open', function() {
 
 		}
 	});
-
+ 
 
 	app.get("/delete/:id", function (req,res) {
 		User.findOne({email:req.session.email}, function (err, user){
@@ -489,8 +705,12 @@ db.once('open', function() {
 			if(found){
 				user.boxes.splice(pos,1);
 				//si courant, on met par de faut le premier coffret en courant
-				if(curr){
+				if(curr && user.boxes.length>0){
 					user.boxes[0].isCurrent=true;
+					currentBox = user.boxes[0].id;
+				}
+				if (user.boxes.length==0) {
+					currentBox = null;
 				}
 				user.save();
 			}
@@ -573,4 +793,4 @@ let cb = false;
 
 });
 
-app.listen(port);
+app.listen(port); 

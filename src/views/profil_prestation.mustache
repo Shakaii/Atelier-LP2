@@ -1,9 +1,4 @@
-{{> header}}
-<div class="navCat">
-    {{#categories}}
-        <a href="/catalog/{{title}}">{{title}}</a>
-    {{/categories}}
-</div>
+{{>header}}
 
 <div class="prestation-container">
     <div class="prestation">
@@ -14,11 +9,12 @@
             
             <div class="prestation-footer">
                     <div class="price">{{prestation.price}} €</div>
-
-                        <a class="addToCart" href="/addPrest/{{category.id}}/{{prestation._id}}"><i class="fas fa-cart-plus"></i></a>
-                   
+                    <a class="rmPrest" href="/rmPrest/{{box._id}}/{{prestation._id}}"><i class="fas fa-trash-alt"></i></a>                   
+            </div>
         </div>
     </div>
+    <a class="retour" href="/box/{{box._id}}">Retourner au coffret</a>
 </div>
 
-{{> footer}}
+
+{{>footer}}
