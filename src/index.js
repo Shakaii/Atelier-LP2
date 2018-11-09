@@ -543,6 +543,39 @@ db.once('open', function() {
 		}
 	});
 
+	app.get("/box/:boxId/:id", function (req,res) {
+		if (req.session.email){
+			
+			User.findOne({email:req.session.email}, function (err, user){
+				let box;
+				let found=false;
+				user.boxes.forEach(function(element) {
+					if(element._id == req.params.boxId){
+						box=element;
+						found=true;
+					}
+				});
+				if(found){
+					let prest;
+					let foundPrest=false;
+					box.prestations.forEach(function(element) {
+						if(element._id == req.params.id){
+							prest=element;
+							foundPrest=true;
+						}
+					});
+					if(foundPrest){
+						console.log(box);
+						res.render('profil_prestation',{'connected':true,'box':box, 'prestation':prest});
+					}
+				}
+			});
+
+		} else {
+			res.redirect('/');
+		}
+	});
+
 	app.get("/box/:id/suivi", function (req,res) {
 		if (req.session.email){
 			
