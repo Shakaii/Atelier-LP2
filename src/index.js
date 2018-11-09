@@ -21,7 +21,6 @@ app.use(express.static(path.join(__dirname + '/public')));
 
 app.use(session({ secret: "secret", cookie: { maxAge: 7200000 }}));
 
-/* GESTION DES GET */
 require('./controllers/dbController')(mongoose, app);
 
-app.listen(port); 
+app.listen(port);  

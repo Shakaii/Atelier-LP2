@@ -119,6 +119,7 @@ body {
     height:100%;
     background-size: cover;
     background-image: url("https://trello-backgrounds.s3.amazonaws.com/SharedBackground/2560x1707/e5e66a7fb493c1c8aba4c65c31b6389d/photo-1512916206820-bd6d503c003e");
+    background-attachment: fixed;
 }
  
 img {
@@ -177,7 +178,6 @@ img {
     font-weight:1.8em;
     text-align: center;
     text-transform: capitalize;
-    box-shadow: 0px 1px lightgrey;
     transition:0.7s;
     padding: 1em;
     font-weight:1.8em;
@@ -187,7 +187,6 @@ img {
 .card-footer {
     padding:0.7em;
     background-color:rgb(13, 35, 71);
-    box-shadow: 0px 1px lightgrey;
     display:flex;
     flex-direction:row;
     justify-content:space-around;
@@ -215,6 +214,15 @@ img {
         font-weight: 100;
         color:white;
 
+    }
+    .zoom{
+        color:white;
+        text-decoration:none;
+        transition:0.5s;
+    }
+    .zoom:hover{
+        color:#87abe5;
+        transform: scale(1.3)
     }
 }
 
@@ -417,7 +425,6 @@ img {
     .prestation-footer{
     padding:0.7em;
     background-color:rgb(13, 35, 71);
-    box-shadow: 0px 1px lightgrey;
     display:flex;
     flex-direction:row;
     justify-content:space-around;
@@ -440,6 +447,7 @@ img {
         color:red;
         transform: scale(1.3)
     }
+
 
     .price{
         font-weight: 100!important;
@@ -483,4 +491,48 @@ img {
             color: #097887
         }
     }
+}
+
+.urlGift {
+    text-align: center;
+    text-transform: uppercase;
+    font-weight:100;
+    display: inline-block;
+    margin-top: 1em;
+    text-decoration: none;
+    border: none;
+    padding:10px;
+    background-color: rgb(13, 35, 71);
+    box-shadow: 0 4px 8px 0 rgba(13, 35, 71, 0.4), 0 6px 20px 0 rgba(13, 35, 71, 0.41);
+    color:white;
+    cursor:pointer;
+    border-width:2px;
+    border-style:solid;
+    border-color:rgb(13, 35, 71); 
+    transition:1s;
+    &:hover {
+        border-style:solid;
+        border-color:rgb(13, 35, 71);
+        color: rgb(13, 35, 71);
+        background-color: white;
+    }
+}
+
+.link{
+    text-align:center;
+    text-decoration : none;
+    text-transform : uppercase;
+    color: rgb(13, 35, 71);
+    font-weight: 100;
+    margin-bottom:1em;
+    &:hover{
+        color: #097887
+    }
+}
+
+.description-box{
+    text-align:center;
+    color: rgb(13, 35, 71);
+    font-weight:bold;
+    line-height:2em;
 }
