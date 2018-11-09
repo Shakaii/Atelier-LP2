@@ -2,7 +2,6 @@ module.exports = function (app, Box, User, Category) {
     let bcrypt = require('bcryptjs');
     let validator = require('validator');
     let uuid4 = require('uuid/v4');
-
     let tri; //var pour le tri des prestations
     let currentBox;
 
@@ -168,16 +167,18 @@ module.exports = function (app, Box, User, Category) {
                 if (err) return handleError(err)
                 //if user is found
                 if (user) {
-                    //if the passwords match
-                    if (bcrypt.compare(req.body.password, user.password)) {
-                        req.session.email = user.email;
-                        res.redirect('/');
-                    } else {
-                        res.render('login', {
-                            "connectionRefused": true,
-                            "saveEmail": saveEmail
-                        });
-                    }
+                    bcrypt.compare(req.body.password, user.password).then(function (result) {
+                        //if the passwords match
+                        if (result) {
+                            req.session.email = user.email;
+                            res.redirect('/');
+                        } else {
+                            res.render('login', {
+                                "connectionRefused": true,
+                                "saveEmail": saveEmail
+                            });
+                        }
+                    });
                 } else {
                     res.render('login', {
                         "connectionRefused": true,
@@ -461,12 +462,16 @@ module.exports = function (app, Box, User, Category) {
 
             if (validated) {
 
-                user.password = req.body.password;
-
-                user.save(function (err) {
-                    if (err) return handleError(err)
-                    res.redirect('/profile');
+                bcrypt.genSalt(10, function (err, salt) {
+                    bcrypt.hash(req.body.password, salt, function (err, hash) {
+                        user.password = hash;
+                        user.save(function (err) {
+                            if (err) return handleError(err)
+                            res.redirect('/profile');
+                        });
+                    });
                 });
+
             } else {
                 res.render('modify', {
                     "passwordMatch": !passwordMatch,
@@ -674,5 +679,79 @@ module.exports = function (app, Box, User, Category) {
             }
         });
         res.redirect('/profile');
+    });
+
+    app.get("/validate/:id", function (req, res) {
+        if (!req.session.email) {
+            res.redirect('/catalog');
+        } else {
+            res.render('validate', {
+                connected: true
+            });
+        }
+    });
+
+    app.post("/validate/:id", function (req, res) {
+
+        User.findOne({
+            email: req.session.email
+        }, function (err, user) {
+
+            if (user) {
+
+                let box = user.boxes.filter(function (box) {
+                    return box.id === req.params.id;
+                }).pop();
+
+                box.recipientName = req.body.name;
+                box.message = req.body.message;
+                box.date = req.body.dateouverture;
+
+                if (req.body.paiement === "c") {
+                    urlPot = req.param.id
+                }
+
+                user.save();
+
+                console.log(user);
+                res.redirect('/profile/')
+            };
+        });
+    });
+
+    app.get("/validation/:id", function (req, res) {
+        if (!req.session.email) {
+            res.redirect('/catalog');
+        } else {
+            res.render('validation', {
+                connected: true
+            });
+        }
+    });
+
+    app.post("/validation/:id", function (req, res) {
+        User.findOne({
+            email: req.session.email
+        }, function (err, user) {
+
+            if (user) {
+
+                let box = user.boxes.filter(function (box) {
+                    return box.id === req.params.id;
+                }).pop();
+
+                if (req.body.numcarte != null &&
+                    req.body.name != null &&
+                    req.body.dateexpi != null &&
+                    req.body.crypt != null
+                ) {
+                    box.isPaid = true;
+                }
+
+                user.save();
+
+                res.redirect('/profile/')
+            };
+        });
     });
 }

@@ -1,19 +1,23 @@
 let express = require('express');
 let mongoose = require('mongoose');
-let app = express();
-
-let port = 80;
 let mustacheExpress = require('mustache-express');
-let uri = 'mongodb://mongo:27017/test';
-let session = require('express-session')
-mongoose.connect(uri);
-app.engine('mustache', mustacheExpress()); 
-app.set('view engine', 'mustache');
-app.set('views', __dirname + '/views');
+let session = require('express-session');
 const bodyParser = require("body-parser");
+
+let app = express();
+let port = 80;
+let uri = 'mongodb://mongo:27017/test';
+
 app.use(bodyParser.urlencoded({
 	extended: true  
 }));
+
+mongoose.connect(uri);
+
+app.engine('mustache', mustacheExpress()); 
+app.set('view engine', 'mustache');
+app.set('views', __dirname + '/views');
+
 app.use(bodyParser.json());
 
 let path = require('path');
