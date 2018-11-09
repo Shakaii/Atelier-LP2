@@ -1,6 +1,7 @@
 [
     {
       "title": "Attention",
+      "image": "Attention.jpg",
       "prestations": [
         {
 	  "_id": "1234e8ac996ef7f4636bfeac",
@@ -54,6 +55,7 @@
     },
     {
       "title": "Activité",
+      "image": "Activité.jpg",
       "prestations":[
         {
 	  "_id": "5519e8ac456ef7f4636bfeac",
@@ -155,6 +157,7 @@
     },
     {
       "title": "Restauration",
+      "image": "Restauration.jpg",
       "prestations":[
         {
           "_id": "5519e8ae996ef7f4636bfeac",
@@ -216,6 +219,7 @@
     },
     {
       "title": "Hébergement",
+      "image": "Hébergement.jpg",
       "prestations":[
         {
 	  "_id": "5519e8ac996ef7f4636bfaeb", 
