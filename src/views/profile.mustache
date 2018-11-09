@@ -35,10 +35,10 @@
             <input disabled="disabled" value={{host}}/box/gift/{{user.id}}/{{urlGift}}> 
             {{/urlGift}}
             {{^urlGift}}
-            <a href=/box/giftGenerate/{{_id}}>Génerer votre Url cadeau !</a> 
+            <a class="linkProfile" href=/box/giftGenerate/{{_id}}>Génerer votre Url cadeau !</a> 
             {{/urlGift}}
         </div>
         {{/user.boxes}}
     </div>
-    <a href="/profile/modify" class="modifProfil">Modifier ses informations personnelles</a>
+    <a class="linkProfile" href="/profile/modify" class="modifProfil">Modifier ses informations personnelles</a>
 {{> footer}}
