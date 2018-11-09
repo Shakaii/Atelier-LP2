@@ -8,10 +8,10 @@
     <div class="container">
         {{#box.prestations}}
         <div class="card">
-            <h1 class="card-title">{{title}}</h1>
-            <div class="card-img">
-                <img src="/img/{{image}}">
-            </div>
+            <a  href="/box/{{box._id}}/{{_id}}" >
+                <div class="card-title">{{title}}</div>
+                <div class="card-img"><img src="/img/{{image}}"></div>
+            </a>
             <div class="card-footer">
                 <span class="price">{{price}}€</span>
                 <a class="rmPrest" href="/rmPrest/{{box._id}}/{{_id}}"><i class="fas fa-trash-alt"></i></a>
