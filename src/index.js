@@ -719,6 +719,73 @@ db.once('open', function() {
 		res.redirect('/profile');
 	});
 
+	
+
+	app.get("/validate/:id",function (req,res){
+		if (!req.session.email){
+			res.redirect('/catalog');
+		}else{
+			res.render('validate', {});
+		}
+	});
+ 
+	app.post("/validate/:id",function(req,res){
+
+		User.findOne({email:req.session.email}, function (err, user){
+
+			if (user) {
+
+				let box = user.boxes.filter(function (box) {
+					return box.id === req.params.id;
+				}).pop();
+
+				box.recipientName = req.body.name;
+				box.message = req.body.message;
+				box.date=req.body.dateouverture;
+
+				if (req.body.paiement === "c"){
+					urlPot = req.param.id
+				}
+	
+				user.save();
+
+				console.log(user);
+				res.redirect('/profile/')
+			};
+		}); 
+	});
+
+	app.get("/validation/:id",function(req,res){
+		if (!req.session.email){
+			res.redirect('/catalog');
+		}else{
+			res.render('validation', {});
+		}
+	});
+
+	app.post("/validation/:id",function(req,res){
+		User.findOne({email:req.session.email}, function (err, user){
+
+			if (user) {
+
+				let box = user.boxes.filter(function (box) {
+					return box.id === req.params.id;
+				}).pop();
+
+				if(req.body.numcarte!= null &&
+					req.body.name!= null &&
+					req.body.dateexpi!= null &&
+					req.body.crypt!= null 
+				){
+					box.isPaid=true;
+				}
+	
+				user.save();
+
+				res.redirect('/profile/')
+			};
+		});
+	});
 
 	console.log('Connection à la bdd effectuée');
 
