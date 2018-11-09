@@ -122,7 +122,7 @@ db.once('open', function() {
 		}	
 		res.redirect('/catalog');
 	}); 
-
+ 
 	//on signup
 	app.post('/signup', function (req, res) {
 
@@ -176,7 +176,6 @@ db.once('open', function() {
 		//if lazy checking passed
 		if (validated){
 
-			let salt = "salty";
 			let passwordHashed;
 			bcrypt.genSalt(10, function(err, salt) {
     			bcrypt.hash(req.body.password, salt, function(err, hash) {
@@ -246,17 +245,19 @@ db.once('open', function() {
 				if (err) return handleError(err)
 					//if user is found
 				if (user){
-					//if the passwords match
-					if (bcrypt.compare(req.body.password, user.password)) {
-						req.session.email = user.email;
-						res.redirect('/');
-					}
-					else {
-						res.render('login', {
-							"connectionRefused": true,
-							"saveEmail" : saveEmail
-						});
-					}
+					bcrypt.compare(req.body.password, user.password).then(function(result) {
+						//if the passwords match
+						if (result) {
+							req.session.email = user.email;
+							res.redirect('/');
+						}
+						else {
+							res.render('login', {
+								"connectionRefused": true,
+								"saveEmail" : saveEmail
+							});
+						}
+					});
 				}
 				else {
 					res.render('login', {
@@ -718,79 +719,76 @@ db.once('open', function() {
 		res.redirect('/profile');
 	});
 
+	
+
 	app.get("/validate/:id",function (req,res){
-		User.findOne({email:req.session.email}, function (err, user){
-			let found=false;
-			user.boxes.forEach(function(element) {
-				if(element._id == req.params.id){
-					found=true;
-					box=element;
-				}
-			});
-			if(found){
-				res.render('validate',{'mail':req.session.email});
-			}
-		});
-		 
+		if (!req.session.email){
+			res.redirect('/catalog');
+		}else{
+			res.render('validate', {});
+		}
 	});
-let cb = false;
+ 
 	app.post("/validate/:id",function(req,res){
+
 		User.findOne({email:req.session.email}, function (err, user){
-			let found=false;
-		
-			user.boxes.forEach(function(element) {
-				if(element._id == req.params.id){
-					found=true;
-					box=element;
-					box.recipientName = req.body.firstname + " " + req.body.lastname;
-					box.recipientEmail = req.body.mail;
-					box.date=req.body.dateouverture;
-					if (req.body.paiement== "cb"){
-						cb=true;
-					}
+
+			if (user) {
+
+				let box = user.boxes.filter(function (box) {
+					return box.id === req.params.id;
+				}).pop();
+
+				box.recipientName = req.body.name;
+				box.message = req.body.message;
+				box.date=req.body.dateouverture;
+
+				if (req.body.paiement === "c"){
+					urlPot = req.param.id
 				}
-			});
-			user.save();
-			if(found){
-				res.redirect('/validation/'+req.params.id)
-				
-			}
-		});
+	
+				user.save();
+
+				console.log(user);
+				res.redirect('/profile/')
+			};
+		}); 
 	});
 
 	app.get("/validation/:id",function(req,res){
-		res.render('validation',{'paie':cb});
+		if (!req.session.email){
+			res.redirect('/catalog');
+		}else{
+			res.render('validation', {});
+		}
 	});
 
 	app.post("/validation/:id",function(req,res){
 		User.findOne({email:req.session.email}, function (err, user){
-			let found=false;
-		
-			user.boxes.forEach(function(element) {
-				if(element._id == req.params.id){
-					found=true;
-					box=element;
-					if(req.body.numcarte!= null &&
-						req.body.name!= null &&
-						req.body.dateexpi!= null &&
-						req.body.crypt!= null 
-					){
-						box.isPaid=true;
-					}
+
+			if (user) {
+
+				let box = user.boxes.filter(function (box) {
+					return box.id === req.params.id;
+				}).pop();
+
+				if(req.body.numcarte!= null &&
+					req.body.name!= null &&
+					req.body.dateexpi!= null &&
+					req.body.crypt!= null 
+				){
+					box.isPaid=true;
 				}
-			});
+	
+				user.save();
 
-			user.save();
+				res.redirect('/profile/')
+			};
 		});
-
-		res.redirect('/recap/'+req.params.id);
 	});
 
-	app.get("/recap/:id",function(req,res){
-		res.render('recap');
-	});
 	console.log('Connection à la bdd effectuée');
 
 });
 
-app.listen(port); 
+app.listen(port);  
