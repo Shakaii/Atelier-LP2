@@ -169,6 +169,7 @@ img {
 }
 
 .card-title {
+    font-weight: 900;
     color:white;
     font-weight:bold;
     background-color:rgb(13, 35, 71);
@@ -211,8 +212,9 @@ img {
     }
 
     .price{
+        font-weight: 100;
         color:white;
-        font-weight:bold;
+
     }
 }
 
@@ -223,6 +225,20 @@ img {
     grid-gap: 20px;
     @media screen and (max-width: 1000px) {
         grid-template-columns: repeat(3, 1fr);
+    }
+
+    @media screen and (max-width: 500px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.container-catalog {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 20px;
+    @media screen and (max-width: 1000px) {
+        grid-template-columns: repeat(2, 1fr);
     }
 
     @media screen and (max-width: 500px) {
@@ -260,7 +276,7 @@ img {
         margin-bottom:1em;
     }
     label{
-
+        font-weight:100;
         &>input{
             
             border-radius: 10px;
@@ -282,6 +298,9 @@ img {
        
     }
     .pass{
+        margin-bottom: 1em;
+        font-weight:100;
+        text-transform: uppercase;
         border: none;
         padding:10px;
         background-color: rgb(13, 35, 71);
@@ -304,7 +323,7 @@ img {
         color:white;
     }
     a{
-
+        font-weight:900;
         color:rgb(13, 35, 71);
         margin: 1em;
         text-align:right;
@@ -334,6 +353,8 @@ img {
 .navCat {
     padding:1em;
     a {
+        text-transform: uppercase;
+        font-weight:100;
         display: inline-block;
         margin-top: 1em;
         text-decoration: none;
@@ -421,8 +442,8 @@ img {
     }
 
     .price{
+        font-weight: 100!important;
         color:white;
-        font-weight:bold;
     }
         
     }
@@ -438,6 +459,28 @@ img {
     h1{
         grid-column: span 1;
     }
+    .navCat {
+        text-align:center;
+    }
 }
 
 
+.welcome{
+
+    text-align:center;
+    padding: 2em;
+
+    .headline{
+        font-size: 3em;
+        font-weight:100;
+        color: rgb(13, 35, 71);
+    }
+    p{
+        font-weight:100;
+        color: rgb(13, 35, 71);
+        a{
+            text-decoration: none;
+            color: #097887
+        }
+    }
+}

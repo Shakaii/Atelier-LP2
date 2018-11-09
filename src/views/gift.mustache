@@ -2,6 +2,13 @@
 <h1 class="titreW">Récupérez votre cadeau !</h1>
 
 {{^block}}
+
+{{#recipientName}}
+{{#message}}
+<div class="messageCadeau">{{recipientName}} vous a laissé un message ! {{box.message}}</div>
+{{/message}}
+{{/recipientName}}
+
 <div class="container">
         {{#box.prestations}}
         <div class="card">

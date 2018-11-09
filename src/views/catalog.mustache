@@ -1,5 +1,20 @@
 {{> header}}
-    <div class="container">
+    {{#connected}}
+
+    {{/connected}}
+    {{^connected}}
+    <div class="welcome">
+            <div class="headline"><i class="fas fa-gift"></i> Bienvenue sur MyGiftBox </div>
+            <p>
+                Choisis des prestations, à payer seul ou à plusieurs.<br>
+                Votre ami pourra ouvrir ses cadeaux à la date indiquée ou les découvrirs un à un!<br>
+                Commence par <a href="/signup">t'inscrire</a> ou <a href="/login">connecte toi</a> pour créer ta box!
+            </p>
+        </div>
+    {{/connected}}
+    
+    
+    <div class="container-catalog">
     {{#categories}}
         {{> category}}
     {{/categories}}

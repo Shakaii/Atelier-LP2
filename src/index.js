@@ -1,4 +1,4 @@
-let http = require('http');
+let http = require('http'); 
 let express = require('express');
 let mongoose = require('mongoose');
 let app = express();
@@ -10,7 +10,7 @@ let bcrypt = require('bcryptjs');
 let validator = require('validator');
 let uuid4 = require('uuid/v4');
 mongoose.connect(uri);
-app.engine('mustache', mustacheExpress());
+app.engine('mustache', mustacheExpress()); 
 app.set('view engine', 'mustache');
 app.set('views', __dirname + '/views');
 const bodyParser = require("body-parser");
@@ -320,8 +320,10 @@ db.once('open', function() {
 		}, function (err, user) {
 			user.boxes.forEach(function (element) {
 				if (element._id == req.params.idBox) {
+					let found=false;
 					element.prestations.forEach(function (prest){
-						if(prest._id == req.params.id){
+						if(prest._id == req.params.id && !found){
+							found=true;
 							element.prestations.splice(element.prestations.indexOf(prest),1);
 							user.save();
 						}
@@ -423,7 +425,7 @@ db.once('open', function() {
 		let connected = false;
 		if (req.session.email) {
 			connected = true;
-		}
+		} 
 		
 		Category.findOne({
 			title: req.params.category
@@ -510,15 +512,39 @@ db.once('open', function() {
 		}, function (err, user) {
 			if (err) return handleError(err)
 
-			//if the passwords match
-			if (req.body.passwordCheck == req.body.password) {
-				user.password = req.body.password;
+			//lazy checking
+			let validated = true;
+			let passwordMatch = true;
+			let passwordIsSet = true;
+
+			if (req.body.password.length <= 1){
+				validated = false;
+				passwordIsSet = false;
 			}
 
-			user.save(function (err) {
-				if (err) return handleError(err)
-				res.redirect('/profile');
-			});
+			if (req.body.passwordCheck != req.body.password) {
+				passwordMatch = false;
+				validated = false;
+			}
+
+			if (validated){
+				
+				user.password = req.body.password;
+			
+				user.save(function (err) {
+					if (err) return handleError(err)
+					res.redirect('/profile');
+				});
+			}
+			else{
+				res.render('modify',{
+					"passwordMatch": !passwordMatch,
+					"passwordIsSet": !passwordIsSet,
+					"passwordWarning": !passwordIsSet,
+				})
+			}
+
+			
 
 		});
 
@@ -538,6 +564,43 @@ db.once('open', function() {
 				});
 				if(found){
 					res.render('box',{'connected':true,'box':box});
+				}
+			});
+
+		} else {
+			res.redirect('/');
+		}
+	});
+
+	app.get("/box/:boxId/:id", function (req,res) {
+		if (req.session.email){
+			
+			User.findOne({email:req.session.email}, function (err, user){
+				let box;
+				let found=false;
+				user.boxes.forEach(function(element) {
+					if(element._id == req.params.boxId){
+						box=element;
+						found=true;
+					}
+				});
+				if(found){
+					let prest;
+					let foundPrest=false;
+					box.prestations.forEach(function(element) {
+						if(element._id == req.params.id){
+							prest=element;
+							foundPrest=true;
+						}
+					});
+					if(foundPrest){
+						console.log(box);
+						res.render('profil_prestation',{'connected':true,'box':box, 'prestation':prest});
+					}
+					//si on ne trouve pas la prest on redirige vers la boite (pour le rmPrest)
+					else{
+						res.render('box',{'connected':true,'box':box});
+					}
 				}
 			});
 
