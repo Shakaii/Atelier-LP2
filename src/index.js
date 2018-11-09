@@ -10,7 +10,7 @@ let bcrypt = require('bcryptjs');
 let validator = require('validator');
 let uuid4 = require('uuid/v4');
 mongoose.connect(uri);
-app.engine('mustache', mustacheExpress());
+app.engine('mustache', mustacheExpress()); 
 app.set('view engine', 'mustache');
 app.set('views', __dirname + '/views');
 const bodyParser = require("body-parser");
