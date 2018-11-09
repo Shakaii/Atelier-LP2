@@ -475,7 +475,12 @@ db.once('open', function() {
 	});
 
 	app.get("/current", function(req, res) {
-		res.redirect('/box/'+currentBox);
+		if (currentBox) {
+			res.redirect('/box/'+currentBox);
+		}else {
+			res.redirect('/');
+		}
+		
 	});
 
 	app.get("/profile/modify", function (req, res) {
@@ -640,6 +645,9 @@ db.once('open', function() {
 				if(curr && user.boxes.length>0){
 					user.boxes[0].isCurrent=true;
 					currentBox = user.boxes[0].id;
+				}
+				if (user.boxes.length==0) {
+					currentBox = null;
 				}
 				user.save();
 			}
