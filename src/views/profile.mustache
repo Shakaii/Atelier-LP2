@@ -1,41 +1,100 @@
 {{> header}}
-    <h1 class="titreProfil">Profil de l'utilisateur {{user.email}}</h1>
+    <h1 class="titreW">Profil de l'utilisateur. Vous pouvez consulter le statut de vos coffrets et modifier vos informations personnelles.</h1>
     <div class="container">
         {{#user.boxes}}
         {{^isCurrent}}
-            <div class="box nonCurrent">
+            <div class="card nonCurrent">
         {{/isCurrent}}
         {{#isCurrent}}
-            <div class="box current">
+            <div class="card current">
         {{/isCurrent}}
-            <p class="card-title">
+            <h1 class="card-title">
                 {{#isCurrent}}
                     Coffret en cours
                 {{/isCurrent}}
                 {{^isCurrent}}
                     Autre coffret
                 {{/isCurrent}}
-            </p>
-                Nombre de prestations : {{prestations.length}}
-                {{^isPaid}}
-                </br>Le coffret n'est pas validé !
-                <a href=/box/{{_id}}>Modifier le contenu du coffret</a>
-                <a href=/validate/{{_id}}>Valider le coffret</a>
-                {{/isPaid}}
+            </h1>
+            <div class="description-box">
+                Nombre de prestation(s) : {{prestations.length}}
+                {{#recipientName}}
+                    {{#isPaid}}
+                        </br>Le coffret est validé et a été transmis au destinataire !
+                        {{#isOpened}}
+                          </br>Il a été ouvert !
+                        {{/isOpened}}
+                        {{^isOpened}}
+                            </br>Il n'a pas encore été ouvert.
+                        {{/isOpened}}
+                    {{/isPaid}}
+                    {{^isPaid}}
+                        </br>Le coffret est en attente de paiement !
+                    {{/isPaid}}
+                {{/recipientName}}
+                {{^recipientName}}
+                    </br>Le coffret est en attente de validation
+
+                {{/recipientName}}
+
+
+
+                </div>
+
+        <!-- Si validé -->
+        {{#recipientName}}        
+            {{#urlGift}}    <!-- Si cadeau -->
+                <input data-clipboard-text="{{host}}/box/gift/{{user.id}}/{{urlGift}}" disabled="disabled" value={{host}}/box/gift/{{user.id}}/{{urlGift}}> 
+                <div class="urlGift" data-clipboard-text="{{host}}/box/gift/{{user.id}}/{{urlGift}}">Copier dans le presse papier</div>
+            {{/urlGift}}
+            {{^urlGift}}
                 {{#isPaid}}
-                Le coffret est validé !
-                <a href=/box/{{_id}}/suivi>Suivre le coffret</a>
-                    {{#urlGift}}
-                    <input disabled="disabled" value={{host}}/box/gift/{{user.id}}/{{urlGift}}> 
-                    {{/urlGift}}
-                    {{^urlGift}}
-                    <a href=/box/giftGenerate/{{_id}}>Génerer votre Url cadeau !</a> 
-                    {{/urlGift}}
+                    <a class="link" href=/box/giftGenerate/{{_id}}>Génerer votre Url cadeau !</a> 
                 {{/isPaid}}
-            </br>
-            
+
+                {{#urlPot}} <!-- Si cagnotte -->
+                    <input data-clipboard-text="{{host}}/box/pot/{{user.id}}/{{urlPot}}" disabled="disabled" value={{host}}/box/pot/{{user.id}}/{{urlPot}}> 
+                    <div class="urlGift" data-clipboard-text="{{host}}/box/pot/{{user.id}}/{{urlPot}}">Copier dans le presse papier</div>
+                {{/urlPot}}
+                {{^urlPot}}
+                    {{#isPaid}}{{/isPaid}}{{^isPaid}}
+                        <a class="link" href=/validation/{{_id}}>Payer</a>
+                    {{/isPaid}}
+                {{/urlPot}}
+            {{/urlGift}}
+        {{/recipientName}}
+
+        <!-- Si pas -->
+        {{^recipientName}}
+            <a class="link" href=/validate/{{_id}}>Finaliser le panier</a>
+            <a class="link" href=/changeCurr/{{_id}}>Définir en temps que panier courant</a>
+        {{/recipientName}}
+
+         <div class="card-footer">
+            <a class="zoom" href=/box/{{_id}}><i class="fas fa-search-plus"></i></a>
+            {{#isPaid}}{{/isPaid}}{{^isPaid}}
+                <a class="rmPrest" href=/delete/{{_id}}><i class="fas fa-trash-alt"></i></a>
+            {{/isPaid}}
         </div>
-        {{/user.boxes}}
     </div>
-    <a href="/profile/modify" class="modifProfil">Modifier ses informations personnelles</a>
-{{> footer}}
+        {{/user.boxes}}
+</div>
+<a href="/profile/modify" class="modifProfil">Modifier mon mot de passe</a>
+{{> footer}} 
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+<script src="https://unpkg.com/tippy.js@3/dist/tippy.all.min.js"></script>
+<script>
+    let clipboard = new ClipboardJS('.urlGift');
+    tippy('.urlGift',{
+		content: "copié!",
+		trigger: "click",
+		arrow: true,
+		animation: "fade",
+		onShow: function(){
+			setTimeout(function(){tippy.hideAllPoppers()},800)
+			
+		}
+	});
+</script> 
