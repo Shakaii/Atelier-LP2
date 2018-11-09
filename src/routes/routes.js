@@ -2,7 +2,6 @@ module.exports = function (app, Box, User, Category) {
     let bcrypt = require('bcryptjs');
     let validator = require('validator');
     let uuid4 = require('uuid/v4');
-
     let tri; //var pour le tri des prestations
     let currentBox;
 
@@ -142,7 +141,7 @@ module.exports = function (app, Box, User, Category) {
 
     //on login 
     app.post("/login", function (req, res) {
-
+ 
         let validate = true;
         let saveEmail = false;
         let emailIsSet = true;
@@ -150,47 +149,52 @@ module.exports = function (app, Box, User, Category) {
 
         if (req.body.mail) saveEmail = req.body.mail
 
-        if (req.body.mail.length <= 5) {
+        if (req.body.mail.length <= 5){
             emailIsSet = false;
             validate = false;
         }
-        if (req.body.password.length <= 1) {
+        if (req.body.password.length <= 1){
             passwordIsSet = false;
             validate = false;
         }
 
         //if lazy checking passed
-        if (validate) {
+        if (validate){
 
             User.findOne({
                 email: req.body.mail
             }, function (err, user) {
-                if (err) return handleError(err)
-                //if user is found
-                if (user) {
-                    //if the passwords match
-                    if (bcrypt.compare(req.body.password, user.password)) {
-                        req.session.email = user.email;
-                        res.redirect('/');
-                    } else {
-                        res.render('login', {
-                            "connectionRefused": true,
-                            "saveEmail": saveEmail
-                        });
-                    }
-                } else {
-                    res.render('login', {
+               if (err) return handleError(err)
+                   //if user is found
+               if (user){
+                   bcrypt.compare(req.body.password, user.password).then(function(result) {
+                       //if the passwords match
+                       if (result) {
+                           req.session.email = user.email;
+                           res.redirect('/');
+                       }
+                       else {
+                           res.render('login', {
+                               "connectionRefused": true,
+                               "saveEmail" : saveEmail
+                           });
+                       }
+                   });
+               }
+               else {
+                   res.render('login', {
                         "connectionRefused": true,
-                        "saveEmail": saveEmail
+                        "saveEmail" : saveEmail
                     });
                 }
                 //Only telling the user the connection is refused, not why to allow account guessing
 
-
-
-
+                
+                
+                
             });
-        } else {
+        }
+        else {
 
             let passwordWarning = passwordIsSet;
             let emailWarning = emailIsSet;
@@ -200,7 +204,7 @@ module.exports = function (app, Box, User, Category) {
                 "passwordIsSet": !passwordIsSet,
                 "passwordWarning": !passwordWarning,
                 "emailWarning": !emailWarning,
-                "saveEmail": saveEmail
+                "saveEmail" : saveEmail
             });
         }
     });
@@ -680,7 +684,7 @@ module.exports = function (app, Box, User, Category) {
         if (!req.session.email) {
             res.redirect('/catalog');
         } else {
-            res.render('validate', {});
+            res.render('validate', {connected:true});
         }
     });
 
@@ -716,7 +720,7 @@ module.exports = function (app, Box, User, Category) {
         if (!req.session.email) {
             res.redirect('/catalog');
         } else {
-            res.render('validation', {});
+            res.render('validation', {connected: true});
         }
     });
 
