@@ -7,7 +7,7 @@
                     <label ><p>Numero de carte</p> <input {{#saveNumber}} value="{{saveNumber}}" {{/saveNumber}} {{#numberWarning}} class="inputWarning" {{/numberWarning}} name="numcarte" type="text" maxlength="16"></label>
 
                     {{#numberIsSet}}
-                        <span class="warning">Veuillez entrer le numéro de votre carte/span>
+                        <span class="warning">Veuillez entrer le numéro de votre carte</span>
                     {{/numberIsSet}}
                     
                 </div>
@@ -21,7 +21,7 @@
                 </div>
 
                 <div>
-                    <label ><p>Date d'expiration</p> <input {{#saveDate}} value="{{saveDate}}" {{/saveDate}} {{#checkWarning}} class="inputWarning" {{/checkWarning}} name="dateexpi" type="text" ></label>
+                    <label ><p>Date d'expiration</p> <input {{#saveDate}} value="{{saveDate}}" {{/saveDate}} {{#checkWarning}} class="inputWarning" {{/checkWarning}} name="dateexpi" type="date" ></label>
 
                     {{#dateIsSet}}
                         <span class="warning">Veuillez entrer la date d'expiration</span>

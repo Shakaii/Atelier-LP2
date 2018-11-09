@@ -1,0 +1,41 @@
+{{> header}}
+
+        <div class="pannelLog">
+            <form method="post">
+                <h1>Cagnotte</h1>
+
+                <div>
+                        <label ><p>Nom Prénom</p> <input {{#nameWarning}} class="inputWarning" {{/nameWarning}} name="name" type="text"></label>
+    
+                        {{#nameIsSet}}
+                            <span class="warning">Veuillez entrer votre nom / prénom</span>
+                        {{/nameIsSet}}
+                        
+                    </div>
+
+                <div>
+                    <label ><p>Message</p> <input {{#saveMessage}} value="{{saveMessage}}" {{/saveMessage}}  {{#dateWarning}} class="inputWarning" {{/dateWarning}} name="message" type="text" >
+    
+                        {{#messageIsSet}}
+                            <span class="warning">Veuillez entrer un message</span>
+                        {{/messageIsSet}}
+                        
+                </div>
+
+                <div>
+                        <label ><p>Message</p> <input {{#amountWarning}} class="inputWarning" {{/amountWarning}} name="amount" type="number" >
+        
+                            {{#messageIsSet}}
+                                <span class="warning">Veuillez entrer un message</span>
+                            {{/messageIsSet}}
+                            
+                    </div>
+
+
+            </br>
+
+                <input class="pass" type = "submit" value="Valider">
+ 
+            </form>
+        </div>
+{{> footer}}

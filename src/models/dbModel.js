@@ -19,7 +19,7 @@ module.exports = function(mongoose, app){
     
         let contributionSchema = new mongoose.Schema({
             name: String,
-            Amount: Number,
+            amount: Number,
             message: String
         })
     
@@ -50,6 +50,6 @@ module.exports = function(mongoose, app){
         let Prestation = mongoose.model('Prestation', prestationSchema);
         let Contribution = mongoose.model('Contribution', contributionSchema);
 
-        require('../routes/routes')(app, Box, User, Category);
+        require('../routes/routes')(app, Box, User, Category, Contribution);
     });
 }
