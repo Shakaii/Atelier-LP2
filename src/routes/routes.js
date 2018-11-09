@@ -465,8 +465,11 @@ module.exports = function (app, Box, User, Category) {
 
             if (validated) {
 
-                user.password = req.body.password;
-
+                bcrypt.genSalt(10, function(err, salt) {
+					bcrypt.hash(req.body.password, salt, function(err, hash) {
+						user.password = hash;
+					});
+				});
                 user.save(function (err) {
                     if (err) return handleError(err)
                     res.redirect('/profile');
