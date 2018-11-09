@@ -1,0 +1,19 @@
+{{> header}}
+<h1>Validation</h1>
+<form method="post">
+<label ><p>nom</p> <input name="firstname" type="text"></label>
+<label ><p>prenom</p> <input name="lastname" type="text"></label>
+<label ><p>email</p> <input name="mail" type="text" value="{{mail}}"></label>
+
+<p>Date d'ouverture des cadeaux</p>
+<input type="date" name="dateouverture">
+
+<p>Moyen de paiement</p>
+<fieldset id="paiement">
+<label ><input type="radio" name="paiement" value="cb"> Carte banquaire<br></label>
+
+<label ><input type="radio" name="paiement" value="c"> Cagnotte<br></label>
+</fieldset>
+<input class ="pass" type = "submit" value="Valider">
+</form>
+{{> footer}}

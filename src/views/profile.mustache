@@ -20,18 +20,20 @@
                 {{^isPaid}}
                 </br>Le coffret n'est pas validé !
                 <a href=/box/{{_id}}>Modifier le contenu du coffret</a>
+                <a href=/validate/{{_id}}>Valider le coffret</a>
                 {{/isPaid}}
                 {{#isPaid}}
                 Le coffret est validé !
                 <a href=/box/{{_id}}/suivi>Suivre le coffret</a>
+                    {{#urlGift}}
+                    <input disabled="disabled" value={{host}}/box/gift/{{user.id}}/{{urlGift}}> 
+                    {{/urlGift}}
+                    {{^urlGift}}
+                    <a href=/box/giftGenerate/{{_id}}>Génerer votre Url cadeau !</a> 
+                    {{/urlGift}}
                 {{/isPaid}}
             </br>
-            {{#urlGift}}
-            <input disabled="disabled" value={{host}}/box/gift/{{user.id}}/{{urlGift}}> 
-            {{/urlGift}}
-            {{^urlGift}}
-            <a href=/box/giftGenerate/{{_id}}>Génerer votre Url cadeau !</a> 
-            {{/urlGift}}
+            
         </div>
         {{/user.boxes}}
     </div>

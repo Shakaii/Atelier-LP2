@@ -498,7 +498,77 @@ db.once('open', function() {
 		res.redirect('/profile');
 	});
 
+	app.get("/validate/:id",function (req,res){
+		User.findOne({email:req.session.email}, function (err, user){
+			let found=false;
+			user.boxes.forEach(function(element) {
+				if(element._id == req.params.id){
+					found=true;
+					box=element;
+				}
+			});
+			if(found){
+				res.render('validate',{'mail':req.session.email});
+			}
+		});
+		 
+	});
+let cb = false;
+	app.post("/validate/:id",function(req,res){
+		User.findOne({email:req.session.email}, function (err, user){
+			let found=false;
+		
+			user.boxes.forEach(function(element) {
+				if(element._id == req.params.id){
+					found=true;
+					box=element;
+					box.recipientName = req.body.firstname + " " + req.body.lastname;
+					box.recipientEmail = req.body.mail;
+					box.date=req.body.dateouverture;
+					if (req.body.paiement== "cb"){
+						cb=true;
+					}
+				}
+			});
+			user.save();
+			if(found){
+				res.redirect('/validation/'+req.params.id)
+				
+			}
+		});
+	});
 
+	app.get("/validation/:id",function(req,res){
+		res.render('validation',{'paie':cb});
+	});
+
+	app.post("/validation/:id",function(req,res){
+		User.findOne({email:req.session.email}, function (err, user){
+			let found=false;
+		
+			user.boxes.forEach(function(element) {
+				if(element._id == req.params.id){
+					found=true;
+					box=element;
+					if(req.body.numcarte!= null &&
+						req.body.name!= null &&
+						req.body.dateexpi!= null &&
+						req.body.crypt!= null 
+					){
+						box.isPaid=true;
+					}
+				}
+			});
+
+			user.save();
+		});
+
+		res.redirect('/recap/'+req.params.id);
+	});
+
+	app.get("/recap/:id",function(req,res){
+		res.render('recap');
+	});
 	console.log('Connection à la bdd effectuée');
 
 });

@@ -1,0 +1,19 @@
+{{> header}}
+{{#paie}}
+<h1>Paiement par carte banquaire</h1>
+<form method="post">
+    
+    <label ><p>Numero de carte</p> <input name="numcarte" type="text" maxlength="16"></label>
+    <label ><p>NOM prenom</p> <input name="name" type="text"></label>
+    <label ><p>Date d'expiration</p> <input name="dateexpi" type="text"></label>
+    <label ><p>Cryptogramme</p> <input name="crypt" type="text" maxlength="3"></label>
+    
+
+  
+    <input class ="pass" type = "submit" value="Payer">
+    </form>
+{{/paie}}
+{{^paie}}
+
+{{/paie}}
+{{> footer}}
