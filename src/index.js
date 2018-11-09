@@ -190,6 +190,7 @@ db.once('open', function() {
 						req.session.email = user.email;
 						res.redirect('/');
 					});
+
 				});	
 
     		}); 
@@ -202,6 +203,8 @@ db.once('open', function() {
 
 			if (!emailIsNotInDb || !emailIsValid || !emailIsSet) emailWarning = false;
 			
+			
+
 			res.render('signup', {
 				"passwordMatch": !passwordMatch,
 				"emailIsNotInDb": !emailIsNotInDb,
@@ -530,7 +533,11 @@ db.once('open', function() {
 
 			if (validated){
 				
-				user.password = req.body.password;
+				bcrypt.genSalt(10, function(err, salt) {
+					bcrypt.hash(req.body.password, salt, function(err, hash) {
+						user.password = hash;
+					});
+				});
 			
 				user.save(function (err) {
 					if (err) return handleError(err)
@@ -749,7 +756,6 @@ db.once('open', function() {
 	
 				user.save();
 
-				console.log(user);
 				res.redirect('/profile/')
 			};
 		}); 
