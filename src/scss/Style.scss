@@ -232,6 +232,20 @@ img {
     }
 }
 
+.container-catalog {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 20px;
+    @media screen and (max-width: 1000px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media screen and (max-width: 500px) {
+        grid-template-columns: 1fr;
+    }
+}
+
 
 .pannelLog{
     display: flex;
@@ -284,6 +298,9 @@ img {
        
     }
     .pass{
+        margin-bottom: 1em;
+        font-weight:100;
+        text-transform: uppercase;
         border: none;
         padding:10px;
         background-color: rgb(13, 35, 71);
@@ -448,3 +465,22 @@ img {
 }
 
 
+.welcome{
+
+    text-align:center;
+    padding: 2em;
+
+    .headline{
+        font-size: 3em;
+        font-weight:100;
+        color: rgb(13, 35, 71);
+    }
+    p{
+        font-weight:100;
+        color: rgb(13, 35, 71);
+        a{
+            text-decoration: none;
+            color: #097887
+        }
+    }
+}
