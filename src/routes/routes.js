@@ -694,25 +694,62 @@ module.exports = function (app, Box, User, Category, Contribution) {
                 email: req.session.email
             }, function (err, user) {
 
+                let nbCateg = 0;
+
                 if (user) {
 
                     let box = user.boxes.filter(function (box) {
                         return box.id === req.params.id;
                     }).pop();
 
-                    if (box.prestations.length >= 2){
-                        res.render('validate', {
-                            connected: true
-                        });
-                    }
-                    else {
-                        res.render('profile', {
-                            'connected': true,
-                            'user': user,
-                            'host': req.hostname,
-                            'validationRefused': true
-                        });
-                    }
+                    
+
+                    Category.find(function (err,categories){
+
+                        
+
+                        //pour chaques catégories
+                        for (let indexCateg = 0;indexCateg < categories.length;indexCateg ++){
+
+                            let isInCateg = false;
+
+                            //pour chaques prestations de la box
+                            for (let indexPrest = 0;indexPrest < box.prestations.length;indexPrest ++){
+
+                                //pour chaques prest je check si elle existe dans la categ
+                                let presta = categories[indexCateg].prestations.filter(function (presta) {
+                                    return presta.id === box.prestations[indexPrest].id
+                                }).pop(); 
+
+                                if (presta){
+                                    isInCateg = true
+                                }
+                            }
+                            if (isInCateg == true){
+                                nbCateg ++;
+                            }
+
+                            if (indexCateg == categories.length - 1){
+                                if (box.prestations.length >= 2 && nbCateg >= 2 ){
+                                    res.render('validate', {
+                                        connected: true
+                                    });
+                                }
+                                else {
+                                    res.render('profile', {
+                                        'connected': true,
+                                        'user': user,
+                                        'host': req.hostname,
+                                        'validationRefused': true
+                                    });
+                                }
+                            }
+
+                        }
+                    })
+
+
+
                     
                 };
             });
