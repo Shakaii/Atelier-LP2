@@ -1,6 +1,6 @@
 # MyGiftBox.app
 
-Installation : (nécessite docker)
+Installation : (nÃ©cessite docker)
 
 Lancer le makefile -> make install
 
@@ -16,5 +16,5 @@ Compte utilisateur :
 
 ---
 
-Url du dépôt git : git@github.com:Shakaii/Atelier-LP2.git
+Url du dÃ©pÃ´t git : https://github.com/Shakaii/Atelier-LP2
 Url de test : http://51.158.74.182/
