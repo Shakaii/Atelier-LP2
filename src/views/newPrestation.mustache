@@ -1,20 +1,53 @@
 {{> header}}
-<h1>Ajout d'une prestation</h1>
-<form method="post">
-<div>
-    <label ><p>Titre</p><input type="text" name="title" ></label>
-</div>
-<div>
-    <label ><p>description</p><input type="text" name="description" ></label>
-</div>
 
-<div>
-    <label ><p>prix</p><input type="number" name="price" min="0" ></label>
-</div>
+<div class="pannelLog">
+        <form method="post">
+            <h1>Ajout d'une prestation</h1>
 
-<div>
-    <label ><p>image</p><input type="text" name="image" ></label>
-</div>
-<input class="pass" type = "submit" value="Ajouter">
-</form>
+            <div>
+                    <label ><p>Titre</p> <input {{#saveTitle}} value="{{saveTitle}}" {{/saveTitle}} {{#titleWarning}} class="inputWarning" {{/titleWarning}} name="title" type="text"></label>
+                    {{#titleIsSet}}
+                        <span class="warning">Veuillez entrer un titre</span>
+                    {{/titleIsSet}}
+                    
+                </div>
+
+            <div>
+                <label ><p>Description</p> <input {{#saveDesc}} value="{{saveDesc}}" {{/saveDesc}}  {{#descWarning}} class="inputWarning" {{/descWarning}} name="description" type="text" >
+
+                    {{#descIsSet}}
+                        <span class="warning">Veuillez entrer une description</span>
+                    {{/descIsSet}}
+                    
+            </div>
+
+            <div>
+                    <label ><p>Prix</p> <input {{#priceWarning}} class="inputWarning" {{/priceWarning}} min="0" name="price" type="number" >
+    
+                        {{#priceIsSet}}
+                            <span class="warning">Veuillez entrer un prix</span>
+                        {{/priceIsSet}}
+                        
+            </div>
+
+            <div>
+                    <label ><p>Image</p> <input {{#amountWarning}} class="inputWarning" {{/amountWarning}} {{#box.urlGift}}disabled{{/box.urlGift}} name="image" type="file" >
+    
+                        {{#imageIsSet}}
+                            <span class="warning">Veuillez ajouter une image</span>
+                        {{/imageIsSet}}
+                        
+            </div>
+
+
+
+
+        </br>
+
+        <input class="pass" type = "submit" value="Ajouter">
+            </form>
+
+
+
+
 {{> footer}}
