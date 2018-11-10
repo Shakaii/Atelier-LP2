@@ -2,12 +2,12 @@
 
     <div class="container">
 
-            {{^box.isCurrent}}
+        {{^box.isCurrent}}
             <div class="card nonCurrent">
         {{/box.isCurrent}}
         {{#box.isCurrent}}
             <div class="card current">
-        {{/isCurrent}}
+        {{/box.isCurrent}}
             <h1 class="card-title">
                 {{#box.isCurrent}}
                     Coffret courant
