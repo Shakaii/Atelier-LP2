@@ -106,7 +106,8 @@ module.exports = function (app, Box, User, Category, Contribution,Prestation) {
 
                     let user = new User({
                         password: hash,
-                        email: sanitizer.escape(req.body.mail)
+                        email: sanitizer.escape(req.body.mail),
+                        isAdmin: false
                     });
 
                     user.save(function (err) {
