@@ -5,7 +5,7 @@
                 <h1>Finalisation</h1>
 
                 <div>
-                        <label ><p>Nom Prénom</p> <input {{#nameWarning}} class="inputWarning" {{/nameWarning}} name="name" type="text"></label>
+                        <label ><p>Nom Prénom</p> <input {{#saveName}} value="{{saveName}}" {{/saveName}} {{#nameWarning}} class="inputWarning" {{/nameWarning}} name="name" type="text"></label>
     
                         {{#nameIsSet}}
                             <span class="warning">Veuillez entrer votre nom / prénom</span>
@@ -14,7 +14,7 @@
                     </div>
 
                 <div>
-                    <label ><p>Date d'ouverture des cadeaux</p> <input {{#dateWarning}} class="inputWarning" {{/dateWarning}} name="dateouverture" type="date"></label>
+                    <label ><p>Date d'ouverture des cadeaux</p> <input {{#saveDate}} value="{{saveDate}}" {{/saveDate}} {{#dateWarning}} class="inputWarning" {{/dateWarning}} name="dateouverture" type="date"></label>
 
                     {{#dateIsSet}}
                         <span class="warning">Veuillez entrer une date</span>

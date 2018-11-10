@@ -1,4 +1,4 @@
-module.exports = function (app, Box, User, Category) {
+module.exports = function (app, Box, User, Category, Contribution) {
     let bcrypt = require('bcryptjs');
     let validator = require('validator');
     let uuid4 = require('uuid/v4');
@@ -66,7 +66,7 @@ module.exports = function (app, Box, User, Category) {
         }
 
         //check if mail is set then if it is valid and not already in DB
-        if (req.body.mail.length > 5) {
+        if (req.body.mail.length > 4) {
 
             if (!validator.isEmail(req.body.mail)) {
                 validated = false;
@@ -631,7 +631,7 @@ module.exports = function (app, Box, User, Category) {
                         }
                     });
                     if (foundPrest) {
-                        console.log(box);
+
                         res.render('profil_prestation', {
                             'connected': true,
                             'box': box,
@@ -697,30 +697,79 @@ module.exports = function (app, Box, User, Category) {
 
     app.post("/validate/:id", function (req, res) {
 
-        User.findOne({
-            email: req.session.email
-        }, function (err, user) {
+        let validated = true;
+        let dateIsSet = true;
+        let messageIsSet = true;
+        let nameIsSet = true;
+        let saveName = '';
+        let saveDate = "";
+        let saveMessage = "";
+    
+        if(!req.body.name.length){
+            validated = false;
+            nameIsSet = false;
+        }
+        else{
+            saveName = req.body.name
+        }
+    
+        if(!req.body.dateouverture.length){
+            validated = false;
+            dateIsSet = false;
+        }
+        else{
+            saveDate = req.body.dateouverture
+        }
+    
+        if(!req.body.message.length){
+            validated = false;
+            messageIsSet = false;
+        }
+        else{
+            saveMessage = req.body.message
+        }
+    
+        //if okay just set the box as Paid
+        if (validated){
+            console.log("ok");
+            User.findOne({
+                email: req.session.email
+            }, function (err, user) {
 
-            if (user) {
+                if (user) {
 
-                let box = user.boxes.filter(function (box) {
-                    return box.id === req.params.id;
-                }).pop();
+                    let box = user.boxes.filter(function (box) {
+                        return box.id === req.params.id;
+                    }).pop();
 
-                box.recipientName = req.body.name;
-                box.message = req.body.message;
-                box.date = req.body.dateouverture;
+                    box.recipientName = escape(req.body.name);
+                    box.message = escape(req.body.message);
+                    box.date = escape(req.body.dateouverture);
 
-                if (req.body.paiement === "c") {
-                    urlPot = req.param.id
-                }
+                    if (req.body.paiement == "c") {
+                        box.urlFund = box.id+"/"+user.id
+                    }
 
-                user.save();
+                    user.save();
 
-                console.log(user);
-                res.redirect('/profile/')
-            };
-        });
+                    res.redirect('/profile/')
+                };
+            });
+        }else{  //else resend the view
+    
+            res.render('validate',{
+                "dateIsSet" : !dateIsSet,
+                "nameIsSet" : !nameIsSet,
+                "messageIsSet": !messageIsSet,
+                "dateWarning" : !dateIsSet,
+                "nameWarning" : !nameIsSet,
+                "messageWarning": !messageIsSet,
+                "saveDate" : saveDate,
+                "saveName": saveName,
+                "saveMessage": saveMessage
+            })
+    
+        }
     });
 
     app.get("/validation/:id", function (req, res) {
@@ -733,10 +782,91 @@ module.exports = function (app, Box, User, Category) {
         }
     });
 
-    app.post("/validation/:id", function (req, res) {
-        User.findOne({
-            email: req.session.email
-        }, function (err, user) {
+    app.post("/validation/:id",function(req,res){
+
+        let validated = true;
+        let numberIsSet = true;
+        let dateIsSet = true;
+        let cryptIsSet = true;
+        let nameIsSet = true;
+        let saveNumber = "";
+        let saveName = "";
+        let saveCrypt = "";
+        let saveDate = ""
+
+        if(!req.body.numcarte){
+            validated = false;
+            numberIsSet = false
+        }
+        else{
+            saveNumber = req.body.numcarte
+        }
+    
+        if(!req.body.name){
+            validated = false;
+            nameIsSet = false
+        }
+        else{
+            saveName = req.body.name
+        }
+    
+        if(!req.body.dateexpi){
+            validated = false;
+            dateIsSet = false
+        }
+        else{
+            saveDate = req.body.dateexpi
+        }
+    
+        if(!req.body.crypt){
+            validated = false;
+            cryptIsSet = false
+        }
+        else{
+            saveCrypt = req.body.crypt
+        }
+    
+        //if okay just set the box as Paid
+        if (validated){
+
+            User.findOne({email:req.session.email}, function (err, user){
+
+                if (user) {
+                    
+                    let box = user.boxes.filter(function (box) {
+                        return box.id === req.params.id;
+                    }).pop();
+    
+                    box.isPaid=true;                
+    
+                    user.save();
+    
+                    res.redirect('/profile/')
+                };
+            });
+        }else{  //else resend the view
+    
+            res.render('validation',{
+                "numberIsSet" : !numberIsSet,
+                "dateIsSet" : !dateIsSet,
+                "cryptIsSet" : !cryptIsSet,
+                "nameIsSet" : !nameIsSet,
+                "numberWarning" : !numberIsSet,
+                "dateWarning" : !dateIsSet,
+                "cryptWarning" : !cryptIsSet,
+                "nameWarning" : !nameIsSet,
+                "saveNumber": saveNumber,
+                "saveCrypt": saveCrypt,
+                "saveName": saveName,
+                "saveDate": saveDate
+            })
+    
+        }
+    });
+
+    app.get("/box/pot/:id/:userId", function (req, res) {
+
+        User.findOne({"_id" : req.params.userId}, function (err, user){
 
             if (user) {
 
@@ -744,18 +874,139 @@ module.exports = function (app, Box, User, Category) {
                     return box.id === req.params.id;
                 }).pop();
 
-                if (req.body.numcarte != null &&
-                    req.body.name != null &&
-                    req.body.dateexpi != null &&
-                    req.body.crypt != null
-                ) {
-                    box.isPaid = true;
+                let priceTotal = 0;
+                let paid = 0;
+                let index = 0;
+                for (index = 0; index < box.prestations.length; index ++){
+                    priceTotal += box.prestations[index].price;
+                }
+                for (index = 0; index < box.contributions.length; index ++){
+                    paid += Number(box.contributions[index].amount);
                 }
 
-                user.save();
-
-                res.redirect('/profile/')
-            };
+                res.render('pot', {
+                    "box" : box,
+                    "paid" : paid,
+                    "price" : priceTotal
+                });
+            }
+            else res.redirect('/catalog');
         });
     });
+
+    app.post("/box/pot/:id/:userId", function (req, res) {
+        
+
+
+        let validated = true;
+        let messageIsSet = true;
+        let amountIsSet = true;
+        let nameIsSet = true;
+        let saveAmount = "";
+        let saveName = "";
+        let saveMessage = "";
+    
+        if(!req.body.message){
+            validated = false;
+            messageIsSet = false
+        }
+        else{
+            saveMessage = req.body.message
+        }
+    
+        if(!req.body.name){
+            validated = false;
+            nameIsSet = false
+        }
+        else{
+            saveName = req.body.name
+        }
+    
+        if(!req.body.amount){
+            validated = false;
+            amountIsSet = false
+        }
+        else{
+            saveAmount = req.body.amount
+        }
+    
+        //if okay just set the box as Paid
+        if (validated){
+            
+            User.findOne({"_id" : req.params.userId}, function (err, user){
+        
+                if (user) {
+
+                    let box = user.boxes.filter(function (box) {
+                        return box.id === req.params.id;
+                    }).pop();
+
+                    let contrib = new Contribution({
+                        "name": escape(req.body.name),
+                        "message": escape(req.body.message),
+                        "amount" : escape(req.body.amount)
+                    });           
+
+                    box.contributions.push(contrib);
+
+                    let priceTotal = 0;
+                    let paid = 0;
+                    let index = 0;
+                    for (index = 0; index < box.prestations.length; index ++){
+                        priceTotal += box.prestations[index].price;
+                    }
+                    for (index = 0; index < box.contributions.length; index ++){
+                        paid += Number(box.contributions[index].amount);
+                    }
+
+                    if (paid >= priceTotal){
+                        box.isPaid = true;
+                    }
+
+                    user.save();
+
+                    res.redirect('/box/pot/'+box.urlFund);
+                };
+            });
+        }
+        else{
+            User.findOne({_id:req.params.userId}, function (err, user){
+        
+                if (user) {
+                    
+                    let box = user.boxes.filter(function (box) {
+                        return box.id === req.params.id;
+                    }).pop();
+
+                    let priceTotal = 0;
+                    let paid = 0;
+                    let index = 0;
+                    for (index = 0; index < box.prestations.length; index ++){
+                        priceTotal += box.prestations[index].price;
+                    }
+                    for (index = 0; index < box.contributions.length; index ++){
+                        paid += box.contributions[index].amount;
+                    }
+
+                    res.render('pot', {
+                        "box" : box,
+                        "paid" : paid,
+                        "price" : priceTotal,
+                        "messageIsSet" : !messageIsSet,
+                        "amountIsSet" : !amountIsSet,
+                        "nameIsSet" : !nameIsSet,
+                        "nameWarning": !nameIsSet,
+                        "amountWarning": !amountIsSet,
+                        "messageWarning": !messageIsSet,
+                        "saveAmount": saveAmount,
+                        "saveName": saveName,
+                        "saveMessage": saveMessage
+                    });
+
+                }
+            });
+        }
+    });
+
+    
 }

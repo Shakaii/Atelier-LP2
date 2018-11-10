@@ -1,0 +1,60 @@
+{{> header}}
+
+<div class="pannelLog">
+        <form method="post">
+            <h1>Cagnotte <br> {{paid}}€ payé sur {{price}}€</h1>
+
+
+            <div>
+                    <label ><p>Nom Prénom</p> <input {{#saveName}} value="{{saveName}}" {{/saveName}} {{#nameWarning}} class="inputWarning" {{/nameWarning}} name="name" type="text"></label>
+
+                    {{#nameIsSet}}
+                        <span class="warning">Veuillez entrer votre nom / prénom</span>
+                    {{/nameIsSet}}
+                    
+                </div>
+
+            <div>
+                <label ><p>Message</p> <input {{#saveMessage}} value="{{saveMessage}}" {{/saveMessage}}  {{#messageWarning}} class="inputWarning" {{/messageWarning}} name="message" type="text" >
+
+                    {{#messageIsSet}}
+                        <span class="warning">Veuillez entrer un message</span>
+                    {{/messageIsSet}}
+                    
+            </div>
+
+            <div>
+                    <label ><p>Montant</p> <input {{#amountWarning}} class="inputWarning" {{/amountWarning}} name="amount" type="number" >
+    
+                        {{#amountIsSet}}
+                            <span class="warning">Veuillez entrer un message</span>
+                        {{/amountIsSet}}
+                        
+                </div>
+
+
+        </br>
+
+            <input class="pass" type = "submit" value="Participer">
+
+        </form>
+    </div>
+
+            <div class="container">
+                {{#box.prestations}}
+                <div class="card">
+                    <a>
+                        <div class="card-title">{{title}}</div>
+                        <div class="card-img"><img src="/img/{{image}}"></div>
+                    </a>
+                    <div class="card-footer">
+                        <span class="price">{{price}}€</span>
+                    </div>
+                </div>
+                {{/box.prestations}}
+            </div>
+
+
+
+
+{{> footer}}

@@ -20,7 +20,7 @@
                 Nombre de prestation(s) : {{prestations.length}}
                 {{#recipientName}}
                     {{#isPaid}}
-                        </br>Le coffret est validé et a été transmis au destinataire !
+                        </br>Le coffret est validé et peu être transmis au destinataire !
                         {{#isOpened}}
                           </br>Il a été ouvert !
                         {{/isOpened}}
@@ -52,15 +52,15 @@
                     <a class="link" href=/box/giftGenerate/{{_id}}>Génerer votre Url cadeau !</a> 
                 {{/isPaid}}
 
-                {{#urlPot}} <!-- Si cagnotte -->
-                    <input data-clipboard-text="{{host}}/box/pot/{{user.id}}/{{urlPot}}" disabled="disabled" value={{host}}/box/pot/{{user.id}}/{{urlPot}}> 
-                    <div class="urlGift" data-clipboard-text="{{host}}/box/pot/{{user.id}}/{{urlPot}}">Copier dans le presse papier</div>
-                {{/urlPot}}
-                {{^urlPot}}
+                {{#urlFund}} <!-- Si cagnotte -->
+                    <input data-clipboard-text="{{host}}/box/pot/{{user.id}}/{{urlFund}}" disabled="disabled" value={{host}}/box/pot/{{urlFund}}> 
+                    <div class="urlGift" data-clipboard-text="{{host}}/box/pot/{{urlFund}}">Copier dans le presse papier</div>
+                {{/urlFund}}
+                {{^urlFund}}
                     {{#isPaid}}{{/isPaid}}{{^isPaid}}
                         <a class="link" href=/validation/{{_id}}>Payer</a>
                     {{/isPaid}}
-                {{/urlPot}}
+                {{/urlFund}}
             {{/urlGift}}
         {{/recipientName}}
 
