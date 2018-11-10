@@ -1053,5 +1053,29 @@ module.exports = function (app, Box, User, Category, Contribution,Prestation) {
            
         });
     });
-    
+    app.get("/deleteprest/:idcat/:idprest", function (req, res) {
+        if(req.session.email){
+        User.findOne({
+            email: req.session.email
+        }, function (err, user) {
+            let pos;
+            if(user.isAdmin){
+                Category.findOne({_id:req.params.idcat},function(err,cat){
+                    cat.prestations.forEach(function(prest){
+                        if(prest._id==req.params.idprest){
+                            pos=cat.prestations.indexOf(prest);
+                        }
+                    });
+                    cat.prestations.splice(pos,1);
+                    cat.save();
+                    res.redirect('/catalog/'+cat.title);
+                });
+
+            }
+        });
+        
+        }
+    });
+            
+           
 }

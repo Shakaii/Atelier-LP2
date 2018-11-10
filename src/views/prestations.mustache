@@ -20,6 +20,9 @@
             <div class="price">{{price}} €</div>
             {{#connected}}
             <a class="addToCart" href="/addPrest/{{category.id}}/{{id}}"><i class="fas fa-cart-plus"></i></a>
+            {{#admin}}
+            <a href="/deleteprest/{{category.id}}/{{id}}" class="modifsBox">Supprimer la prestation</a>
+            {{/admin}}
             {{/connected}}
     </div> 
 </div>  
