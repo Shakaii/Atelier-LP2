@@ -1,5 +1,8 @@
 {{> header}}
     <h1 class="titreW">Profil de l'utilisateur. Vous pouvez consulter le statut de vos coffrets et modifier vos informations personnelles.</h1>
+    {{#validationRefused}}
+    <h1 class="titreW">Impossible de valider la box, vous devez avoir au moins deux prestations de deux catégories différente</h1>
+    {{/validationRefused}}
     <div class="container">
         {{#user.boxes}}
         {{^isCurrent}}
@@ -23,10 +26,10 @@
                         </br>Le coffret est validé et peu être transmis au destinataire !
                         {{#isOpened}}
                           </br>Il a été ouvert !
-                        {{/isOpened}}
-                        {{^isOpened}}
-                            </br>Il n'a pas encore été ouvert.
-                        {{/isOpened}}
+                        {{/isOpened}}validationRefused
+                        {{^isOpened}}validationRefused
+                            </br>Il nvalidationRefusedvert.
+                        {{/isOpened}}validationRefused
                     {{/isPaid}}
                     {{^isPaid}}
                         </br>Le coffret est en attente de paiement !

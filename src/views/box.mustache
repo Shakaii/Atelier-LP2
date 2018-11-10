@@ -1,11 +1,87 @@
 {{> header}}
-    <h1 class="infoCoffrets">
-    Coffret 
-    {{#box.isCurrent}} courant {{/box.isCurrent}}
-    {{^box.isCurrent}} non courant {{/box.isCurrent}}
-    contenant {{box.prestations.length}} prestation(s).
-    </h1>
+
     <div class="container">
+
+            {{^box.isCurrent}}
+            <div class="card nonCurrent">
+        {{/box.isCurrent}}
+        {{#box.isCurrent}}
+            <div class="card current">
+        {{/isCurrent}}
+            <h1 class="card-title">
+                {{#box.isCurrent}}
+                    Coffret courant
+                {{/box.isCurrent}}
+                {{^box.isCurrent}}
+                   Coffret non courant
+                {{/box.isCurrent}}
+            </h1>
+            <div class="description-box">
+                Nombre de prestation(s) : {{box.prestations.length}}
+                {{#recipientName}}
+                    {{#isPaid}}
+                        </br>Le coffret est validé et peu être transmis au destinataire !
+                        {{#isOpened}}
+                          </br>Il a été ouvert !
+                        {{/isOpened}}
+                        {{^isOpened}}
+                            </br>Il n'a pas encore été ouvert.
+                        {{/isOpened}}
+                    {{/isPaid}}
+                    {{^isPaid}}
+                        </br>Le coffret est en attente de paiement !
+                    {{/isPaid}}
+                {{/recipientName}}
+                {{^recipientName}}
+                    </br>Le coffret est en attente de validation
+
+                {{/recipientName}}
+
+
+
+                </div>
+
+        <!-- Si validé -->
+        {{#recipientName}}        
+            {{#urlGift}}    <!-- Si cadeau -->
+                <input data-clipboard-text="{{host}}/box/gift/{{user.id}}/{{urlGift}}" disabled="disabled" value={{host}}/box/gift/{{user.id}}/{{urlGift}}> 
+                <div class="urlGift" data-clipboard-text="{{host}}/box/gift/{{user.id}}/{{urlGift}}">Copier dans le presse papier</div>
+            {{/urlGift}}
+            {{^urlGift}}
+                {{#isPaid}}
+                    <a class="link" href=/box/giftGenerate/{{_id}}>Génerer votre Url cadeau !</a> 
+                {{/isPaid}}
+
+                {{#urlFund}} <!-- Si cagnotte -->
+                    <input data-clipboard-text="{{host}}/box/pot/{{user.id}}/{{urlFund}}" disabled="disabled" value={{host}}/box/pot/{{urlFund}}> 
+                    <div class="urlGift" data-clipboard-text="{{host}}/box/pot/{{urlFund}}">Copier dans le presse papier</div>
+                {{/urlFund}}
+                {{^urlFund}}
+                    {{#isPaid}}{{/isPaid}}{{^isPaid}}
+                        <a class="link" href=/validation/{{_id}}>Payer</a>
+                    {{/isPaid}}
+                {{/urlFund}}
+            {{/urlGift}}
+        {{/recipientName}}
+
+                <!-- Si pas -->
+                {{^recipientName}}
+                <a class="link" href=/validate/{{_id}}>Finaliser le panier</a>
+                <a class="link" href=/changeCurr/{{_id}}>Définir en temps que panier courant</a>
+            {{/recipientName}}
+    
+             <div class="card-footer">
+                <a class="zoom" href=/box/{{_id}}><i class="fas fa-search-plus"></i></a>
+                {{#isPaid}}{{/isPaid}}{{^isPaid}}
+                    <a class="rmPrest" href=/delete/{{_id}}><i class="fas fa-trash-alt"></i></a>
+                {{/isPaid}}
+            </div>
+        </div>
+
+
+
+            <!-- Affichage prestations-->
+
         {{#box.prestations}}
         <div class="card">
             <a  href="/box/{{box._id}}/{{_id}}" >
@@ -19,9 +95,6 @@
         </div>
         {{/box.prestations}}
     </div>
-    {{^isCurrent}}
-        <a href="/changeCurr/{{box._id}}" class="modifsBox">Sélectionner le coffret comme coffret courant</a>
-    {{/isCurrent}}
-        <a href="/delete/{{box._id}}" class="modifsBox">Supprimer le coffret</a>
+ 
     
 {{> footer}}

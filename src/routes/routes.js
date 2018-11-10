@@ -1,6 +1,7 @@
 module.exports = function (app, Box, User, Category, Contribution) {
     let bcrypt = require('bcryptjs');
     let validator = require('validator');
+    var sanitizer = require('sanitizer');
     let uuid4 = require('uuid/v4');
     let tri; //var pour le tri des prestations
     let currentBox;
@@ -105,7 +106,7 @@ module.exports = function (app, Box, User, Category, Contribution) {
 
                     let user = new User({
                         password: hash,
-                        email: escape(req.body.mail)
+                        email: sanitizer.escape(req.body.mail)
                     });
 
                     user.save(function (err) {
@@ -134,7 +135,7 @@ module.exports = function (app, Box, User, Category, Contribution) {
                 "checkWarning": !checkWarning,
                 "passwordWarning": !passwordWarning,
                 "saveEmail": saveEmail
-            });
+            }); 
         }
 
     });
@@ -559,9 +560,7 @@ module.exports = function (app, Box, User, Category, Contribution) {
                 block = true;
             }
             if (found) {
-                console.log(box.isOpened);
                 box.isOpened=true;
-                console.log(box.isOpened);
                 user.save();
                 res.render('gift', {
                     'box': box,
@@ -689,9 +688,37 @@ module.exports = function (app, Box, User, Category, Contribution) {
         if (!req.session.email) {
             res.redirect('/catalog');
         } else {
-            res.render('validate', {
-                connected: true
+
+
+            User.findOne({
+                email: req.session.email
+            }, function (err, user) {
+
+                if (user) {
+
+                    let box = user.boxes.filter(function (box) {
+                        return box.id === req.params.id;
+                    }).pop();
+
+                    if (box.prestations.length >= 2){
+                        res.render('validate', {
+                            connected: true
+                        });
+                    }
+                    else {
+                        res.render('profile', {
+                            'connected': true,
+                            'user': user,
+                            'host': req.hostname,
+                            'validationRefused': true
+                        });
+                    }
+                    
+                };
             });
+
+
+
         }
     });
 
@@ -731,7 +758,7 @@ module.exports = function (app, Box, User, Category, Contribution) {
     
         //if okay just set the box as Paid
         if (validated){
-            console.log("ok");
+
             User.findOne({
                 email: req.session.email
             }, function (err, user) {
@@ -742,9 +769,9 @@ module.exports = function (app, Box, User, Category, Contribution) {
                         return box.id === req.params.id;
                     }).pop();
 
-                    box.recipientName = escape(req.body.name);
-                    box.message = escape(req.body.message);
-                    box.date = escape(req.body.dateouverture);
+                    box.recipientName = sanitizer.escape(req.body.name);
+                    box.message = sanitizer.escape(req.body.message);
+                    box.date = sanitizer.escape(req.body.dateouverture);
 
                     if (req.body.paiement == "c") {
                         box.urlFund = box.id+"/"+user.id
@@ -776,9 +803,29 @@ module.exports = function (app, Box, User, Category, Contribution) {
         if (!req.session.email) {
             res.redirect('/catalog');
         } else {
-            res.render('validation', {
-                connected: true
+            User.findOne({email:req.session.email}, function (err, user){
+
+                if (user) {
+                    
+                    let box = user.boxes.filter(function (box) {
+                        return box.id === req.params.id;
+                    }).pop();
+
+                    let priceTotal = 0;
+                    let index = 0;
+                    for (index = 0; index < box.prestations.length; index ++){
+                        priceTotal += box.prestations[index].price;
+                    }
+
+                    res.render('validation', {
+                        "connected": true,
+                        "price" : priceTotal,
+                        "box" : box
+                    });
+
+                }
             });
+            
         }
     });
 
@@ -846,6 +893,22 @@ module.exports = function (app, Box, User, Category, Contribution) {
             });
         }else{  //else resend the view
     
+            User.findOne({email:req.session.email}, function (err, user){
+
+                if (user) {
+                    
+                    let box = user.boxes.filter(function (box) {
+                        return box.id === req.params.id;
+                    }).pop();
+
+                    let priceTotal = 0;
+                    let index = 0;
+                    for (index = 0; index < box.prestations.length; index ++){
+                        priceTotal += box.prestations[index].price;
+                    }
+                }
+            });
+ 
             res.render('validation',{
                 "numberIsSet" : !numberIsSet,
                 "dateIsSet" : !dateIsSet,
@@ -858,7 +921,9 @@ module.exports = function (app, Box, User, Category, Contribution) {
                 "saveNumber": saveNumber,
                 "saveCrypt": saveCrypt,
                 "saveName": saveName,
-                "saveDate": saveDate
+                "saveDate": saveDate,
+                "price" : priceTotal,
+                "box" : box
             })
     
         }
@@ -896,8 +961,6 @@ module.exports = function (app, Box, User, Category, Contribution) {
 
     app.post("/box/pot/:id/:userId", function (req, res) {
         
-
-
         let validated = true;
         let messageIsSet = true;
         let amountIsSet = true;
@@ -905,6 +968,15 @@ module.exports = function (app, Box, User, Category, Contribution) {
         let saveAmount = "";
         let saveName = "";
         let saveMessage = "";
+        let saveCrypt = "";
+        let saveDate = "";
+        let saveNumber = "";
+        let numberIsSet = true;
+        let dateIsSet = true;
+        let cryptIsSet = true;
+        
+
+        
     
         if(!req.body.message){
             validated = false;
@@ -929,6 +1001,30 @@ module.exports = function (app, Box, User, Category, Contribution) {
         else{
             saveAmount = req.body.amount
         }
+
+        if(!req.body.numcarte){
+            validated = false;
+            numberIsSet = false
+        }
+        else{
+            saveNumber = req.body.numcarte
+        }
+    
+        if(!req.body.dateexpi){
+            validated = false;
+            dateIsSet = false
+        }
+        else{
+            saveDate = req.body.dateexpi
+        }
+    
+        if(!req.body.crypt){
+            validated = false;
+            cryptIsSet = false
+        }
+        else{
+            saveCrypt = req.body.crypt
+        }
     
         //if okay just set the box as Paid
         if (validated){
@@ -942,9 +1038,9 @@ module.exports = function (app, Box, User, Category, Contribution) {
                     }).pop();
 
                     let contrib = new Contribution({
-                        "name": escape(req.body.name),
-                        "message": escape(req.body.message),
-                        "amount" : escape(req.body.amount)
+                        "name": sanitizer.escape(req.body.name),
+                        "message": sanitizer.escape(req.body.message),
+                        "amount" : sanitizer.escape(req.body.amount)
                     });           
 
                     box.contributions.push(contrib);
@@ -1000,7 +1096,16 @@ module.exports = function (app, Box, User, Category, Contribution) {
                         "messageWarning": !messageIsSet,
                         "saveAmount": saveAmount,
                         "saveName": saveName,
-                        "saveMessage": saveMessage
+                        "saveMessage": saveMessage,
+                        "numberIsSet" : !numberIsSet,
+                        "dateIsSet" : !dateIsSet,
+                        "cryptIsSet" : !cryptIsSet,
+                        "numberWarning" : !numberIsSet,
+                        "dateWarning" : !dateIsSet,
+                        "cryptWarning" : !cryptIsSet,
+                        "saveNumber": saveNumber,
+                        "saveCrypt": saveCrypt,
+                        "saveDate": saveDate
                     });
 
                 }

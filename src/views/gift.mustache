@@ -4,11 +4,18 @@
 
 {{^block}}
 
-{{#recipientName}}
-{{#message}}
-<div class="messageCadeau">{{recipientName}} vous a laissé un message ! {{box.message}}</div>
-{{/message}}
-{{/recipientName}}
+
+<div class="messageCadeau">{{box.recipientName}} vous a laissé un message ! {{box.message}}</div>
+
+
+{{#box.urlFund}}
+    Vos amis ont réalisés une cagnotte pour vous offrir ce cadeau, voici les messages qu'ils vous ont laissés !</br>
+    {{#box.contributions}}
+        {{name}} : {{message}}<br>
+    {{/box.contributions}}
+
+{{/box.urlFund}}
+
 
 <div class="container">
         {{#box.prestations}}

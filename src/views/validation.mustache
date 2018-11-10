@@ -1,8 +1,11 @@
 {{> header}}
 
+
+
+
         <div class="pannelLog">
             <form method="post">
-                <h1>Inscription</h1>
+                <h1>Paiement de {{price}}€</h1>
                 <div>
                     <label ><p>Numero de carte</p> <input {{#saveNumber}} value="{{saveNumber}}" {{/saveNumber}} {{#numberWarning}} class="inputWarning" {{/numberWarning}} name="numcarte" type="text" maxlength="16"></label>
 
@@ -21,7 +24,7 @@
                 </div>
 
                 <div>
-                    <label ><p>Date d'expiration</p> <input {{#saveDate}} value="{{saveDate}}" {{/saveDate}} {{#checkWarning}} class="inputWarning" {{/checkWarning}} name="dateexpi" type="date" ></label>
+                    <label ><p>Date d'expiration</p> <input {{#saveDate}} value="{{saveDate}}" {{/saveDate}} {{#dateWarning}} class="inputWarning" {{/dateWarning}} name="dateexpi" type="text" ></label>
 
                     {{#dateIsSet}}
                         <span class="warning">Veuillez entrer la date d'expiration</span>
@@ -29,15 +32,34 @@
                 </div>
 
                 <div>
-                        <label ><p>Cryptogramme</p> <input {{#saveCrypt}} value="{{saveCrypt}}" {{/saveCrypt}} {{#checkWarning}} class="inputWarning" {{/checkWarning}} name="crypt" type="text" maxlength="3"></label>
+                        <label ><p>Cryptogramme</p> <input {{#saveCrypt}} value="{{saveCrypt}}" {{/saveCrypt}} {{#cryptWarning}} class="inputWarning" {{/cryptWarning}} name="crypt" type="number" maxlength="3"></label>
     
                         {{#cryptIsSet}}
                             <span class="warning">Veuillez entrer le cryptogramme</span>
                         {{/cryptIsSet}}
-                    </div>
+                </div>
 
                 <input class="pass" type = "submit" value="Payer">
  
             </form>
         </div>
+
+
+        <h1>Récapitulatif</h1>
+
+
+        <div class="container">
+            {{#box.prestations}}
+            <div class="card">
+                <a>
+                    <div class="card-title">{{title}}</div>
+                    <div class="card-img"><img src="/img/{{image}}"></div>
+                </a>
+                <div class="card-footer">
+                    <span class="price">{{price}}€</span>
+                </div>
+            </div>
+            {{/box.prestations}}
+        </div>
+
 {{> footer}}
