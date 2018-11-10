@@ -11,6 +11,8 @@
 </div>
 <div class="container">
 {{#prestations}}
+{{#admin}}
+
 <div class="card">
     <a  href="/catalog/{{category.title}}/{{title}}" >
         <div class="card-title">{{title}}</div>
@@ -20,12 +22,36 @@
             <div class="price">{{price}} €</div>
             {{#connected}}
             <a class="addToCart" href="/addPrest/{{category.id}}/{{id}}"><i class="fas fa-cart-plus"></i></a>
-            {{#admin}}
-            <a href="/deleteprest/{{category.id}}/{{id}}" class="modifsBox">Supprimer la prestation</a>
-            {{/admin}}
+            <a href="/deleteprest/{{category.id}}/{{id}}" <i class="fas fa-trash-alt"></i></a>
+            {{#isVisible}}
+            <a href="/disabledprest/{{category.id}}/{{id}}" <i class="fas fa-eye"></i></a>
+            {{/isVisible}}
+            {{^isVisible}}
+            <a href="/disabledprest/{{category.id}}/{{id}}" <i class="fas fa-eye-slash"></i></a>
+            {{/isVisible}}
             {{/connected}}
     </div> 
 </div>  
+
+{{/admin}}
+{{^admin}}
+{{#isVisible}}
+<div class="card">
+    <a  href="/catalog/{{category.title}}/{{title}}" >
+        <div class="card-title">{{title}}</div>
+        <div class="card-img"><img src="/img/{{image}}"></div>
+    </a>
+    <div class="card-footer">
+            <div class="price">{{price}} €</div>
+            {{#connected}}
+            <a class="addToCart" href="/addPrest/{{category.id}}/{{id}}"><i class="fas fa-cart-plus"></i></a>
+           
+            {{/connected}}
+    </div> 
+</div>  
+{{/isVisible}}
+{{/admin}}
+
 {{/prestations}}
 </div>
 {{> footer}}

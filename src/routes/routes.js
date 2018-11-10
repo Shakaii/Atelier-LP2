@@ -1218,6 +1218,35 @@ module.exports = function (app, Box, User, Category, Contribution,Prestation) {
         
         }
     });
-            
+    app.get("/disabledprest/:idcat/:idprest", function (req, res) {
+        if(req.session.email){
+        User.findOne({
+            email: req.session.email
+        }, function (err, user) {
+        
+            if(user.isAdmin){
+                Category.findOne({_id:req.params.idcat},function(err,cat){
+                    cat.prestations.forEach(function(prest){
+                        if(prest._id==req.params.idprest){
+                            if(prest.isVisible){
+                            prest.isVisible=false;
+                            
+                            }else{
+                            prest.isVisible=true;
+                       
+                            }
+                        }
+                    });
+                    
+                    cat.save();
+                    res.redirect('/catalog/'+cat.title);
+                });
+
+            }
+        });
+        
+        }
+    });
+          
            
 }
