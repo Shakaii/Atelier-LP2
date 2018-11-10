@@ -1,4 +1,4 @@
-module.exports = function (app, Box, User, Category, Contribution) {
+module.exports = function (app, Box, User, Category, Contribution,Prestation) {
     let bcrypt = require('bcryptjs');
     let validator = require('validator');
     let uuid4 = require('uuid/v4');
@@ -313,10 +313,15 @@ module.exports = function (app, Box, User, Category, Contribution) {
     });
 
     app.get("/catalog/:category", function (req, res) {
-        let connected = false;
+     
+ let connected = false;
         if (req.session.email) {
+            User.findOne({email:req.session.email},function(err,user){
+                req.session.isAdmin=user.isAdmin;
+            });
             connected = true;
         }
+     
         Category
             .findOne({
                 title: req.params.category
@@ -335,15 +340,18 @@ module.exports = function (app, Box, User, Category, Contribution) {
                             return a.price - b.price
                         });
                     } //- vers +
-
+                    
+                   
                     res.render('prestations', {
                         'categories': categories,
                         'category': category,
                         'prestations': category.prestations,
-                        'connected': connected
+                        'connected': connected,
+                        'admin':req.session.isAdmin
                     });
-                });
+                
             });
+        });
     });
 
     app.get("/triPrest", function (req, res) {
@@ -1008,5 +1016,42 @@ module.exports = function (app, Box, User, Category, Contribution) {
         }
     });
 
+    app.get("/newPrestation/:id", function (req, res) {
+    if(req.session.email){
+        User.findOne({email:req.session.email}, function (err, user){
+                
+                if(user.isAdmin){
+                    res.render('newPrestation',{connected:true});
+                }else{
+                    res.redirect("/");
+                }
+            });
+    }
+        
+      
+    });
+
+    app.post("/newPrestation/:id",function(req,res){
+        Category.findOne({_id:req.params.id},function(err,cat){
+           /* let img="";
+            if(req.body.image!=null)
+                img = "animateur.jpg";
+                else*/
+                console.log(req.params.id);
+                 console.log(cat);
+            let prest = new Prestation({
+                title:req.body.title,
+                description:req.body.description,
+                image: "animateur.jpg",
+                price:req.body.price,
+                isVisible:true
+            });
+           
+            cat.prestations.push(prest);
+            cat.save();
+            res.redirect('/');
+           
+        });
+    });
     
 }

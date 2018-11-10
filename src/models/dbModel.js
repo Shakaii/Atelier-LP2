@@ -50,6 +50,6 @@ module.exports = function(mongoose, app){
         let Prestation = mongoose.model('Prestation', prestationSchema);
         let Contribution = mongoose.model('Contribution', contributionSchema);
 
-        require('../routes/routes')(app, Box, User, Category, Contribution);
+        require('../routes/routes')(app, Box, User, Category, Contribution,Prestation);
     });
 }

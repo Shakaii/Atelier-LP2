@@ -3,7 +3,11 @@
     {{#categories}}
         <a href="/catalog/{{title}}">{{title}}</a>
     {{/categories}}
+    
     <a href="/triPrest">Trier par prix <i class="fas fa-sort"></i></a>
+    {{#admin}}
+    <a href="/newPrestation/{{category.id}}">Ajouter une prestation</a>
+    {{/admin}}
 </div>
 <div class="container">
 {{#prestations}}
