@@ -1,12 +1,16 @@
 {{> header}}
 
+
+
 <div class="pannelLog">
         <form method="post">
-            <h1>Cagnotte <br> {{paid}}€ payé sur {{price}}€</h1>
+            <h1>Cagnotte <br> {{paid}}€ payé sur {{price}}€ {{#box.urlGift}}<br>
+                La cagnotte est fermée, il est inutile de contribuer plus
+            {{/box.urlGift}}</h1>
 
 
             <div>
-                    <label ><p>Nom Prénom</p> <input {{#saveName}} value="{{saveName}}" {{/saveName}} {{#nameWarning}} class="inputWarning" {{/nameWarning}} name="name" type="text"></label>
+                    <label ><p>Nom Prénom</p> <input {{#saveName}} value="{{saveName}}" {{/saveName}} {{#box.urlGift}}disabled{{/box.urlGift}} {{#nameWarning}} class="inputWarning" {{/nameWarning}} name="name" type="text"></label>
 
                     {{#nameIsSet}}
                         <span class="warning">Veuillez entrer votre nom / prénom</span>
@@ -15,7 +19,7 @@
                 </div>
 
             <div>
-                <label ><p>Message</p> <input {{#saveMessage}} value="{{saveMessage}}" {{/saveMessage}}  {{#messageWarning}} class="inputWarning" {{/messageWarning}} name="message" type="text" >
+                <label ><p>Message</p> <input {{#saveMessage}} value="{{saveMessage}}" {{/saveMessage}} {{#box.urlGift}}disabled{{/box.urlGift}} {{#messageWarning}} class="inputWarning" {{/messageWarning}} name="message" type="text" >
 
                     {{#messageIsSet}}
                         <span class="warning">Veuillez entrer un message</span>
@@ -24,18 +28,43 @@
             </div>
 
             <div>
-                    <label ><p>Montant</p> <input {{#amountWarning}} class="inputWarning" {{/amountWarning}} name="amount" type="number" >
+                    <label ><p>Montant</p> <input {{#amountWarning}} class="inputWarning" {{/amountWarning}} {{#box.urlGift}}disabled{{/box.urlGift}} name="amount" type="number" >
     
                         {{#amountIsSet}}
                             <span class="warning">Veuillez entrer un message</span>
                         {{/amountIsSet}}
                         
+            </div>
+
+            <div>
+                    <label ><p>Numero de carte</p> <input {{#saveNumber}} value="{{saveNumber}}" {{/saveNumber}} {{#numberWarning}} class="inputWarning" {{/numberWarning}} name="numcarte" type="text" maxlength="16"></label>
+
+                    {{#numberIsSet}}
+                        <span class="warning">Veuillez entrer le numéro de votre carte</span>
+                    {{/numberIsSet}}
+                    
+                </div>
+
+                <div>
+                    <label ><p>Date d'expiration</p> <input {{#saveDate}} value="{{saveDate}}" {{/saveDate}} {{#dateWarning}} class="inputWarning" {{/dateWarning}} name="dateexpi" type="text" ></label>
+
+                    {{#dateIsSet}}
+                        <span class="warning">Veuillez entrer la date d'expiration</span>
+                    {{/dateIsSet}}
+                </div>
+
+                <div>
+                        <label ><p>Cryptogramme</p> <input {{#saveCrypt}} value="{{saveCrypt}}" {{/saveCrypt}} {{#cryptWarning}} class="inputWarning" {{/cryptWarning}} name="crypt" type="number" maxlength="3"></label>
+    
+                        {{#cryptIsSet}}
+                            <span class="warning">Veuillez entrer le cryptogramme</span>
+                        {{/cryptIsSet}}
                 </div>
 
 
         </br>
 
-            <input class="pass" type = "submit" value="Participer">
+            <input class="pass" type = "submit" value="Participer" {{#box.urlGift}}disabled{{/box.urlGift}}>
 
         </form>
     </div>
