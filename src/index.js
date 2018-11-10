@@ -6,7 +6,7 @@ const bodyParser = require("body-parser");
 
 let app = express();
 let port = 80;
-let uri = 'mongodb://mongo:27017/test';
+let uri = 'mongodb://mongo:27017/test'; 
 
 app.use(bodyParser.urlencoded({
 	extended: true  

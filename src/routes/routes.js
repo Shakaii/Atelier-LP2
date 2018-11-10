@@ -559,9 +559,7 @@ module.exports = function (app, Box, User, Category, Contribution) {
                 block = true;
             }
             if (found) {
-                console.log(box.isOpened);
                 box.isOpened=true;
-                console.log(box.isOpened);
                 user.save();
                 res.render('gift', {
                     'box': box,
